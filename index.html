@@ -17,7 +17,7 @@
   <div class="hero__card">
     <h3>How to Use This Guide</h3>
     <ul>
-      <li>Sliders start at <strong>real-world defaults</strong> (BoC at 2.75%, Fed at 4.25%, CAD/USD ≈ 1.44)</li>
+      <li>Sliders start at <strong>real-world defaults</strong> (BoC at 2.25%, Fed at 3.50–3.75%, CAD/USD ≈ 1.39)</li>
       <li>Drag sliders to simulate shocks — <strong>dashed ghost curves</strong> show the original so you see the shift</li>
       <li>Each section has a <strong>🔬 Try This</strong> walkthrough referencing current events (Iran war, AI bubble, private credit unwind, BoC vs Fed divergence)</li>
       <li>Read the <strong>bullet explanations</strong> below each chart for both the theory and the Canada–US interpretation</li>
@@ -45,7 +45,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 1</span>
     <h2>The Foreign Exchange Market</h2>
-    <p class="desc">The CAD/USD exchange rate is just a price — how many Canadian dollars it costs to buy one US dollar — set by supply and demand.</p>
+    <p class="desc">Before we can understand why the loonie moves, we need to see what an exchange rate actually <em>is</em>. CAD/USD is just a price — how many Canadian dollars it costs to buy one US dollar — set by supply and demand like any other market. Once you see the two curves, every section that follows is just a story about what shifts them.</p>
   </div>
   <div class="controls">
     <label>Demand for USD Shift <span class="value-pill" id="fx-d-shift-v">0</span>
@@ -67,12 +67,12 @@
     <ul>
       <li><strong>Demand for USD</strong> (cyan D curve): Canadians wanting USD — to import American goods, buy US stocks, pay USD debts, travel to the US</li>
       <li><strong>Supply of USD</strong> (purple S curve): Americans sending USD to Canada — to buy Canadian oil/lumber, invest in TSX, purchase Canadian real estate</li>
-      <li><strong>E (vertical axis)</strong> = CAD per USD. Higher E = weaker loonie. At ~1.44, it costs C$1.44 to buy US$1.00</li>
+      <li><strong>E (vertical axis)</strong> = CAD per USD. Higher E = weaker loonie. At ~1.39, it costs C$1.39 to buy US$1.00</li>
       <li>Where D crosses S = the market-clearing exchange rate. Every trade has a buyer and a seller</li>
     </ul>
     <h4>🔬 Try This — Simulate current events</h4>
     <ul>
-      <li><strong>Iran war oil spike:</strong> drag <em>Supply of USD</em> slider RIGHT (+1.5). Oil at $90+ means Americans send more USD to Canada for energy → more USD available → E falls → <strong>CAD strengthens</strong> (lower E)</li>
+      <li><strong>Iran war oil spike:</strong> drag <em>Supply of USD</em> slider RIGHT (+1.5). Oil above $100 means Americans send more USD to Canada for energy → more USD available → E falls → <strong>CAD strengthens</strong> (lower E)</li>
       <li><strong>US tariff threat:</strong> drag <em>Supply of USD</em> LEFT (-1.0) AND <em>Demand for USD</em> RIGHT (+0.5). US buys less from Canada (fewer USD flowing in), but Canada still needs USD imports → E rises → <strong>CAD weakens</strong></li>
       <li><strong>AI bubble pop / US tech selloff:</strong> drag <em>Demand for USD</em> LEFT (-1.0). Canadian pension funds reducing US tech exposure = less need for USD → <strong>CAD strengthens slightly</strong>. But also drag Supply left a bit (-0.5) since US investors pull back globally</li>
     </ul>
@@ -88,17 +88,17 @@
   <div class="section-heading">
     <span class="eyebrow">Section 2</span>
     <h2>Money Supply → Interest Rates → Exchange Rates</h2>
-    <p class="desc">The core transmission chain: the Bank of Canada sets money supply → this determines Canadian interest rates → which pin down the CAD/USD rate through capital flows.</p>
+    <p class="desc">Section 1 showed us that supply and demand set the exchange rate. But what <em>drives</em> those shifts? The single most powerful force is central bank policy. The Bank of Canada sets money supply → that determines Canadian interest rates → which pin down CAD/USD through international capital flows. This two-panel diagram is the engine behind everything that follows.</p>
   </div>
   <div class="controls controls--three">
     <label>BoC Money Supply (Mˢ) <span class="value-pill" id="mm-ms-v">7.0</span>
       <input type="range" id="mm-ms" min="3" max="12" step="0.1" value="7">
     </label>
-    <label>Fed Rate — US i* (%) <span class="value-pill" id="mm-if-v">4.3%</span>
-      <input type="range" id="mm-if" min="0.5" max="8" step="0.1" value="4.3">
+    <label>Fed Rate — US i* (%) <span class="value-pill" id="mm-if-v">3.6%</span>
+      <input type="range" id="mm-if" min="0.5" max="8" step="0.1" value="3.6">
     </label>
-    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="mm-ee-v">1.40</span>
-      <input type="range" id="mm-ee" min="0.6" max="2.0" step="0.01" value="1.40">
+    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="mm-ee-v">1.37</span>
+      <input type="range" id="mm-ee" min="0.6" max="2.0" step="0.01" value="1.37">
     </label>
   </div>
   <div class="grid grid--charts">
@@ -130,13 +130,13 @@
     </ul>
     <h4>🔬 Try This — BoC vs Fed divergence (the dominant story of 2025-26)</h4>
     <ul>
-      <li><strong>BoC easing:</strong> drag Mˢ from 7.0 → 9.0. Watch the Canadian rate drop in the left panel. Then watch the cyan return line shift LEFT in the right panel → equilibrium E rises → <strong>CAD weakens</strong>. This is exactly what happened as BoC cut from 5% to 2.75% while the Fed held at 4.25%</li>
+      <li><strong>BoC easing:</strong> drag Mˢ from 7.0 → 9.0. Watch the Canadian rate drop in the left panel. Then watch the cyan return line shift LEFT in the right panel → equilibrium E rises → <strong>CAD weakens</strong>. This is exactly what happened as BoC cut from 5% to 2.25% while the Fed cut more cautiously to 3.50–3.75%</li>
       <li><strong>Fed surprise cut:</strong> drag Fed Rate from 4.3% → 3.0%. The green foreign-return curve shifts LEFT. Even without BoC doing anything, E drops → <strong>CAD strengthens</strong>. Markets would celebrate this for Canada</li>
-      <li><strong>Private credit panic / risk-off:</strong> drag Eᵉ from 1.40 → 1.55 (markets expect CAD to be weaker in the future). The green curve shifts UP → E rises immediately → <strong>CAD weakens now</strong> because investors demand compensation for expected future losses</li>
+      <li><strong>Private credit panic / risk-off:</strong> drag Eᵉ from 1.37 → 1.55 (markets expect CAD to be weaker in the future). The green curve shifts UP → E rises immediately → <strong>CAD weakens now</strong> because investors demand compensation for expected future losses</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
-      <li>This two-panel diagram is THE core mechanism. When the BoC cuts rates, capital flows to the US because the Fed offers better returns → <strong>CAD weakens</strong>. The 175bp BoC–Fed gap is why CAD went from 1.36 to 1.44</li>
+      <li>This two-panel diagram is THE core mechanism. When the BoC cuts rates, capital flows to the US because the Fed offers better returns → <strong>CAD weakens</strong>. The ~125bp BoC–Fed gap is why CAD went from 1.36 to 1.44 and has since recovered to ~1.39 as the Fed began cutting too</li>
     </ul>
   </div>
 </section>
@@ -146,21 +146,21 @@
   <div class="section-heading">
     <span class="eyebrow">Section 3</span>
     <h2>Interest Rate Parity</h2>
-    <p class="desc">Why doesn't all capital flow to the US just because the Fed rate is higher? Because the market prices in expected CAD appreciation to compensate.</p>
+    <p class="desc">Section 2 showed that higher US rates pull capital toward the US and weaken the loonie. But if that's true, why doesn't <em>all</em> capital flow to the US? There must be an equilibrium. Interest rate parity formalizes the answer: the market prices in expected CAD appreciation to compensate for the rate gap — and that arbitrage condition pins down today's exchange rate.</p>
   </div>
   <div class="toggle-row">
     <button class="toggle-chip is-active" id="irp-uip">Uncovered (UIP)</button>
     <button class="toggle-chip" id="irp-cip">Covered (CIP)</button>
   </div>
   <div class="controls controls--three">
-    <label>BoC Rate — Canada i (%) <span class="value-pill" id="irp-ih-v">2.8%</span>
-      <input type="range" id="irp-ih" min="0.5" max="10" step="0.1" value="2.8">
+    <label>BoC Rate — Canada i (%) <span class="value-pill" id="irp-ih-v">2.3%</span>
+      <input type="range" id="irp-ih" min="0.5" max="10" step="0.1" value="2.3">
     </label>
-    <label>Fed Rate — US i* (%) <span class="value-pill" id="irp-if-v">4.3%</span>
-      <input type="range" id="irp-if" min="0.5" max="10" step="0.1" value="4.3">
+    <label>Fed Rate — US i* (%) <span class="value-pill" id="irp-if-v">3.6%</span>
+      <input type="range" id="irp-if" min="0.5" max="10" step="0.1" value="3.6">
     </label>
-    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="irp-ee-v">1.40</span>
-      <input type="range" id="irp-ee" min="0.6" max="2.0" step="0.01" value="1.40">
+    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="irp-ee-v">1.37</span>
+      <input type="range" id="irp-ee" min="0.6" max="2.0" step="0.01" value="1.37">
     </label>
   </div>
   <div class="grid grid--single">
@@ -174,8 +174,8 @@
   <div class="explanation">
     <h4>What the controls mean</h4>
     <ul>
-      <li><strong>BoC Rate (i)</strong>: Canadian overnight rate at 2.75%. This is the vertical cyan line — the return you earn holding CAD deposits</li>
-      <li><strong>Fed Rate (i*)</strong>: US rate at 4.25%. Embedded in the green downward-sloping curve — the expected return from holding USD deposits</li>
+      <li><strong>BoC Rate (i)</strong>: Canadian overnight rate at 2.25%. This is the vertical cyan line — the return you earn holding CAD deposits</li>
+      <li><strong>Fed Rate (i*)</strong>: US rate at 3.50–3.75%. Embedded in the green downward-sloping curve — the expected return from holding USD deposits</li>
       <li><strong>Expected Future E (Eᵉ)</strong>: where markets think CAD/USD will be. Shifts the green curve — higher Eᵉ (weaker future loonie) shifts it up</li>
       <li><strong>Toggle UIP/CIP</strong>: UIP = risk-bearing bet on expected spot; CIP = risk-free forward contract (locked in today)</li>
     </ul>
@@ -187,14 +187,14 @@
     </ul>
     <h4>🔬 Try This — Why CAD is weak but "expected to strengthen"</h4>
     <ul>
-      <li><strong>See the current gap:</strong> BoC at 2.8%, Fed at 4.3%. The US pays 1.5% more. The chart shows CAD/USD E* settles above 1.40 — CAD is weak NOW to compensate</li>
-      <li><strong>What if BoC cuts more?</strong> Drag BoC rate from 2.8% → 1.5%. The cyan line shifts left → E* jumps higher → <strong>CAD weakens further</strong>. This is exactly what markets fear if the Canadian recession deepens</li>
-      <li><strong>What if Fed pivots?</strong> Drag Fed rate from 4.3% → 3.0%. The green curve shifts left → E* drops → <strong>CAD surges</strong>. A Fed cut would be the single biggest positive catalyst for the loonie</li>
-      <li><strong>Switch to CIP:</strong> click "Covered" — now the metric shows the 1Y forward rate. The forward CAD/USD is BELOW spot (~1.42 vs 1.44), meaning you can lock in a better rate today. This is the forward premium on CAD — the market "knows" CAD should appreciate</li>
+      <li><strong>See the current gap:</strong> BoC at 2.3%, Fed at 3.6%. The US pays ~1.3% more. The chart shows CAD/USD E* settles near 1.39 — CAD is weak NOW to compensate</li>
+      <li><strong>What if BoC cuts more?</strong> Drag BoC rate from 2.3% → 1.5%. The cyan line shifts left → E* jumps higher → <strong>CAD weakens further</strong>. This is exactly what markets fear if the Canadian recession deepens</li>
+      <li><strong>What if Fed cuts faster?</strong> Drag Fed rate from 3.6% → 2.5%. The green curve shifts left → E* drops → <strong>CAD surges</strong>. Faster Fed cuts would be the single biggest positive catalyst for the loonie</li>
+      <li><strong>Switch to CIP:</strong> click "Covered" — now the metric shows the 1Y forward rate. The forward CAD/USD is BELOW spot (~1.38 vs 1.39), meaning you can lock in a better rate today. This is the forward premium on CAD — the market "knows" CAD should appreciate</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
-      <li>The 175bp BoC–Fed gap is why CAD is weak. But parity says this weakness is temporary — CAD must be expected to appreciate to make CAD deposits competitive. The loonie is cheap now <em>precisely because</em> markets expect it to recover</li>
+      <li>The ~125bp BoC–Fed gap is why CAD is somewhat weak. But parity says this weakness is temporary — CAD must be expected to appreciate to make CAD deposits competitive. The loonie is cheap now <em>precisely because</em> markets expect it to recover</li>
     </ul>
   </div>
 </section>
@@ -204,17 +204,17 @@
   <div class="section-heading">
     <span class="eyebrow">Section 4</span>
     <h2>Purchasing Power Parity &amp; the Long Run</h2>
-    <p class="desc">Where is CAD/USD <em>going</em> over 5–10 years? PPP says the answer lives in the inflation gap between Canada and the US.</p>
+    <p class="desc">Sections 2–3 explained short-run exchange rate moves through interest rates and capital flows. But where is CAD/USD headed over 5–10 years? The short-run forces eventually fade, and a deeper anchor takes over: inflation. PPP says the long-run destination lives in the inflation gap between Canada and the US — giving us the endpoint that the short-run dynamics are converging toward.</p>
   </div>
   <div class="controls controls--three">
-    <label>Canada CPI Inflation (%) <span class="value-pill" id="ppp-pih-v">2.5%</span>
-      <input type="range" id="ppp-pih" min="0" max="12" step="0.1" value="2.5">
+    <label>Canada CPI Inflation (%) <span class="value-pill" id="ppp-pih-v">1.8%</span>
+      <input type="range" id="ppp-pih" min="0" max="12" step="0.1" value="1.8">
     </label>
-    <label>US CPI Inflation (%) <span class="value-pill" id="ppp-pif-v">2.8%</span>
-      <input type="range" id="ppp-pif" min="0" max="12" step="0.1" value="2.8">
+    <label>US CPI Inflation (%) <span class="value-pill" id="ppp-pif-v">2.4%</span>
+      <input type="range" id="ppp-pif" min="0" max="12" step="0.1" value="2.4">
     </label>
-    <label>Starting CAD/USD Rate <span class="value-pill" id="ppp-s-v">1.44</span>
-      <input type="range" id="ppp-s" min="0.5" max="2.0" step="0.01" value="1.44">
+    <label>Starting CAD/USD Rate <span class="value-pill" id="ppp-s-v">1.39</span>
+      <input type="range" id="ppp-s" min="0.5" max="2.0" step="0.01" value="1.39">
     </label>
   </div>
   <div class="grid grid--single">
@@ -227,23 +227,23 @@
   <div class="explanation">
     <h4>What the controls mean</h4>
     <ul>
-      <li><strong>Canada CPI Inflation</strong>: the annualized rate at which Canadian prices are rising (~2.5% as of early 2026). The cyan line in the chart</li>
-      <li><strong>US CPI Inflation</strong>: the US rate (~2.8%). The green line. The GAP between these two determines the PPP trend</li>
-      <li><strong>Starting CAD/USD</strong>: today's spot rate (~1.44). The chart projects forward 10 years from here</li>
+      <li><strong>Canada CPI Inflation</strong>: the annualized rate at which Canadian prices are rising (~1.8% as of early 2026). The cyan line in the chart</li>
+      <li><strong>US CPI Inflation</strong>: the US rate (~2.4%). The green line. The GAP between these two determines the PPP trend</li>
+      <li><strong>Starting CAD/USD</strong>: today's spot rate (~1.39). The chart projects forward 10 years from here</li>
     </ul>
     <h4>How to read the chart</h4>
     <ul>
       <li>The chart shows two lines diverging over time — one for each country's price index</li>
       <li>If <strong>Canada inflates faster</strong>: Canadian goods get more expensive relative to US goods → CAD must weaken (E rises) for trade to balance</li>
-      <li>If <strong>US inflates faster</strong> (as it currently does — 2.8% vs 2.5%): US goods get relatively expensive → CAD should strengthen slightly (E falls) over time</li>
+      <li>If <strong>US inflates faster</strong> (as it currently does — 2.4% vs 1.8%): US goods get relatively expensive → CAD should strengthen slightly (E falls) over time</li>
       <li>The "Implied 10Y" metric shows where PPP predicts CAD/USD will be in a decade</li>
     </ul>
     <h4>🔬 Try This — Inflation scenarios</h4>
     <ul>
-      <li><strong>Current reality:</strong> leave defaults at Canada 2.5%, US 2.8%. Notice the gap is −0.3% — PPP says CAD should STRENGTHEN slowly over 10 years (E drifts down). This is the long-run anchor suggesting today's 1.44 is too weak</li>
+      <li><strong>Current reality:</strong> leave defaults at Canada 1.8%, US 2.4%. Notice the gap is −0.6% — PPP says CAD should STRENGTHEN slowly over 10 years (E drifts down). This is the long-run anchor suggesting today's 1.39 is somewhat weak</li>
       <li><strong>Iran war stagflation in Canada:</strong> drag Canada inflation to 5.0% (oil shock filters into domestic costs, BoC can't hike because economy is weak). Now PPP predicts CAD weakening over time — <strong>bad current account story</strong></li>
       <li><strong>US tariffs cause dual inflation:</strong> set both to 4.5%. When they're equal, PPP says no trend in E — the exchange rate just stays around wherever the short-run forces leave it</li>
-      <li><strong>Big Mac test:</strong> a Big Mac costs ~C$7.50 in Toronto and ~US$5.60 in NYC. That implies a PPP rate of 7.50/5.60 = 1.34 — suggesting CAD is already undervalued at 1.44</li>
+      <li><strong>Big Mac test:</strong> a Big Mac costs ~C$7.50 in Toronto and ~US$5.60 in NYC. That implies a PPP rate of 7.50/5.60 ≈ 1.34 — suggesting CAD is mildly undervalued at 1.39</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
@@ -257,14 +257,14 @@
   <div class="section-heading">
     <span class="eyebrow">Section 5</span>
     <h2>Balance of Payments</h2>
-    <p class="desc">Canada's trade with the world must add up. If Canada sends more C$ out for imports than it earns from exports, the difference must flow back as capital investment. Always.</p>
+    <p class="desc">So far we've tracked exchange rates through money, interest rates, and prices. But there's a parallel accounting reality we've been ignoring: trade. Every dollar Canada spends on US imports must come back as US investment in Canada — the BOP <em>always</em> balances. This section connects the capital-flow story from Sections 2–3 with the real-world flow of goods, and shows what happens to trade when the currency moves (the J-curve).</p>
   </div>
   <div class="controls controls--three">
     <label>Canada's Trade Balance (CA) <span class="value-pill" id="bop-nx-v">-1.5</span>
       <input type="range" id="bop-nx" min="-6" max="6" step="0.1" value="-1.5">
     </label>
-    <label>Rate Premium — BoC − Fed (%) <span class="value-pill" id="bop-ip-v">-1.5%</span>
-      <input type="range" id="bop-ip" min="-3" max="5" step="0.1" value="-1.5">
+    <label>Rate Premium — BoC − Fed (%) <span class="value-pill" id="bop-ip-v">-1.4%</span>
+      <input type="range" id="bop-ip" min="-3" max="5" step="0.1" value="-1.4">
     </label>
     <label>CAD Depreciation Shock (%) <span class="value-pill" id="bop-dep-v">10%</span>
       <input type="range" id="bop-dep" min="0" max="30" step="1" value="10">
@@ -288,7 +288,7 @@
     <h4>What the controls mean</h4>
     <ul>
       <li><strong>Trade Balance (CA)</strong>: Canada's current account — exports minus imports. Negative = deficit (Canada imports more than it exports). Currently ~−C$15B per quarter</li>
-      <li><strong>Rate Premium (BoC − Fed)</strong>: the interest rate gap. At −1.5% (BoC 2.75% vs Fed 4.25%), US assets are more attractive. This drives the <strong>Financial Account</strong> — capital flows IN or OUT of Canada</li>
+      <li><strong>Rate Premium (BoC − Fed)</strong>: the interest rate gap. At −1.4% (BoC 2.25% vs Fed ~3.6%), US assets are more attractive. This drives the <strong>Financial Account</strong> — capital flows IN or OUT of Canada</li>
       <li><strong>CAD Depreciation Shock</strong>: a sudden weakening of the loonie (e.g., from tariff news). This triggers the J-curve in the right panel</li>
     </ul>
     <h4>How to read the two panels</h4>
@@ -299,13 +299,13 @@
     <h4>🔬 Try This — Current events</h4>
     <ul>
       <li><strong>BoC–Fed divergence:</strong> set Rate Premium to −1.5. The bars show a capital outflow from Canada (negative FA?) — actually, because Canada needs to attract capital to fund its trade deficit, the rate premium makes this harder. This is why the loonie is under pressure</li>
-      <li><strong>Iran war oil price spike:</strong> drag Trade Balance from −1.5 to +2.0. Canada is a net energy exporter — $90+ oil swings the CA into surplus. Now Canada is lending to the world (negative FA). <strong>Oil booms are good for the loonie</strong></li>
+      <li><strong>Iran war oil price spike:</strong> drag Trade Balance from −1.5 to +2.0. Canada is a net energy exporter — $100+ oil swings the CA into surplus. Now Canada is lending to the world (negative FA). <strong>Oil booms are good for the loonie</strong></li>
       <li><strong>US tariffs on Canadian goods:</strong> drag Trade Balance from −1.5 → −4.0. Exports collapse → bigger deficit → Canada needs even more foreign capital → FA must grow → but with lower rates it's hard to attract capital → <strong>currency must weaken to make Canadian assets cheaper</strong></li>
       <li><strong>J-curve after tariff shock:</strong> set depreciation to 15%. Initially the trade balance tanks (import bill jumps), but over 6–12 months Canadian products become cheaper for Americans and volumes adjust. The loonie weakness is the economy's immune response</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
-      <li>Every dollar Canada spends on US imports must come back as US investment in Canada. The BOP <em>always</em> balances. The question is: does Canada attract capital through high rates (no — BoC is low) or through a cheap currency (yes — that's what 1.44 is doing)</li>
+      <li>Every dollar Canada spends on US imports must come back as US investment in Canada. The BOP <em>always</em> balances. The question is: does Canada attract capital through high rates (no — BoC is low) or through a cheap currency (yes — that's what 1.39 is doing)</li>
     </ul>
   </div>
 </section>
@@ -315,7 +315,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 6</span>
     <h2>The Mundell-Fleming Model (IS-LM-BP)</h2>
-    <p class="desc">The workhorse model of open-economy macro: three curves show how fiscal and monetary policy work differently under fixed vs. floating exchange rates.</p>
+    <p class="desc">We now have all the building blocks: money markets (Section 2), capital flows (Section 3), trade (Section 5). Mundell-Fleming ties them together into one diagram to answer the big policy question: when the BoC cuts rates or Ottawa spends billions, what actually happens to output? The answer depends entirely on the exchange rate regime — and Canada's choice to float means monetary policy is king while fiscal stimulus leaks through the exchange rate.</p>
   </div>
   <div class="toggle-row">
     <span class="toggle-group-label">Exchange Rate:</span>
@@ -352,7 +352,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 7</span>
     <h2>Exchange Rate Overshooting</h2>
-    <p class="desc">When the BoC surprises with a cut, CAD doesn't gently drift — it plunges PAST its new equilibrium, then slowly recovers. Dornbusch (1976) explains why: prices are sticky, so the exchange rate absorbs the entire shock alone.</p>
+    <p class="desc">Mundell-Fleming told us <em>which direction</em> the exchange rate moves after a policy shock. But it didn't explain <em>how much</em> — and in practice, FX markets wildly overreact. When the BoC surprises with a cut, CAD doesn't gently drift to its new level — it plunges <em>past</em> it, then slowly recovers. Dornbusch (1976) explains why: goods prices are sticky, so the exchange rate must absorb the entire shock alone, temporarily overshooting to keep markets in equilibrium.</p>
   </div>
   <div class="controls">
     <label>BoC Money Supply Increase (%) <span class="value-pill" id="os-dm-v">15%</span>
@@ -400,7 +400,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 8</span>
     <h2>The Impossible Trinity</h2>
-    <p class="desc">Canada chose two: free capital flows + independent BoC policy. The price? A floating CAD/USD. No country gets all three. Click to see what other countries chose.</p>
+    <p class="desc">Sections 6–7 assumed Canada floats its dollar. But <em>why</em> does Canada float? Is that the only option? The impossible trinity reveals the fundamental constraint: countries can have at most two of fixed rates, free capital, and independent monetary policy. Canada chose free capital + BoC autonomy, and the floating CAD is the price. This section shows what other countries chose — and why every regime is a tradeoff.</p>
   </div>
   <div class="toggle-row">
     <button class="toggle-chip is-active" id="tri-peg">Fixed Rate + Free Capital</button>
@@ -422,12 +422,12 @@
     <h4>The three scenarios</h4>
     <ul>
       <li><strong>Fixed + Free Capital</strong> (sacrifice policy): Hong Kong, Eurozone. The CB must match the anchor country's rates exactly. If the Fed hikes, HK must hike too, even if their economy is weak</li>
-      <li><strong>Free Capital + Policy Autonomy</strong> (sacrifice fixed rate): <strong>Canada, US, UK, Japan</strong>. The BoC sets rates independently, but CAD/USD must float. This is Canada's choice — it's why we have a 1.44 rate instead of a peg</li>
+      <li><strong>Free Capital + Policy Autonomy</strong> (sacrifice fixed rate): <strong>Canada, US, UK, Japan</strong>. The BoC sets rates independently, but CAD/USD must float. This is Canada's choice — it's why we have a 1.39 rate instead of a peg</li>
       <li><strong>Fixed + Policy Autonomy</strong> (sacrifice capital mobility): China historically, Malaysia 1998. You control capital flows with regulations. Beijing can set rates AND peg the yuan, but companies can't freely move money in/out</li>
     </ul>
     <h4>🔬 Try This — Why Canada floats</h4>
     <ul>
-      <li>Click <strong>"Free Capital + Policy Autonomy"</strong> — this is Canada. The BoC can cut to 2.75% while the Fed sits at 4.25% because Canada accepts that CAD floats to 1.44. If Canada pegged at 1.00, BoC would be <em>forced</em> to match the Fed rate</li>
+      <li>Click <strong>"Free Capital + Policy Autonomy"</strong> — this is Canada. The BoC can cut to 2.25% while the Fed sits at 3.50–3.75% because Canada accepts that CAD floats to 1.39. If Canada pegged at 1.00, BoC would be <em>forced</em> to match the Fed rate</li>
       <li>Click <strong>"Fixed + Free Capital"</strong> — this is Hong Kong or EU members. When the Fed hiked aggressively in 2022-23, HK rates automatically followed even though their property market was crashing. <strong>No independent policy</strong></li>
       <li>Click <strong>"Fixed + Policy Autonomy"</strong> — this is China. The PBoC can ease while maintaining a stable yuan — but only because capital controls prevent money from fleeing. This is why Chinese investors struggle to buy Toronto real estate directly (they use workarounds)</li>
       <li>Think about the <strong>private credit unwind</strong>: if US shadow banking stress triggers capital flight from Canada, having a floating rate is actually protection — CAD weakens, which automatically makes Canadian assets cheaper for foreign bargain hunters, attracting capital back. A peg would break instead</li>
@@ -444,7 +444,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 9</span>
     <h2>Currency Crises &amp; Feedback Loops</h2>
-    <p class="desc">When private credit unwinds, funding dries up, and balance sheets are in USD — orderly parity breaks down. Vicious circles take over. This section simulates the mechanics.</p>
+    <p class="desc">Everything up to now described orderly adjustment — markets finding equilibrium through arbitrage and policy. But what happens when the system <em>breaks</em>? When private credit unwinds, funding dries up, and balance sheets are denominated in USD, the parity conditions from Sections 2–4 stop holding. Vicious circles take over: currency falls → debt burden rises → more selling → currency falls further. This section simulates the mechanics of that breakdown.</p>
   </div>
   <div class="controls controls--three">
     <label>Funding Shock Severity <span class="value-pill" id="cr-shock-v">4 / 10</span>
@@ -494,58 +494,122 @@
 <section id="synthesis" class="panel">
   <div class="section-heading">
     <span class="eyebrow">Section 10</span>
-    <h2>How the Forces Fit Together — The Canada–US Story</h2>
-    <p class="desc">Everything above connects. Here’s the full chain applied to the CAD/USD in early 2026, and how each section maps to the current macro landscape.</p>
+    <h2>Putting It All Together — Canada vs USA, March 2026</h2>
+    <p class="desc">You've now seen every piece: how central banks move rates (2), how rates move exchange rates (3), where they're headed long-run (4), how trade adjusts (5), which policies work (6), why markets overreact (7), what constrains regime choice (8), and when it all breaks down (9). This final section uses those nine frameworks as a lens to explain <em>why</em> every key Canadian number is where it is right now — and what the theory says happens next.</p>
   </div>
+
+  <!-- ── Part A: The current state, explained ── -->
+  <div class="card callout-card">
+    <p><strong>The question this section answers:</strong> You see the headlines — BoC at 2.25%, Fed at 3.50–3.75%, CAD/USD at 1.39, 5Y fixed mortgages at ~4.0%, variable mortgages at ~3.35–4.45%. <em>Why</em> are they at those exact numbers, and what do the models from Sections 1–9 predict happens next?</p>
+  </div>
+
+  <div class="explanation">
+    <h4>Part A — Why every number is where it is</h4>
+
+    <h4>🔗 The BoC–Fed gap: ~125bp (Sections 2 &amp; 8)</h4>
+    <ul>
+      <li><strong>Section 2 says:</strong> when the BoC increases money supply (easing cycle from 5% → 2.25%), the left panel shows Canadian interest rates falling. The right panel shows the CAD return line shifting left → E rises → <strong>CAD weakens</strong></li>
+      <li><strong>Section 8 says:</strong> Canada can only do this <em>because</em> it chose the "free capital + policy autonomy" corner of the trinity. The floating CAD is the pressure valve that makes independent rate cuts possible. If Canada pegged to the USD, the BoC would be forced to hold at 3.50–3.75% alongside the Fed — imagine the pain for Canadian mortgage holders</li>
+      <li><strong>Why ~125bp?</strong> The BoC cut aggressively because Canada's economy was weaker — GDP growth ~1%, housing market fragile, consumer debt at record ~185% of disposable income. The Fed eventually followed with three cuts in 2025, but US inflation remained stickier at 2.4% with a resilient labor market. Two very different economies, converging but still divergent policies — and the remaining gap drives everything below</li>
+    </ul>
+
+    <h4>🔗 CAD/USD at 1.39 (Sections 1, 3 &amp; 7)</h4>
+    <ul>
+      <li><strong>Section 1 says:</strong> the ~125bp gap increases demand for USD (Canadians chasing higher yields) and decreases supply of USD (Americans have less reason to invest in lower-yield Canada). Both shifts push E up → <strong>1.39</strong></li>
+      <li><strong>Section 3 (UIP) says:</strong> 1.39 is the <em>exact</em> rate where investors are indifferent between CAD and USD deposits. At 1.39, the expected CAD appreciation (~1.3% per year back toward ~1.34–1.37) compensates for the ~125bp you're giving up vs the Fed. If CAD were at 1.34, you'd earn <em>less</em> expected appreciation and everyone would pile into USD. If at 1.45, the expected appreciation would be too generous and capital would flood back to CAD. <strong>1.39 is the equilibrium</strong></li>
+      <li><strong>Section 7 says:</strong> CAD likely <em>overshot</em> on the way to its trough. When the BoC surprised with the 50bp cut in Oct 2024, goods prices didn't budge overnight — so the exchange rate absorbed the full blow alone, spiking to ~1.46 before gradually recovering to 1.39 as the Fed caught up. The overshoot is why FX markets are so volatile around rate decisions</li>
+    </ul>
+
+    <h4>🔗 Canada's trade balance (Section 5)</h4>
+    <ul>
+      <li><strong>The BOP identity:</strong> Canada runs a current account deficit of ~2% GDP — importing more goods/services than it exports. This <em>must</em> be financed by capital inflows (Americans and others buying Canadian bonds, real estate, or corporate debt)</li>
+      <li>But with the BoC at 2.25% vs Fed at 3.50–3.75%, attracting that capital is harder. Canada can't offer competitive yields → so the currency must weaken to make Canadian assets <em>cheaper</em> for foreign buyers. This is the BOP mechanism reinforcing the rate differential story</li>
+      <li>The one bright spot: oil above $100 from Iran war risk helps Canada's trade balance (energy is ~20% of exports). <strong>Section 1 manifests:</strong> oil revenue shifts the USD supply curve right, partially supporting CAD. Without high oil, CAD might be at 1.45+</li>
+    </ul>
+
+    <h4>🔗 Why Ottawa can't "fix" this (Section 6)</h4>
+    <ul>
+      <li><strong>Mundell-Fleming's brutal lesson:</strong> under floating rates with free capital, fiscal policy is ineffective. If Ottawa announces a $50B stimulus, rates would edge up → capital floods in → CAD strengthens → exports collapse → stimulus nullified. The exchange rate <em>undoes</em> the fiscal push</li>
+      <li>This is why the BoC — not Parliament — is the only institution that can meaningfully steer the Canadian economy right now. The BoC's rate cuts are working <em>through</em> the weak CAD: cheaper loonie → more competitive exports → IS shifts right. The policy framework from Section 6 is playing out in real time</li>
+    </ul>
+  </div>
+
+  <!-- ── Part B: What the theory says happens next ── -->
+  <div class="card callout-card">
+    <p><strong>Part B — What happens next?</strong> The models from Sections 2–9 don't just explain today. They make specific, testable predictions about the next 1–5 years for Canadian interest rates, the exchange rate, and — crucially — what Canadians care about most: <strong>mortgages</strong>.</p>
+  </div>
+
   <div class="synthesis-grid">
     <article class="summary-card">
-      <h3>1. BoC Sets Money Supply</h3>
-      <p>BoC eased to 2.75% to support a sluggish economy. Fed held at 4.25% fighting sticky US inflation. <strong>175bp gap</strong> = the root cause.</p>
+      <h3>📉 Variable-Rate Mortgages</h3>
+      <p>Priced off the BoC overnight rate (currently 2.25%). Best variable rates sit at ~3.35% (prime − 1.10%). <strong>Section 2 predicts:</strong> if the BoC holds at 2.25% or eases further if the economy weakens, variable rates remain attractive. Variable holders have already benefited enormously from the BoC's 275bp of cuts since mid-2024.</p>
     </article>
     <article class="summary-card">
-      <h3>2. Capital Flows to the US</h3>
-      <p>Canadian pension funds, banks, and investors chase higher US yields. Capital leaves Canada → demand for USD rises → CAD weakens.</p>
+      <h3>📊 Fixed-Rate Mortgages (5Y)</h3>
+      <p>Priced off the 5Y Government of Canada bond yield (~3.2%), NOT the BoC rate. <strong>Section 3 (parity) + Section 4 (PPP) predict:</strong> the 5Y GoC yield blends BoC rate expectations AND long-run inflation expectations. Even if the BoC cuts more, 5Y fixed rates may not fall much — because bond markets already price in BoC cuts, and long-run inflation is anchored near 2%. Current best ~4.0% fixed rates may settle around 3.8–4.2%.</p>
     </article>
     <article class="summary-card">
-      <h3>3. CAD/USD Adjusts to 1.44</h3>
-      <p>Interest rate parity: CAD must be weak enough that expected appreciation compensates for the rate gap. At 1.44, the math works out.</p>
+      <h3>💱 CAD/USD Exchange Rate</h3>
+      <p><strong>Section 3 (UIP):</strong> the BoC–Fed gap has already narrowed from ~175bp to ~125bp as the Fed caught up. If the gap continues closing (Fed cuts more or BoC holds), capital flows rebalance and CAD strengthens toward ~1.34–1.37. <strong>Section 4 (PPP):</strong> lower Canadian inflation (1.8% vs 2.4%) suggests the long-run anchor for CAD/USD is ~1.32–1.34. Both forces point to continued CAD strengthening — the recovery from 1.44 to 1.39 may be just the beginning.</p>
     </article>
     <article class="summary-card">
-      <h3>4. Trade &amp; Balance Sheets React</h3>
-      <p>Weak CAD boosts oil/lumber exports but raises import costs. BOP adjusts. USD debt gets pricier. The system finds a new equilibrium — or breaks.</p>
+      <h3>⚠️ Risk Scenarios</h3>
+      <p><strong>Section 9 (Crisis):</strong> If private credit unwinds or AI bubble pops, CAD could spike back to 1.50+ as US dollar funding dries up. <strong>Section 7 (Overshooting):</strong> any BoC emergency cut in that scenario would cause CAD to overshoot well beyond its new equilibrium. <strong>Fixed mortgage holders are protected; variable holders are helped but face imported inflation.</strong></p>
     </article>
   </div>
-  <div class="card callout-card">
-    <p>
-      <strong>Short run (Sections 2, 3, 7):</strong> Prices are sticky, interest rates diverge, and CAD overshoots — that's the 1.36 → 1.44 move.
-      <strong>Long run (Section 4):</strong> PPP says lower Canadian inflation should gradually pull CAD back toward ~1.34.
-      <strong>Policy (Sections 6, 8):</strong> Canada chose floating + free capital, so the BoC steers the ship — and fiscal policy leaks through the exchange rate.
-      <strong>Crisis risk (Section 9):</strong> If private credit unwinds, AI bubble pops, or Iran escalates, the feedback loop can overwhelm the orderly adjustment.
-    </p>
-  </div>
+
   <div class="explanation">
-    <h4>The current macro shocks, mapped to sections</h4>
+    <h4>The exchange rate forecast, by time horizon</h4>
     <ul>
-      <li><strong>BoC vs Fed divergence</strong> (Sections 2, 3): THE dominant force. 175bp gap drives capital outflows and pins CAD at 1.44. Every BoC cut without a Fed cut widens the pressure</li>
-      <li><strong>Iran war / oil shock</strong> (Sections 1, 5): Oil spikes help Canada's trade balance (Section 5) and shift USD supply right (Section 1). But geopolitical risk raises volatility, triggering risk-off flows that hurt CAD. Net effect: ambiguous, depends on whether oil stays high or spikes-then-crashes</li>
-      <li><strong>AI bubble concerns</strong> (Sections 1, 9): If US tech valuations correct 30%+, Canadian pension funds (heavily exposed to US tech) take losses. Demand for USD drops (Section 1, slight CAD positive), but broader risk-off hits all non-US assets. Watch for contagion into private credit</li>
-      <li><strong>Private credit unwind</strong> (Section 9): The ~$1.7T US private credit market has opacity, maturity mismatch, and leverage. If CLOs/BDCs face redemptions, funding dries up globally. Canadian banks have direct and indirect exposure. This is the tail risk that could trigger a crisis-loop scenario</li>
-      <li><strong>US tariff threats</strong> (Sections 1, 5, 6): Tariffs directly cut Canada's exports (Section 5 trade balance), reducing USD inflows (Section 1). The weak CAD is the economy's automatic stabilizer (Section 6 — Mundell-Fleming). But tariff uncertainty alone is negative for investment</li>
+      <li><strong>Next 3–6 months (Sections 2, 3):</strong> CAD/USD likely stays in the 1.36–1.42 range. The BoC–Fed gap is narrowing, supporting CAD. If the Fed signals further cuts, CAD strengthens toward 1.35 rapidly (Section 3 — UIP recalibrates instantly on expectations). Iran war keeping oil above $100 helps CAD, but risk-off safe-haven USD demand partially offsets</li>
+      <li><strong>12–24 months (Sections 3, 6):</strong> Markets price the BoC holding near 2.25% and the Fed potentially cutting to ~3.0% by late 2027. If this plays out, the gap narrows from ~125bp → ~75bp → CAD strengthens to ~1.34–1.37. This is the base case. Mundell-Fleming confirms: BoC's rate cuts have already done their stimulative work through the weak CAD. As the economy stabilizes, the BoC can hold and let the rate gap close naturally</li>
+      <li><strong>3–5 years (Section 4 — PPP):</strong> The long-run anchor. Canada's lower inflation (1.8% vs 2.4%) means the PPP trend favors a gradually stronger CAD. The 10Y PPP-implied rate is ~1.32. CAD will likely drift towards this range — but PPP takes years, not months, and can be overwhelmed by capital flow shocks in the meantime</li>
     </ul>
-    <h4>🔬 Master exercise: simulate the full shock chain</h4>
+
+    <h4>The interest rate forecast, by instrument</h4>
     <ul>
-      <li><strong>Step 1</strong> (Section 2): Set BoC Mˢ to 9.0, Fed i* to 4.3, Eᵉ to 1.40. See Canadian rate drop and CAD weaken. <em>This is the starting condition</em></li>
-      <li><strong>Step 2</strong> (Section 5): Set Trade Balance to −3.0 (tariff hit) and Rate Premium to −1.5. See the BOP stress — Canada needs to attract capital but can't offer high rates</li>
-      <li><strong>Step 3</strong> (Section 9): Set Shock to 6 (private credit stress), Reserves 8, USD Debt 30%. See whether Canada's institutions hold the line or the feedback loop activates</li>
-      <li><strong>Step 4</strong> (Section 7): Set Money Supply increase to 20% (emergency BoC easing). Watch the overshoot — CAD spikes past equilibrium before recovering. <em>This is what the crisis response looks like in real time</em></li>
+      <li><strong>BoC overnight rate:</strong> Currently 2.25%. The BoC has held since its last cut in October 2025. If Canada slides into recession, could go to 1.75% or below. <strong>Section 2:</strong> each cut further weakens CAD, but also stimulates through exports (Section 6). The BoC is walking a tightrope — cut too much and CAD at 1.45+ creates import inflation; cut too little and housing/consumer debt implodes</li>
+      <li><strong>5Y GoC bond yield:</strong> Currently ~3.2%. Reflects BoC rate expectations + term premium + inflation expectations. Even with BoC cuts, unlikely to drop below 2.5–2.8% because the long-run inflation anchor is firm and Iran war fears are adding a risk premium. This is why 5Y fixed mortgages are "sticky" around 3.8–4.2% even as the BoC cuts aggressively</li>
+      <li><strong>Variable mortgage rates:</strong> Best currently ~3.35% (prime 4.45% minus 1.10%). Move in lockstep with BoC. If BoC reaches 1.75%, prime drops to ~3.95%, so variable rates settle near ~2.85–3.95%. <strong>Variable has been the winning bet since the BoC started cutting</strong></li>
+      <li><strong>Fixed 5Y mortgage rates:</strong> Best currently ~4.0%. Priced off the 5Y GoC bond + lender spread (~80–150bp). Even if BoC cuts aggressively, 5Y bond yields may not fall much due to Iran war inflation fears. Forecast: 3.7–4.2% range. <strong>Fixed wins if you think bond yields will rise from here or if you want payment certainty</strong></li>
     </ul>
+
+    <h4>The mortgage decision through the lens of Sections 2–7</h4>
+    <ul>
+      <li><strong>Choose variable if</strong> (Section 2 worldview): you believe the BoC will cut further because Canada's economy is weak. Every 25bp BoC cut flows directly to your payment. Risk: if inflation re-accelerates (Iran oil shock → imported inflation via weak CAD), the BoC reverses course and your rate spikes. <strong>Section 7 is your risk:</strong> the exchange rate could overshoot, causing import prices to surge, forcing the BoC to pause or hike</li>
+      <li><strong>Choose fixed if</strong> (Section 4 worldview): you believe we're near the trough and rates will normalize upward. The 5Y GoC yield already prices in the BoC staying low — you're locking in the market's best guess of the average rate over 5 years. <strong>Section 9 is your insurance:</strong> if a private credit crisis or tariff war triggers economic chaos, your payment doesn't change while variable holders face uncertainty</li>
+      <li><strong>The spread matters:</strong> currently variable can be as low as ~3.35% vs fixed ~4.0% — a ~65bp gap in favor of variable. Historically, variable beats fixed ~80% of the time because the yield curve is usually upward-sloping and BoC doesn't hike as much as bonds fear. With the BoC rate well below the 5Y yield, markets expect rates to eventually rise or stay near current levels. The gap reflects the market's bet that the BoC will <strong>hold, then eventually normalize upward</strong></li>
+    </ul>
+
+    <h4>Putting the current shocks together — the complete picture</h4>
+    <ul>
+      <li><strong>BoC vs Fed divergence</strong> (Sections 2, 3): a narrowing force. The gap has compressed from ~175bp to ~125bp as the Fed cut three times in 2025. Every Fed cut without a matching BoC cut narrows the gap and supports CAD. <em>Prediction:</em> this gap narrows further in 2027 as the Fed continues easing toward 3.0%</li>
+      <li><strong>Iran war / oil shock</strong> (Sections 1, 5): oil above $100 supports Canada's trade balance and partially offsets the remaining BoC–Fed rate gap. Net effect on CAD: positive. <em>But:</em> if oil spikes to $120 then crashes, the J-curve hits hard — trade balance worsens before adjusting (Section 5)</li></li>
+      <li><strong>AI bubble concerns</strong> (Sections 1, 9): a 30%+ US tech correction would reduce capital inflows to the US (Section 1 — demand for USD drops). But also creates risk-off panic that hurts all non-US assets. <em>For mortgages:</em> a correction would likely cause BoC to cut faster → variable rates fall → but also triggers financial stress that tightens lending standards</li>
+      <li><strong>Private credit unwind</strong> (Section 9): the tail risk. $1.7T US market with opacity and leverage. Canadian pensions (CPPIB, CDPQ, OTPP) are deep in this space. If CLOs freeze, the funding shock from Section 9 materializes → CAD overshoots to 1.50+ (Section 7) → BoC forced into emergency cuts → <em>variable mortgage holders see rates plunge but face a weak-CAD import inflation hit on everything else</em></li>
+      <li><strong>US tariffs</strong> (Sections 1, 5, 6): 25% tariffs would crush Canadian exports (Section 5 — trade balance to −4 or worse), force CAD to perhaps 1.50+ (Section 1), but be partially absorbed by Mundell-Fleming's automatic stabilizer (Section 6 — weaker CAD makes remaining exports competitive). <em>For mortgages:</em> tariff-driven recession → BoC cuts deeper → variable rates fall sharply → but housing values also fall. The worst scenario for homeowners is tariffs + BoC hikes to defend CAD — but Section 8 tells us Canada won't do that (floating rate means BoC targets the domestic economy, not the exchange rate)</li>
+    </ul>
+
+    <h4>🔬 Master exercise: simulate the full cycle through Sections 1–9</h4>
+    <ul>
+      <li><strong>Step 1</strong> (Section 2): Set BoC Mˢ to 9.0, Fed i* to 3.6, Eᵉ to 1.37. Watch the Canadian rate drop and CAD weaken. <em>This is 2024–26: the BoC easing cycle</em></li>
+      <li><strong>Step 2</strong> (Section 3): Set BoC rate to 2.25%, Fed to 3.0%, Eᵉ to 1.35. See E* settle at ~1.37. <em>This is late 2027 if the Fed keeps cutting — the gap narrows further and CAD recovers</em></li>
+      <li><strong>Step 3</strong> (Section 5): Set Trade Balance to −3.5 (tariff shock), Rate Premium to −1.0. See BOP stress — Canada needs capital inflows but can't offer competitive yields. <em>This is the tariff scenario</em></li>
+      <li><strong>Step 4</strong> (Section 7): Set Money Supply increase to 25% (emergency easing), θ to 0.4 (sticky prices). Watch the overshoot. <em>This is the crisis response: CAD spikes to 1.52 before recovering. Your variable mortgage drops, but groceries get more expensive</em></li>
+      <li><strong>Step 5</strong> (Section 9): Set Shock to 7 (private credit freeze), Reserves 8, USD Debt 30%. See that Canada's institutions hold but stress is real. <em>Then try it at Shock 9 with Reserves 5 to see an emerging-market-style crisis — the version Canada is designed to avoid</em></li>
+      <li><strong>Step 6</strong> (Section 4): Set Canada CPI 1.8%, US CPI 2.4%, starting E 1.39. See the 10Y forecast pull CAD toward ~1.35. <em>This is PPP's long-run promise — CAD recovers further, but slowly. The short-run pain from 2024–25 is fading, and the long-run destination is favorable</em></li>
+    </ul>
+  </div>
+
+  <div class="card callout-card">
+    <p><strong>The bottom line:</strong> The BoC–Fed gap is the engine. CAD weakness is the transmission. Mortgage rates are the outcome Canadians feel daily. Variable rates move with the BoC (short-run, Sections 2, 6). Fixed rates move with bond yields (long-run expectations, Sections 3, 4). The exchange rate ties it all together — and your mortgage decision is, at its core, a bet on whether we're in the world of Section 2 (more BoC cuts ahead → variable wins) or Section 4 (near the trough → fixed wins). The models don't give you a magic answer, but they give you the <em>right framework</em> for thinking about it.</p>
   </div>
 </section>
 
 </main>
 
 <footer class="footer">
-  <p>Built as a client-side-only static site. Canada \ud83c\udde8\ud83c\udde6 \u2194 USA \ud83c\uddfa\ud83c\uddf8 framing with ~March 2026 data. Conceptual anchors: Krugman &amp; Obstfeld, Mundell-Fleming, Dornbusch overshooting. &nbsp;&middot;&nbsp; <a href="/canada-usa-reference" style="color:var(--accent);opacity:0.7">Reference data &amp; slider guide \u2197</a></p>
+  <p>Built as a client-side-only static site. Canada 🇨🇦 ↔ USA 🇺🇸 framing with ~March 2026 data. Conceptual anchors: Krugman &amp; Obstfeld, Mundell-Fleming, Dornbusch overshooting. &nbsp;·&nbsp; <a href="/canada-usa-reference" style="color:var(--accent);opacity:0.7">Reference data &amp; slider guide ↗</a></p>
 </footer>
 
 <script src="app.js"></script>

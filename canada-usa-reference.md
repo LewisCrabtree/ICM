@@ -9,10 +9,10 @@ All sections use **Canada as domestic** and **USA as foreign**.
 
 | Variable | Canada (Domestic) | USA (Foreign) | Notes |
 |---|---|---|---|
-| **Policy rate** | BoC: 2.75% | Fed: 4.25–4.50% | BoC cutting since mid-2024; Fed on hold / cautious |
-| **CPI Inflation** | ~2.5% | ~2.8% | Both moderating; Canada slightly lower |
-| **Spot FX (CAD/USD)** | ~1.44 | — | CAD weakened sharply from ~1.36 in mid-2024 |
-| **10Y Government Bond** | ~3.0% | ~4.2% | 120bp spread; notable |
+| **Policy rate** | BoC: 2.25% | Fed: 3.50–3.75% | BoC cut to 2.25% (Oct 2025, held since); Fed cut 3× in 2025 |
+| **CPI Inflation** | ~1.8% | ~2.4% | Both moderating; Canada well below target |
+| **Spot FX (CAD/USD)** | ~1.39 | — | CAD recovering from ~1.44 peak as Fed caught up |
+| **10Y Government Bond** | ~3.6% | ~4.4% | ~80bp spread; Iran war pushing yields up |
 | **Current Account** | Deficit (~-2% GDP) | Deficit (~-3.5% GDP) | Canada: energy exports offset by goods imports |
 | **FX Reserves** | ~$110B | ~$245B | Canada small relative to economy |
 | **External Debt in USD** | High (banks, corps) | N/A (USD is own currency) | Canadian banks borrow heavily in USD money markets |
@@ -24,10 +24,11 @@ All sections use **Canada as domestic** and **USA as foreign**.
 ## Current Macro Shocks (as of March 2026)
 
 ### 1. Iran War / Middle East Escalation
-- **Oil price spike**: Brent pushed above $90+, supporting CAD via energy exports
+- **Oil price spike**: WTI pushed above $100, supporting CAD via energy exports
 - Canada is a major oil exporter (oil sands); US is now also a major producer but net importer
 - War risk premium → higher oil → shifts USD supply curve RIGHT (more USD flowing to Canada for oil)
 - Also: global risk-off → USD safe haven demand → partially offsets CAD strength
+- Iran war also pushing bond yields higher (inflation fears) despite central bank rate cuts
 - **Net effect**: mixed for CAD; oil helps, but risk-off flight-to-USD hurts
 
 ### 2. AI Bubble / Tech Correction
@@ -47,13 +48,14 @@ All sections use **Canada as domestic** and **USA as foreign**.
 - **Net effect**: short-term CAD weakness from liquidity scramble (even if fundamentals are OK)
 
 ### 4. Bank of Canada vs Federal Reserve Divergence
-- BoC cut to 2.75%; Fed still at 4.25-4.50%
-- **175bp rate gap** — historically wide for CAD/USD
+- BoC cut to 2.25%; Fed at 3.50–3.75%
+- **~125bp rate gap** — narrowing from the ~175bp peak in early 2025
+- Fed cut 3× in 2025 (Sep, Oct, Dec), closing the gap significantly
 - UIP says: higher US rates attract capital to US → CAD weakens → but then CAD expected to appreciate
-- This is the DOMINANT force on the exchange rate right now
-- BoC cutting to support housing market and slowing economy
-- Fed holding because US inflation stickier + strong labor market
-- **Net effect**: main driver of CAD weakness to ~1.44
+- This remains the DOMINANT force on the exchange rate, but its magnitude is shrinking
+- BoC has held since Oct 2025 as economy shows signs of stabilization
+- Fed likely to continue easing as US inflation moderates
+- **Net effect**: CAD recovering to ~1.39 as gap narrows; further narrowing = further CAD strength
 
 ### 5. US Tariff Threats / Trade War Risk
 - Ongoing US protectionist rhetoric; 25% tariff threats on Canadian goods
@@ -70,30 +72,30 @@ All sections use **Canada as domestic** and **USA as foreign**.
 - **Y-axis**: Exchange rate E = CAD per USD (higher = weaker CAD)
 - **Demand for USD**: Canadians buying US goods, investing in US assets, paying USD debts
 - **Supply of USD**: Americans buying Canadian goods, investing in Canada, buying oil
-- **Realistic defaults**: E ≈ 1.44 CAD/USD
+- **Realistic defaults**: E ≈ 1.39 CAD/USD
 - **Try this**: Iran war → oil spike → supply shifts right (more USD from oil) → CAD strengthens
 - **Try this**: Tariff threat → supply shifts left + demand stays → CAD weakens
 
 ### Section 2: Money → Interest → FX
 - **Mˢ slider** = Bank of Canada money supply (BoC balance sheet / policy stance)
-- **i* (foreign rate)** = Fed funds rate ≈ 4.25%
+- **i* (foreign rate)** = Fed funds rate ≈ 3.6%
 - **Eᵉ (expected future)** = where markets think CAD/USD is heading
 - **BoC easing**: more money → lower Canadian rates → capital flows to US → CAD weakens
-- **Current reality**: BoC at 2.75% vs Fed at 4.25% explains CAD at 1.44
+- **Current reality**: BoC at 2.25% vs Fed at 3.50–3.75% explains CAD at 1.39
 
 ### Section 3: Interest Rate Parity
-- **Home rate** = BoC rate ≈ 2.75%
-- **Foreign rate** = Fed rate ≈ 4.25%
+- **Home rate** = BoC rate ≈ 2.25%
+- **Foreign rate** = Fed rate ≈ 3.6%
 - UIP says: CAD is weak NOW but should gradually strengthen (expected CAD appreciation compensates for lower rates)
 - CIP: forward CAD/USD should be below spot (forward discount on USD / premium on CAD)
-- Current 1Y forward: ~1.42 vs spot ~1.44 → consistent with CIP
+- Current 1Y forward: ~1.38 vs spot ~1.39 → consistent with CIP
 
 ### Section 4: PPP
-- **Canada inflation** ≈ 2.5%, **US inflation** ≈ 2.8%
-- PPP says: slightly lower Canadian inflation → CAD should slowly appreciate in real terms
+- **Canada inflation** ≈ 1.8%, **US inflation** ≈ 2.4%
+- PPP says: lower Canadian inflation → CAD should slowly appreciate in real terms
 - BUT current CAD is weaker than PPP suggests → standard finding (short-run deviations persist)
-- **Starting E** = 1.44
-- Big Mac Index: CAD roughly 10-15% undervalued vs USD
+- **Starting E** = 1.39
+- Big Mac Index: CAD roughly 5–10% undervalued vs USD
 
 ### Section 5: Balance of Payments
 - Canada runs a **current account deficit** (~-2% GDP)
@@ -134,16 +136,16 @@ All sections use **Canada as domestic** and **USA as foreign**.
 |---|---|---|---|
 | FX Market | Demand/Supply Shift | 0 / 0 | Baseline; user shifts to simulate |
 | Money→FX | Mˢ | 7.0 (increased from baseline) | BoC easing |
-| Money→FX | i* (foreign) | 4.3 | Fed funds |
-| Money→FX | Eᵉ | 1.40 | Market expects slight CAD appreciation |
-| Parity | Home rate | 2.75 | BoC overnight |
-| Parity | Foreign rate | 4.25 | Fed funds |
-| Parity | Eᵉ | 1.40 | Forward consensus |
-| PPP | Home inflation | 2.5 | CAN CPI |
-| PPP | Foreign inflation | 2.8 | US CPI |
-| PPP | Starting E | 1.44 | Current spot |
+| Money→FX | i* (foreign) | 3.6 | Fed funds |
+| Money→FX | Eᵉ | 1.37 | Market expects slight CAD appreciation |
+| Parity | Home rate | 2.25 | BoC overnight |
+| Parity | Foreign rate | 3.6 | Fed funds |
+| Parity | Eᵉ | 1.37 | Forward consensus |
+| PPP | Home inflation | 1.8 | CAN CPI |
+| PPP | Foreign inflation | 2.4 | US CPI |
+| PPP | Starting E | 1.39 | Current spot |
 | BOP | Trade balance | -2.0 | CA deficit |
-| BOP | Rate premium | -1.5 | Canada rates BELOW US |
+| BOP | Rate premium | -1.4 | Canada rates BELOW US |
 | BOP | Depreciation shock | 10 | Moderate scenario |
 | Overshooting | Money increase | 15 | BoC QE equivalent |
 | Overshooting | Price speed | 0.5 | Normal stickiness |

@@ -197,7 +197,7 @@ function updateFxMarket() {
    SECTION 2: MONEY → INTEREST RATES → EXCHANGE RATES
    Two-panel: Money Market (left) + FX Returns (right)
    ========================================================= */
-var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 4.3, MM_DEFAULT_EE = 1.40;
+var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.37;
 var MM_SENSITIVITY = 8; // how responsive expected foreign return is to E changes
 
 function updateMoneyFx() {
@@ -311,7 +311,7 @@ function updateParity() {
   c.axes("Rate of Return (%)", "CAD/USD (E)");
 
   // Default values for ghost curves
-  var defIH = 2.8, defIF = 4.3, defEE = 1.40;
+  var defIH = 2.3, defIF = 3.6, defEE = 1.37;
 
   // Foreign return curve: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
   var frPts = linspace(0.5, 2.0, 60).map(function (E) {
@@ -520,7 +520,7 @@ function updateMF() {
   // Base parameters
   var isA = 8, isB = 0.02;   // IS: i = isA - isB*Y
   var lmA = -2, lmB = 0.03;  // LM: i = lmA + lmB*Y
-  var iW = 4.25;               // World interest rate (≈ Fed funds rate)
+  var iW = 3.60;               // World interest rate (≈ Fed funds rate)
   var shift = 2.5;
 
   // Base equilibrium
