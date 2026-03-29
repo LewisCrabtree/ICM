@@ -11,7 +11,7 @@ const fmtNum = (v, d = 2) => v.toFixed(d);
 const state = {
   parityMode: "uip",
   parityUipEe: 1.37,
-  parityCipSpot: 1.39,
+  parityCipSpot: 1.38,
   mfRegime: "floating",
   mfPolicy: "monetary",
   trilemma: "peg"
@@ -135,6 +135,36 @@ function mkChart(svgEl) {
 
   api.grid();
   return api;
+}
+
+function mkSvg(svgEl) {
+  var svg = svgEl;
+  svg.innerHTML = "";
+  var W = svg.viewBox.baseVal.width || 960;
+  var H = svg.viewBox.baseVal.height || 360;
+
+  function n(tag, a) {
+    var el = document.createElementNS(NS, tag);
+    if (a) for (var k in a) el.setAttribute(k, String(a[k]));
+    return el;
+  }
+
+  function txt(x, y, s, a) {
+    a = a || {};
+    var t = n("text", {
+      x: x,
+      y: y,
+      "text-anchor": a.anchor || "middle",
+      fill: a.fill || "#9cb0d2",
+      "font-size": a.size || 12,
+      "font-weight": a.weight || "normal"
+    });
+    t.textContent = s;
+    svg.appendChild(t);
+    return t;
+  }
+
+  return { svg: svg, W: W, H: H, n: n, txt: txt };
 }
 
 /* ── Helper: generate curve points ── */
@@ -320,7 +350,7 @@ function updateParity() {
   $("irp-ee-label").textContent = isCip ? "Spot CAD/USD (S)" : "Expected Future CAD/USD (Eᵉ)";
   $("irp-eq-label").textContent = isCip ? "Spot Rate Input (S)" : "UIP Benchmark Spot (E*)";
   $("irp-diff-label").textContent = isCip ? "Forward Premium (F-S)/S" : "Rate Differential (BoC − Fed)";
-  $("irp-fwd-label").textContent = isCip ? "1Y CIP Forward (F)" : "Expected CAD Change (UIP)";
+  $("irp-fwd-label").textContent = isCip ? "1Y CIP Forward (F)" : "Expected Annual CAD Change (UIP)";
 
   var c = mkChart($("irp-chart"));
   var diff = iHome - iForeign;
@@ -827,7 +857,94 @@ function updateTrilemma() {
 }
 
 /* =========================================================
-   SECTION 9: CRISIS FEEDBACK LOOP
+   SECTION 9: OPTIMUM CURRENCY AREAS
+   ========================================================= */
+function updateOca() {
+  var labour = +$("oca-labour").value;
+  var trade = +$("oca-trade").value;
+  var fiscal = +$("oca-fiscal").value;
+  var symm = +$("oca-symm").value;
+
+  $("oca-labour-v").textContent = labour + " / 10";
+  $("oca-trade-v").textContent = trade + " / 10";
+  $("oca-fiscal-v").textContent = fiscal + " / 10";
+  $("oca-symm-v").textContent = symm + " / 10";
+
+  var criteria = [
+    { name: "Labour Mobility", value: labour, weight: 0.25, color: "#7dd3fc" },
+    { name: "Trade Integration", value: trade, weight: 0.25, color: "#34d399" },
+    { name: "Fiscal Transfers", value: fiscal, weight: 0.25, color: "#c084fc" },
+    { name: "Shock Symmetry", value: symm, weight: 0.25, color: "#fbbf24" }
+  ];
+
+  var score = 0;
+  var weakest = criteria[0];
+  criteria.forEach(function (c) {
+    score += c.value * c.weight;
+    if (c.value < weakest.value) weakest = c;
+  });
+  score = Math.round(score * 10) / 10;
+
+  var threshold = 6;
+  var verdict =
+    score >= 7.5 ? "Strong case for currency union" :
+    score >= threshold ? "Marginal — missing channels create strain" :
+    score >= 4 ? "Weak — independent currency is better" :
+    "Very weak — currency union would be costly";
+
+  // Draw chart
+  var s = mkSvg($("oca-chart"));
+  var barX = 220, barMaxW = 500, barH = 42, gap = 22, topY = 50;
+
+  s.txt(480, 30, "OCA Criteria Scorecard", { fill: "#e8f0ff", weight: 700, size: 16 });
+
+  // Threshold line
+  var threshX = barX + barMaxW * (threshold / 10);
+  s.svg.appendChild(s.n("line", {
+    x1: threshX, y1: topY - 8, x2: threshX, y2: topY + criteria.length * (barH + gap) - gap + 8,
+    stroke: "rgba(251,113,133,0.55)", "stroke-width": 2, "stroke-dasharray": "6,4"
+  }));
+  s.txt(threshX, topY + criteria.length * (barH + gap) + 14, "Threshold = " + threshold, { fill: "#fb7185", size: 11 });
+
+  criteria.forEach(function (c, i) {
+    var y = topY + i * (barH + gap);
+    var w = barMaxW * (c.value / 10);
+
+    // Track background
+    s.svg.appendChild(s.n("rect", {
+      x: barX, y: y, width: barMaxW, height: barH,
+      rx: 12, fill: "rgba(156,176,210,0.08)", stroke: "rgba(156,176,210,0.12)"
+    }));
+    // Value bar
+    s.svg.appendChild(s.n("rect", {
+      x: barX, y: y, width: w, height: barH,
+      rx: 12, fill: c.color, opacity: c.value >= threshold ? 0.78 : 0.40
+    }));
+    // Label
+    s.txt(barX - 12, y + barH / 2 + 5, c.name, { anchor: "end", fill: "#e8f0ff", weight: 700, size: 13 });
+    // Value
+    s.txt(barX + w + 12, y + barH / 2 + 5, c.value + "/10", { anchor: "start", fill: c.color, weight: 700, size: 13 });
+  });
+
+  // Score summary on right side
+  s.txt(800, topY + 30, "Score", { fill: "#9cb0d2", size: 12 });
+  s.txt(800, topY + 60, fmtNum(score, 1), { fill: score >= threshold ? "#34d399" : "#fb7185", weight: 800, size: 28 });
+  s.txt(800, topY + 80, "/ 10", { fill: "#9cb0d2", size: 12 });
+
+  $("oca-score").textContent = fmtNum(score, 1) + " / 10";
+  $("oca-weakest").textContent = weakest.name;
+  $("oca-verdict").textContent = verdict;
+  $("oca-summary").textContent =
+    "With labour mobility at " + labour + ", trade integration at " + trade +
+    ", fiscal transfer capacity at " + fiscal + " and shock symmetry at " + symm +
+    ", the OCA viability score is " + fmtNum(score, 1) + "/10. " +
+    (score >= threshold ?
+      "The score is above the illustrative threshold of " + threshold + ", suggesting the adjustment channels can compensate for giving up an independent exchange rate." :
+      "The score is below the illustrative threshold of " + threshold + ". The weakest link — " + weakest.name.toLowerCase() + " — means shocks would lack a critical adjustment channel.");
+}
+
+/* =========================================================
+   SECTION 10: CRISIS FEEDBACK LOOP
    ========================================================= */
 function updateCrisis() {
   var fundShock = +$("cr-shock").value;
@@ -910,6 +1027,469 @@ function updateCrisis() {
 }
 
 /* =========================================================
+   SECTION 11: PORTFOLIO FLOWS & ASSET PRICING
+   ========================================================= */
+function updatePortfolioFlows() {
+  var us5y = +$("pf-us5y").value;
+  var fxView = +$("pf-fxview").value;
+  var usdVol = +$("pf-usvol").value;
+
+  $("pf-us5y-v").textContent = fmtPct(us5y, 2);
+  $("pf-fxview-v").textContent = fmtPct(fxView, 1);
+  $("pf-usvol-v").textContent = fmtPct(usdVol, 1);
+
+  var cadRet = 3.19;
+  var cadVol = 2.6;
+  var rho = 0.35;
+  var usdRet = us5y - fxView;
+  var frontier = [];
+  var best = { w: 0, ret: cadRet, vol: cadVol, util: -1e9 };
+
+  for (var i = 0; i <= 40; i++) {
+    var w = i / 40;
+    var ret = (1 - w) * cadRet + w * usdRet;
+    var vol = Math.sqrt(
+      Math.pow((1 - w) * cadVol, 2) +
+      Math.pow(w * usdVol, 2) +
+      2 * w * (1 - w) * cadVol * usdVol * rho
+    );
+    var util = ret - 0.01 * vol * vol;
+    frontier.push([vol, ret]);
+    if (util > best.util) best = { w: w, ret: ret, vol: vol, util: util };
+  }
+
+  var xR = [Math.max(1.5, Math.min(cadVol, usdVol, best.vol) - 0.8), Math.max(cadVol, usdVol, best.vol) + 1.2];
+  var yR = [Math.min(cadRet, usdRet, best.ret) - 0.4, Math.max(cadRet, usdRet, best.ret) + 0.5];
+
+  var cL = mkChart($("pf-frontier-chart"));
+  cL.axes("Portfolio Volatility (%)", "Expected Return (%)");
+  cL.curve(frontier, xR, yR, "#a5b4fc");
+  cL.dot(cadVol, cadRet, xR, yR, "#34d399", { toAxes: true, label: "CAD bond" });
+  cL.dot(usdVol, usdRet, xR, yR, "#7dd3fc", { toAxes: true, label: "USD bond" });
+  cL.dot(best.vol, best.ret, xR, yR, "#fbbf24", { label: "Illustrative mix", r: 7 });
+
+  var cR = mkSvg($("pf-allocation-chart"));
+  var barX = 90, barY = 140, barW = 460, barH = 64;
+  var usdW = best.w, cadW = 1 - usdW;
+  cR.svg.appendChild(cR.n("rect", {
+    x: barX, y: barY, width: barW, height: barH,
+    rx: 18, fill: "rgba(156,176,210,0.10)", stroke: "rgba(156,176,210,0.18)"
+  }));
+  cR.svg.appendChild(cR.n("rect", {
+    x: barX, y: barY, width: barW * cadW, height: barH,
+    rx: 18, fill: "rgba(52,211,153,0.82)"
+  }));
+  cR.svg.appendChild(cR.n("rect", {
+    x: barX + barW * cadW, y: barY, width: barW * usdW, height: barH,
+    rx: 18, fill: "rgba(125,211,252,0.82)"
+  }));
+  cR.txt(barX + barW * cadW * 0.5, barY + 38, "CAD " + Math.round(cadW * 100) + "%", { fill: "#04111f", weight: 800, size: 15 });
+  cR.txt(barX + barW * (cadW + usdW * 0.5), barY + 38, "USD " + Math.round(usdW * 100) + "%", { fill: "#04111f", weight: 800, size: 15 });
+  cR.txt(180, 88, "Expected CAD bond return: " + fmtPct(cadRet, 2), { anchor: "start", fill: "#34d399", weight: 700 });
+  cR.txt(180, 112, "Expected USD bond return in CAD: " + fmtPct(usdRet, 2), { anchor: "start", fill: "#7dd3fc", weight: 700 });
+  cR.txt(180, 258, "Illustrative choice rule: higher expected return helps, but volatility and correlation still matter.", {
+    anchor: "start", fill: "#9cb0d2", size: 13
+  });
+  cR.txt(180, 286, "This bar is a teaching allocation, not a claim about actual fund weights.", {
+    anchor: "start", fill: "#9cb0d2", size: 13
+  });
+
+  $("pf-usdret").textContent = fmtPct(usdRet, 2);
+  $("pf-usdweight").textContent = Math.round(usdW * 100) + "%";
+  $("pf-portvol").textContent = fmtPct(best.vol, 1);
+  $("pf-summary").textContent =
+    "With the U.S. 5Y at " + fmtPct(us5y, 2) + " and expected CAD appreciation at " + fmtPct(fxView, 1) +
+    ", the unhedged USD bond offers about " + fmtPct(usdRet, 2) + " in CAD terms versus roughly " + fmtPct(cadRet, 2) +
+    " on the CAD bond. Given the chosen volatility input, the simple mean-variance allocation lands near " +
+    Math.round(usdW * 100) + "% in USD assets.";
+}
+
+function bondPriceFromYield(couponPct, yieldPct, years) {
+  var coupon = 100 * couponPct / 100;
+  var y = yieldPct / 100;
+  var price = 0;
+  for (var t = 1; t <= years; t++) price += coupon / Math.pow(1 + y, t);
+  price += 100 / Math.pow(1 + y, years);
+  return price;
+}
+
+function bondModifiedDuration(couponPct, yieldPct, years) {
+  var coupon = 100 * couponPct / 100;
+  var y = yieldPct / 100;
+  var price = bondPriceFromYield(couponPct, yieldPct, years);
+  var macaulay = 0;
+  for (var t = 1; t <= years; t++) macaulay += t * coupon / Math.pow(1 + y, t);
+  macaulay += years * 100 / Math.pow(1 + y, years);
+  macaulay /= price;
+  return macaulay / (1 + y);
+}
+
+/* =========================================================
+   SECTION 12: BOND PRICING & SOVEREIGN SPREADS
+   ========================================================= */
+function updateBondPricing() {
+  var bench = +$("bp-bench").value;
+  var coupon = +$("bp-coupon").value;
+  var spreadBp = +$("bp-spread").value;
+
+  $("bp-bench-v").textContent = fmtPct(bench, 2);
+  $("bp-coupon-v").textContent = fmtPct(coupon, 2);
+  $("bp-spread-v").textContent = Math.round(spreadBp) + " bp";
+
+  var spreadPct = spreadBp / 100;
+  var allIn = bench + spreadPct;
+  var price = bondPriceFromYield(coupon, allIn, 5);
+  var duration = bondModifiedDuration(coupon, allIn, 5);
+
+  var xR = [1.0, Math.max(8.0, allIn + 1.5)];
+  var curvePts = linspace(xR[0], xR[1], 80).map(function (y) {
+    return [y, bondPriceFromYield(coupon, y, 5)];
+  });
+  var prices = curvePts.map(function (p) { return p[1]; });
+  var yR = [Math.min.apply(null, prices) - 2, Math.max.apply(null, prices) + 2];
+
+  var cL = mkChart($("bp-price-chart"));
+  cL.axes("Yield to Maturity (%)", "Price per 100 Par");
+  cL.curve(curvePts, xR, yR, "#7dd3fc");
+  cL.dot(allIn, price, xR, yR, "#fbbf24", {
+    toAxes: true,
+    label: "Current",
+    xLbl: fmtPct(allIn, 2),
+    yLbl: fmtNum(price, 2)
+  });
+
+  var cR = mkSvg($("bp-spread-chart"));
+  var maxYield = Math.max(6.5, allIn + 1.2);
+  var scaleH = 230;
+  var baseY = 300;
+  var barX = 250;
+  var barW = 130;
+  var benchH = scaleH * (bench / maxYield);
+  var spreadH = scaleH * (spreadPct / maxYield);
+  cR.svg.appendChild(cR.n("line", {
+    x1: barX - 70, y1: baseY, x2: barX + barW + 80, y2: baseY,
+    stroke: "rgba(156,176,210,0.22)", "stroke-width": 2
+  }));
+  cR.svg.appendChild(cR.n("rect", {
+    x: barX, y: baseY - benchH, width: barW, height: benchH,
+    rx: 18, fill: "rgba(125,211,252,0.78)"
+  }));
+  cR.svg.appendChild(cR.n("rect", {
+    x: barX, y: baseY - benchH - spreadH, width: barW, height: spreadH,
+    rx: 18, fill: spreadBp > 0 ? "rgba(251,191,36,0.82)" : "rgba(156,176,210,0.20)"
+  }));
+  cR.txt(barX + barW / 2, baseY - benchH / 2, "Benchmark", { fill: "#04111f", weight: 800, size: 14 });
+  if (spreadBp > 0) cR.txt(barX + barW / 2, baseY - benchH - spreadH / 2 + 4, "Spread", { fill: "#04111f", weight: 800, size: 14 });
+  cR.txt(barX - 60, baseY - benchH + 4, fmtPct(bench, 2), { anchor: "end", fill: "#7dd3fc", weight: 700 });
+  cR.txt(barX - 60, baseY - benchH - spreadH + 4, fmtPct(allIn, 2), { anchor: "end", fill: "#fbbf24", weight: 700 });
+  cR.txt(92, 84, "All-in yield = benchmark + spread", { anchor: "start", fill: "#e8f0ff", weight: 700, size: 15 });
+  cR.txt(92, 112, "For Canada-US sovereign comparisons, spread is often small.", { anchor: "start", fill: "#9cb0d2", size: 13 });
+  cR.txt(92, 136, "For fragile issuers, spread can dominate the borrowing cost.", { anchor: "start", fill: "#9cb0d2", size: 13 });
+
+  $("bp-allin").textContent = fmtPct(allIn, 2);
+  $("bp-price").textContent = fmtNum(price, 2);
+  $("bp-duration").textContent = fmtNum(duration, 2) + "y";
+  $("bp-summary").textContent =
+    "At an all-in yield of " + fmtPct(allIn, 2) + ", a 5Y bond with a " + fmtPct(coupon, 2) +
+    " coupon prices around " + fmtNum(price, 2) + " per 100 of par. With spread at " + Math.round(spreadBp) +
+    " bp, " + (spreadBp === 0 ? "the benchmark curve is doing most of the pricing work." : "the spread is materially lifting the borrowing cost above the world-rate benchmark.");
+}
+
+/* =========================================================
+   SECTION 13: HEDGING BEYOND CIP
+   ========================================================= */
+function updateHedging() {
+  var amount = +$("hg-amt").value;
+  var hedgeRatio = +$("hg-ratio").value / 100;
+  var forward = +$("hg-fwd").value;
+  var spotNow = 1.3844;
+
+  $("hg-amt-v").textContent = fmtNum(amount, 1);
+  $("hg-ratio-v").textContent = Math.round(hedgeRatio * 100) + "%";
+  $("hg-fwd-v").textContent = fmtNum(forward, 2);
+
+  var locked = amount * hedgeRatio * forward;
+  var baseline = amount * (hedgeRatio * forward + (1 - hedgeRatio) * spotNow);
+  var sensitivity = amount * (1 - hedgeRatio) * 0.10;
+
+  var xR = [1.20, 1.55];
+  var unhedgedPts = linspace(xR[0], xR[1], 80).map(function (s) {
+    return [s, amount * s];
+  });
+  var hedgedPts = linspace(xR[0], xR[1], 80).map(function (s) {
+    return [s, amount * (hedgeRatio * forward + (1 - hedgeRatio) * s)];
+  });
+  var minY = Math.min(unhedgedPts[0][1], hedgedPts[0][1]) - 1.5;
+  var maxY = Math.max(unhedgedPts[unhedgedPts.length - 1][1], hedgedPts[hedgedPts.length - 1][1]) + 1.5;
+
+  var c = mkChart($("hg-chart"));
+  c.axes("Future Spot Rate (CAD/USD)", "CAD Revenue (millions)");
+  c.curve(unhedgedPts, xR, [minY, maxY], "#7dd3fc");
+  c.curve(hedgedPts, xR, [minY, maxY], "#34d399");
+  c.vLine(spotNow, xR, [minY, maxY], "rgba(156,176,210,0.35)", { dash: true, label: "Spot = 1.3844" });
+  c.dot(spotNow, amount * spotNow, xR, [minY, maxY], "#7dd3fc", { label: "Unhedged" });
+  c.dot(spotNow, baseline, xR, [minY, maxY], "#34d399", { label: "Partly hedged" });
+
+  $("hg-locked").textContent = fmtNum(locked, 2) + "m";
+  $("hg-baseline").textContent = fmtNum(baseline, 2) + "m";
+  $("hg-sensitivity").textContent = fmtNum(sensitivity, 2) + "m";
+  $("hg-summary").textContent =
+    "With a " + Math.round(hedgeRatio * 100) + "% hedge ratio, about " + fmtNum(locked, 2) +
+    " million CAD is locked in by the forward. The remaining " + Math.round((1 - hedgeRatio) * 100) +
+    "% stays exposed to spot moves, so every 0.10 move in CAD/USD changes revenue by roughly " + fmtNum(sensitivity, 2) + " million CAD.";
+}
+
+/* =========================================================
+   SECTION 14: DERIVATIVES & FX MICROSTRUCTURE
+   ========================================================= */
+function updateMicrostructure() {
+  var flow = +$("ms-flow").value;
+  var depth = +$("ms-depth").value;
+  var inventory = +$("ms-inv").value;
+  var baseSpot = 1.3844;
+
+  $("ms-flow-v").textContent = fmtNum(flow, 1);
+  $("ms-depth-v").textContent = depth + " / 10";
+  $("ms-inv-v").textContent = fmtNum(inventory, 1);
+
+  var effectiveFlow = flow - 0.5 * inventory;
+  var impact = effectiveFlow * 0.014 / (depth + 2);
+  var newSpot = clamp(baseSpot + impact, 1.28, 1.46);
+  var spreadBp = clamp(2 + (11 - depth) * 1.1 + Math.abs(effectiveFlow) * 0.75 + Math.max(0, -inventory) * 0.5, 2, 30);
+  var liquidityState =
+    depth >= 8 && Math.abs(effectiveFlow) <= 2 ? "Deep and two-way" :
+    depth <= 3 || Math.abs(effectiveFlow) >= 6 ? "Thin or one-way" :
+    depth >= 6 ? "Orderly but moving" : "Watch liquidity";
+
+  var sL = mkSvg($("ms-book-chart"));
+  var midX = 320;
+  var topY = 74;
+  var levelGap = 46;
+  var baseQty = 26 + depth * 7;
+  sL.txt(320, 34, "Bid depth              Mid spot              Ask depth", { fill: "#e8f0ff", weight: 700, size: 14 });
+  sL.svg.appendChild(sL.n("line", {
+    x1: midX, y1: 54, x2: midX, y2: 300, stroke: "rgba(156,176,210,0.28)", "stroke-width": 2
+  }));
+  sL.txt(midX, 318, "Spot " + fmtNum(newSpot, 4), { fill: "#fbbf24", weight: 700, size: 14 });
+  for (var lvl = 0; lvl < 4; lvl++) {
+    var priceOff = (lvl + 1) * spreadBp / 20000;
+    var bidQty = clamp(baseQty + Math.max(0, -inventory) * 5 - Math.max(0, -flow) * 2 - lvl * 7, 10, 90);
+    var askQty = clamp(baseQty + Math.max(0, inventory) * 5 - Math.max(0, flow) * 2 - lvl * 7, 10, 90);
+    var y = topY + lvl * levelGap;
+    sL.svg.appendChild(sL.n("rect", {
+      x: midX - 18 - bidQty * 2.1, y: y, width: bidQty * 2.1, height: 24, rx: 8,
+      fill: "rgba(52,211,153,0.74)"
+    }));
+    sL.svg.appendChild(sL.n("rect", {
+      x: midX + 18, y: y, width: askQty * 2.1, height: 24, rx: 8,
+      fill: "rgba(125,211,252,0.76)"
+    }));
+    sL.txt(midX - 28 - bidQty * 2.1, y + 17, fmtNum(newSpot - priceOff, 4), { anchor: "end", fill: "#9cb0d2", size: 11 });
+    sL.txt(midX + 28 + askQty * 2.1, y + 17, fmtNum(newSpot + priceOff, 4), { anchor: "start", fill: "#9cb0d2", size: 11 });
+  }
+
+  var cR = mkChart($("ms-impact-chart"));
+  var xR = [-8, 8];
+  var yR = [1.30, 1.44];
+  var impactPts = linspace(-8, 8, 80).map(function (f) {
+    return [f, clamp(baseSpot + (f - 0.5 * inventory) * 0.014 / (depth + 2), yR[0], yR[1])];
+  });
+  cR.axes("Net USD Order Flow (USD bn)", "CAD/USD Spot");
+  cR.curve(impactPts, xR, yR, "#c084fc");
+  cR.hLine(baseSpot, xR, yR, "rgba(156,176,210,0.35)", { dash: true, label: "Base spot" });
+  cR.dot(flow, newSpot, xR, yR, "#fbbf24", { toAxes: true, label: "Current" });
+
+  $("ms-spot").textContent = fmtNum(newSpot, 4);
+  $("ms-spread").textContent = fmtNum(spreadBp, 1) + " bp";
+  $("ms-liquidity").textContent = liquidityState;
+  $("ms-summary").textContent =
+    "Starting from a spot near 1.3844, the current order-flow and inventory mix pushes the stylized spot to " +
+    fmtNum(newSpot, 4) + ". The point is not that dealers permanently set the exchange rate, but that thin depth and one-sided flow can create larger short-run moves than fundamentals alone would suggest.";
+}
+
+/* =========================================================
+   SECTION 15: COUNTRY RISK & POLITICAL RISK
+   ========================================================= */
+function updatePoliticalRisk() {
+  var pol = +$("rk-pol").value;
+  var conv = +$("rk-conv").value;
+  var legal = +$("rk-legal").value;
+  var benchmark = 4.08;
+
+  $("rk-pol-v").textContent = Math.round(pol) + " bp";
+  $("rk-conv-v").textContent = Math.round(conv) + " bp";
+  $("rk-legal-v").textContent = Math.round(legal) + " bp";
+
+  var totalBp = pol + conv + legal;
+  var requiredYield = benchmark + totalBp / 100;
+  var riskClass =
+    totalBp < 40 ? "Low institutional premium" :
+    totalBp < 150 ? "Moderate priced risk" :
+    "High priced risk";
+
+  var s = mkSvg($("rk-chart"));
+  var maxYield = Math.max(6.5, requiredYield + 1.0);
+  var x0 = 120, y0 = 158, barW = 700, barH = 52;
+  var benchW = barW * (benchmark / maxYield);
+  var polW = barW * (pol / 100 / maxYield);
+  var convW = barW * (conv / 100 / maxYield);
+  var legalW = barW * (legal / 100 / maxYield);
+
+  s.txt(120, 68, "Required return = benchmark rate + country-risk premia", { anchor: "start", fill: "#e8f0ff", weight: 700, size: 15 });
+  s.svg.appendChild(s.n("rect", {
+    x: x0, y: y0, width: barW, height: barH, rx: 18,
+    fill: "rgba(156,176,210,0.08)", stroke: "rgba(156,176,210,0.18)"
+  }));
+  s.svg.appendChild(s.n("rect", { x: x0, y: y0, width: benchW, height: barH, rx: 18, fill: "rgba(125,211,252,0.78)" }));
+  s.svg.appendChild(s.n("rect", { x: x0 + benchW, y: y0, width: polW, height: barH, rx: 18, fill: "rgba(251,113,133,0.82)" }));
+  s.svg.appendChild(s.n("rect", { x: x0 + benchW + polW, y: y0, width: convW, height: barH, rx: 18, fill: "rgba(251,191,36,0.84)" }));
+  s.svg.appendChild(s.n("rect", { x: x0 + benchW + polW + convW, y: y0, width: legalW, height: barH, rx: 18, fill: "rgba(192,132,252,0.82)" }));
+  s.txt(x0 + 10, y0 - 20, "World benchmark", { anchor: "start", fill: "#7dd3fc", weight: 700 });
+  s.txt(x0 + benchW + 10, y0 - 20, "Political", { anchor: "start", fill: "#fb7185", weight: 700 });
+  s.txt(x0 + benchW + polW + 10, y0 - 20, "Convertibility", { anchor: "start", fill: "#fbbf24", weight: 700 });
+  s.txt(x0 + benchW + polW + convW + 10, y0 - 20, "Legal credibility", { anchor: "start", fill: "#c084fc", weight: 700 });
+  s.txt(x0 + barW, y0 + 86, "Required 5Y yield: " + fmtPct(requiredYield, 2), { anchor: "end", fill: "#fbbf24", weight: 800, size: 15 });
+  s.txt(120, 260, "Countries with similar inflation can still face different yields because institutions, legal systems and capital-mobility risk are also priced.", {
+    anchor: "start", fill: "#9cb0d2", size: 13
+  });
+
+  $("rk-premium").textContent = Math.round(totalBp) + " bp";
+  $("rk-yield").textContent = fmtPct(requiredYield, 2);
+  $("rk-class").textContent = riskClass;
+  $("rk-summary").textContent =
+    "Using a world benchmark near " + fmtPct(benchmark, 2) + ", the chosen premia add up to " + Math.round(totalBp) +
+    " bp and push the required yield to about " + fmtPct(requiredYield, 2) + ". This is why institutional credibility matters even when the macro data look superficially similar across countries.";
+}
+
+/* =========================================================
+   SECTION 16: BANKING & EUROCURRENCY MARKETS
+   ========================================================= */
+function updateEurocurrency() {
+  var share = +$("ec-share").value;
+  var shock = +$("ec-shock").value;
+  var backstop = +$("ec-backstop").value;
+
+  $("ec-share-v").textContent = Math.round(share) + "%";
+  $("ec-shock-v").textContent = shock + " / 10";
+  $("ec-backstop-v").textContent = backstop + " / 10";
+
+  var premiumBp = clamp(share * 0.9 + shock * 18 - backstop * 8, 0, 250);
+  var basisBp = -clamp(premiumBp * (0.65 + share / 200), 0, 220);
+  var creditBp = clamp(premiumBp * (0.35 + share / 160) * (1.05 - backstop / 20), 0, 180);
+
+  var s = mkSvg($("ec-chart"));
+  var xs = [110, 300, 490, 680, 850];
+  var labels = [
+    "Offshore USD\nfunding",
+    "Global bank\nfunding desk",
+    "FX swap and\nbasis market",
+    "Domestic bank\nbalance sheet",
+    "Local credit\nconditions"
+  ];
+  var stageVals = [
+    clamp(shock + share / 25, 0, 10),
+    clamp(shock * 0.8 + share / 30, 0, 10),
+    clamp(premiumBp / 20, 0, 10),
+    clamp(creditBp / 15, 0, 10),
+    clamp(creditBp / 12, 0, 10)
+  ];
+
+  for (var i = 0; i < xs.length; i++) {
+    if (i < xs.length - 1) {
+      s.svg.appendChild(s.n("line", {
+        x1: xs[i] + 58, y1: 146, x2: xs[i + 1] - 58, y2: 146,
+        stroke: "rgba(156,176,210,0.28)", "stroke-width": 4
+      }));
+    }
+    s.svg.appendChild(s.n("rect", {
+      x: xs[i] - 58, y: 104, width: 116, height: 84, rx: 20,
+      fill: "rgba(8,18,33,0.92)", stroke: "rgba(125,211,252,0.22)", "stroke-width": 2
+    }));
+    s.svg.appendChild(s.n("rect", {
+      x: xs[i] - 44, y: 200, width: 88, height: 10, rx: 5,
+      fill: "rgba(156,176,210,0.10)"
+    }));
+    s.svg.appendChild(s.n("rect", {
+      x: xs[i] - 44, y: 200, width: 88 * (stageVals[i] / 10), height: 10, rx: 5,
+      fill: stageVals[i] > 6 ? "rgba(251,113,133,0.84)" : "rgba(125,211,252,0.82)"
+    }));
+    var lines = labels[i].split("\n");
+    s.txt(xs[i], 132, lines[0], { fill: "#e8f0ff", weight: 700, size: 13 });
+    s.txt(xs[i], 150, lines[1], { fill: "#e8f0ff", weight: 700, size: 13 });
+    s.txt(xs[i], 228, "Stress " + fmtNum(stageVals[i], 1) + "/10", { fill: "#9cb0d2", size: 11 });
+  }
+
+  s.txt(480, 52, "Offshore dollar funding stress can pass into domestic credit conditions.", { fill: "#e8f0ff", weight: 700, size: 15 });
+  s.txt(480, 286, "Funding premium: " + fmtNum(premiumBp, 1) + " bp", { fill: "#7dd3fc", weight: 700, size: 14 });
+  s.txt(480, 312, "Illustrative cross-currency basis: " + fmtNum(basisBp, 1) + " bp", { fill: "#c084fc", weight: 700, size: 14 });
+  s.txt(480, 338, "Pass-through to domestic credit: +" + fmtNum(creditBp, 1) + " bp", { fill: "#fbbf24", weight: 700, size: 14 });
+
+  $("ec-premium").textContent = fmtNum(premiumBp, 1) + " bp";
+  $("ec-basis").textContent = fmtNum(basisBp, 1) + " bp";
+  $("ec-credit").textContent = "+" + fmtNum(creditBp, 1) + " bp";
+  $("ec-summary").textContent =
+    "With offshore USD funding at roughly " + Math.round(share) + "% of the funding mix, the chosen shock and backstop imply an offshore dollar premium near " +
+    fmtNum(premiumBp, 1) + " bp. Stronger backstops do not erase the shock, but they reduce how much it widens the basis and tightens local credit.";
+}
+
+/* =========================================================
+   SECTION 17: GLOBAL FINANCIAL INTERMEDIATION
+   ========================================================= */
+function updateGlobalIntermediation() {
+  var share = +$("gi-share").value;
+  var leverage = +$("gi-lev").value;
+  var redemption = +$("gi-red").value;
+
+  $("gi-share-v").textContent = Math.round(share) + "%";
+  $("gi-lev-v").textContent = leverage + " / 10";
+  $("gi-red-v").textContent = redemption + " / 10";
+
+  var stressScore = clamp(0.45 * share + 4 * leverage + 3.5 * redemption, 0, 100);
+  var channel =
+    leverage >= redemption + 2 ? "Levered trading books" :
+    redemption >= leverage + 2 ? "Open-end fund liquidity mismatch" :
+    share > 65 ? "Broad non-bank funding chain" :
+    "Mixed transmission";
+  var regime =
+    stressScore < 40 ? "Contained transmission" :
+    stressScore < 65 ? "Fragile but manageable" :
+    "Amplified cross-border cycle";
+
+  var c = mkChart($("gi-chart"));
+  var xR = [0, 10], yR = [0, 10];
+  c.axes("Leverage / Margin Pressure", "Liquidity Mismatch / Redemption Risk");
+  c.vLine(5, xR, yR, "rgba(156,176,210,0.18)", { dash: true, label: "Higher leverage" });
+  c.hLine(5, xR, yR, "rgba(156,176,210,0.18)", { dash: true, label: "Higher liquidity mismatch" });
+
+  var nbScale = (share - 20) / 65;
+  var institutions = [
+    { name: "Banks", x: 3.8 + leverage * 0.14, y: 2.8 + redemption * 0.10, r: 18, color: "#7dd3fc" },
+    { name: "Hedge funds", x: 5.9 + leverage * 0.24, y: 3.5 + redemption * 0.10, r: 16 + 8 * nbScale, color: "#fb7185" },
+    { name: "Money funds", x: 2.9 + leverage * 0.10, y: 5.0 + redemption * 0.26, r: 18 + 7 * nbScale, color: "#34d399" },
+    { name: "Asset managers", x: 4.1 + leverage * 0.14, y: 4.7 + redemption * 0.24, r: 20 + 9 * nbScale, color: "#c084fc" },
+    { name: "Private credit", x: 4.6 + leverage * 0.16, y: 4.3 + redemption * 0.22, r: 18 + 8 * nbScale, color: "#fbbf24" },
+    { name: "Insurers / pensions", x: 2.5 + leverage * 0.08, y: 2.4 + redemption * 0.08, r: 19 + 6 * nbScale, color: "#60a5fa" }
+  ];
+
+  institutions.forEach(function (inst) {
+    var cx = c.sx(clamp(inst.x, 0.6, 9.4), xR[0], xR[1]);
+    var cy = c.sy(clamp(inst.y, 0.6, 9.4), yR[0], yR[1]);
+    c.svg.appendChild(c.n("circle", {
+      cx: cx, cy: cy, r: inst.r,
+      fill: inst.color, opacity: 0.18, stroke: inst.color, "stroke-width": 2.5
+    }));
+    c.txt(cx, cy + 4, inst.name, { fill: "#e8f0ff", weight: 700, size: 11 });
+  });
+
+  $("gi-stress").textContent = fmtNum(stressScore, 0) + " / 100";
+  $("gi-channel").textContent = channel;
+  $("gi-regime").textContent = regime;
+  $("gi-summary").textContent =
+    "With non-banks handling roughly " + Math.round(share) + "% of cross-border finance, the chosen leverage and redemption pressures generate a system stress score near " +
+    fmtNum(stressScore, 0) + "/100. The most exposed transmission channel here is " + channel.toLowerCase() + ", which is why modern crises often propagate through funds and dealer balance sheets rather than through classic bank runs alone.";
+}
+
+/* =========================================================
    MASTER UPDATE & EVENT WIRING
    ========================================================= */
 function updateAll() {
@@ -921,20 +1501,20 @@ function updateAll() {
   updateMF();
   updateOvershoot();
   updateTrilemma();
+  updateOca();
   updateCrisis();
+  updatePortfolioFlows();
+  updateBondPricing();
+  updateHedging();
+  updateMicrostructure();
+  updatePoliticalRisk();
+  updateEurocurrency();
+  updateGlobalIntermediation();
 }
 
 // Wire all slider inputs
-[
-  "fx-d-shift", "fx-s-shift",
-  "mm-ms", "mm-if", "mm-ee",
-  "irp-ih", "irp-if", "irp-ee",
-  "ppp-pih", "ppp-pif", "ppp-s",
-  "bop-nx", "bop-ip", "bop-dep",
-  "os-dm", "os-sp",
-  "cr-shock", "cr-res", "cr-debt"
-].forEach(function (id) {
-  $(id).addEventListener("input", updateAll);
+Array.prototype.forEach.call(document.querySelectorAll("input[type='range']"), function (el) {
+  el.addEventListener("input", updateAll);
 });
 
 // Toggle: Parity mode

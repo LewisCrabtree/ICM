@@ -360,6 +360,36 @@ input[type='range']::-moz-range-thumb {
 
 .callout-card strong { color: var(--accent); }
 
+.show-more-note {
+  margin-bottom: 18px;
+}
+
+.section-heading--compact {
+  margin-bottom: 16px;
+}
+
+.show-more-callout {
+  margin-bottom: 18px;
+}
+
+.panel--subsection {
+  margin-bottom: 18px;
+  padding: 26px;
+  background:
+    linear-gradient(180deg, rgba(11, 22, 40, 0.94), rgba(10, 20, 37, 0.92)),
+    radial-gradient(circle at top right, rgba(125, 211, 252, 0.07), transparent 42%);
+  border-color: rgba(125, 211, 252, 0.14);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+}
+
+.panel--subsection .section-heading {
+  margin-bottom: 16px;
+}
+
+.explanation--tight {
+  margin-top: 18px;
+}
+
 /* ── Footer ── */
 .footer {
   padding: 18px 0 48px;

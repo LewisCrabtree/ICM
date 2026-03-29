@@ -12,7 +12,7 @@
   <div class="hero__content">
     <span class="eyebrow">Interactive Guide · Canada 🇨🇦 ↔ USA 🇺🇸</span>
     <h1>International Capital Markets</h1>
-    <p class="hero__lede">An interactive exploration of exchange rates, monetary policy, and crisis dynamics — grounded in real Canada–US economics.<br>Every section uses <strong>Canada as the domestic country</strong> and the <strong>USA as the foreign country</strong>. Sliders are pre-loaded with approximate March 2026 values anchored to official releases.</p>
+    <p class="hero__lede">An interactive exploration of exchange rates, monetary policy, and crisis dynamics — grounded in real Canada–US economics.<br>Every section uses <strong>Canada as the domestic country</strong> and the <strong>USA as the foreign country</strong>. Sliders are pre-loaded with approximate late-March 2026 values anchored to official releases.</p>
   </div>
   <div class="hero__card">
     <h3>How to Use This Guide</h3>
@@ -27,7 +27,7 @@
 
 <main class="wrap">
   <div class="card callout-card">
-    <p><strong>Data note:</strong> The March 2026 defaults are teaching inputs anchored to official sources, not a live forecast or an empirical model fit. Main references are the Bank of Canada and Federal Reserve policy statements dated March 18, 2026; Statistics Canada and BLS February 2026 CPI releases; Bank of Canada daily FX and 5Y benchmark yield data; and Statistics Canada's Q4 2025 balance of payments release. One important caveat: Canada's February 2026 headline CPI was temporarily lowered by GST/HST tax effects, so the PPP section should be read as illustrative rather than as a precise long-run valuation model.</p>
+    <p><strong>Data note:</strong> The late-March 2026 defaults are teaching inputs anchored to official sources, not a live forecast or an empirical model fit. Policy rates come from the Bank of Canada and Federal Reserve statements dated March 18, 2026; inflation comes from the Statistics Canada and BLS February 2026 CPI releases; labour data come from Statistics Canada's February 2026 Labour Force Survey; external-balance anchors come from Statistics Canada's Q4 2025 balance of payments and international investment position releases; and market-price anchors use Bank of Canada and U.S. Treasury daily data, with March 26, 2026 as the latest common market-close date used in the site defaults. One important caveat: Canada's February 2026 headline CPI was temporarily lowered by GST/HST tax effects, so the PPP section should be read as illustrative rather than as a precise long-run valuation model.</p>
   </div>
 
 <!-- ============ SECTION 1: FX MARKET ============ -->
@@ -160,7 +160,7 @@
   <div class="metric-grid">
     <div class="metric"><span class="metric__label" id="irp-eq-label">UIP Benchmark Spot (E*)</span><strong id="irp-eq-e">—</strong></div>
     <div class="metric"><span class="metric__label" id="irp-diff-label">Rate Differential (BoC − Fed)</span><strong id="irp-diff">—</strong></div>
-    <div class="metric"><span class="metric__label" id="irp-fwd-label">Expected CAD Change (UIP)</span><strong id="irp-fwd">—</strong></div>
+    <div class="metric"><span class="metric__label" id="irp-fwd-label">Expected Annual CAD Change (UIP)</span><strong id="irp-fwd">—</strong></div>
   </div>
   <div class="explanation">
     <h4>What the controls mean</h4>
@@ -191,7 +191,7 @@
       <li><strong>See the current gap:</strong> BoC at 2.25%, Fed at 3.6%. The US pays about 1.3–1.4 percentage points more. In the chart's calibration, CAD/USD E* settles in the 1.38–1.39 area — CAD is weak NOW to offset the rate gap</li>
       <li><strong>What if BoC cuts more?</strong> Drag BoC rate from 2.25% → 1.5%. The cyan line shifts left → E* jumps higher → <strong>CAD weakens further</strong>. This is the parity-style logic if weak Canadian growth or tariff damage pushes the BoC lower</li>
       <li><strong>What if Fed cuts faster?</strong> Drag Fed rate from 3.6% → 2.5%. The green curve shifts left → E* drops → <strong>CAD strengthens</strong>. Faster Fed easing would remove part of the current rate disadvantage facing CAD</li>
-      <li><strong>Switch to CIP:</strong> click "Covered" — the third slider becomes today's spot rate and the metric shows the 1Y forward rate. In this calibration, forward CAD/USD is BELOW spot (~1.37 vs 1.39), consistent with a forward premium on CAD rather than a claim that spot must mechanically move there</li>
+      <li><strong>Switch to CIP:</strong> click "Covered" — the third slider becomes today's spot rate and the metric shows the 1Y forward rate. In this calibration, forward CAD/USD is BELOW spot (~1.36 vs 1.38), consistent with a forward premium on CAD rather than a claim that spot must mechanically move there</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
@@ -200,69 +200,12 @@
   </div>
 </section>
 
-<!-- ============ SECTION 4: PPP ============ -->
-<section id="ppp" class="panel">
-  <div class="section-heading">
-    <span class="eyebrow">Section 4</span>
-    <h2>Purchasing Power Parity &amp; the Long Run</h2>
-    <p class="desc">Sections 2–3 explained short-run exchange rate moves through interest rates and capital flows. But where is CAD/USD headed over 5–10 years? One rough long-run anchor is inflation. This chart compounds the Canada–US inflation gap mechanically to show PPP direction, but real exchange rates also move with productivity, terms of trade, taxes and the tradable-versus-non-tradable mix.</p>
-  </div>
-  <div class="controls controls--three">
-    <label>Canada CPI Inflation (%) <span class="value-pill" id="ppp-pih-v">1.8%</span>
-      <input type="range" id="ppp-pih" min="0" max="12" step="0.1" value="1.8">
-    </label>
-    <label>US CPI Inflation (%) <span class="value-pill" id="ppp-pif-v">2.4%</span>
-      <input type="range" id="ppp-pif" min="0" max="12" step="0.1" value="2.4">
-    </label>
-    <label>Starting CAD/USD Rate <span class="value-pill" id="ppp-s-v">1.39</span>
-      <input type="range" id="ppp-s" min="0.5" max="2.0" step="0.01" value="1.39">
-    </label>
-  </div>
-  <div class="grid grid--single">
-    <div class="card"><svg id="ppp-chart" class="chart" viewBox="0 0 580 360"></svg></div>
-  </div>
-  <div class="metric-grid">
-    <div class="metric"><span class="metric__label">Canada − US Inflation Gap</span><strong id="ppp-gap">—</strong></div>
-    <div class="metric"><span class="metric__label">Illustrative 10Y PPP Path</span><strong id="ppp-10y">—</strong></div>
-  </div>
-  <div class="explanation">
-    <h4>What the controls mean</h4>
-    <ul>
-      <li><strong>Canada CPI Inflation</strong>: a rough proxy for Canadian inflation. The 1.8% February 2026 reading was temporarily lowered by GST/HST tax effects, so treat it as a teaching default rather than a clean long-run signal. The cyan line in the chart</li>
-      <li><strong>US CPI Inflation</strong>: the US headline rate (~2.4%). Using headline CPI keeps the comparison simple, but core measures and tradables prices may tell a different medium-run story. The green line</li>
-      <li><strong>Starting CAD/USD</strong>: today's spot rate (~1.38–1.39). The chart projects forward 10 years from here</li>
-    </ul>
-    <h4>How to read the chart</h4>
-    <ul>
-      <li>The chart compounds the inflation gap into a mechanical nominal FX path. It is an illustration of PPP logic, not an estimated fair-value model</li>
-      <li>If <strong>Canada inflates faster</strong>: Canadian goods become relatively more expensive over time, so PPP-style reasoning points to a weaker CAD (higher E)</li>
-      <li>If <strong>US inflates faster</strong>: PPP-style reasoning points to some CAD appreciation over time, but the result should be read cautiously when the gap is driven by one-offs or by non-tradable prices</li>
-      <li>The "Illustrative 10Y" metric shows the chart's mechanical path, not a claim that CAD/USD should be at that level on schedule</li>
-      <li>This chart shows <strong>relative PPP</strong> — the rate-of-change version (inflation differentials drive FX changes). <strong>Absolute PPP</strong> (equal price levels across countries, via the law of one price) is a stronger and empirically harder condition that the chart does not test</li>
-    </ul>    <h4>Nominal vs. real exchange rate</h4>
-    <ul>
-      <li>This chart shows the <strong>nominal</strong> exchange rate (CAD per USD). Economists often care more about the <strong>real exchange rate</strong>, which adjusts for relative price levels: <em>q = E × P*/P</em> (spot rate × US prices / Canadian prices). The real rate captures purchasing-power-adjusted competitiveness</li>
-      <li>PPP is equivalent to saying the real exchange rate is constant over time. In practice, the real CAD/USD rate moves with productivity differences, terms of trade (especially energy prices for Canada), and the mix of tradable vs. non-tradable goods (the Balassa-Samuelson effect) — so it is not constant</li>
-      <li>When someone says “CAD is undervalued,” they usually mean the real rate has diverged from a long-run estimate. That divergence can persist for years and does not imply a near-term trading signal</li>      <li><strong>Connecting rates and prices (Fisher equation)</strong>: the real interest rate ≈ nominal rate − expected inflation. This links the money-market analysis in Sections 2–3 (nominal rates) to the inflation analysis here. When Canada's real rate is low relative to the US real rate, both interest-parity and PPP channels point the same way</li>    </ul>    <h4>🔬 Try This — Inflation scenarios</h4>
-    <ul>
-      <li><strong>Current reality:</strong> leave defaults at Canada 1.8%, US 2.4%. Notice the gap is −0.6% — PPP gives CAD a mild appreciation bias over the long run. But part of Canada's low headline print reflects GST/HST tax effects, so that bias should be treated cautiously</li>
-      <li><strong>Middle East energy shock spilling into Canada inflation:</strong> drag Canada inflation to 4.0%. If higher energy costs feed broadly into domestic prices and persist, PPP shifts toward a weaker CAD over time</li>
-      <li><strong>Trade-war inflation on both sides:</strong> set both to 4.5%. When inflation rates move together, PPP gives little directional push — short-run interest rates and capital flows would still dominate</li>
-      <li><strong>Back-to-target scenario:</strong> set both to 2.0%. When both economies converge near target, PPP adds very little trend pressure to CAD/USD</li>
-    </ul>
-    <h4>Key takeaway</h4>
-    <ul>
-      <li>PPP is one <strong>rough long-run anchor</strong>. It is most useful for direction over long horizons, not for near-term valuation calls, and it should sit alongside productivity and terms-of-trade stories rather than replacing them</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ============ SECTION 5: BALANCE OF PAYMENTS ============ -->
+<!-- ============ SECTION 4: BALANCE OF PAYMENTS ============ -->
 <section id="bop" class="panel">
   <div class="section-heading">
-    <span class="eyebrow">Section 5</span>
+    <span class="eyebrow">Section 4</span>
     <h2>Balance of Payments</h2>
-    <p class="desc">So far we've tracked exchange rates through money, interest rates, and prices. But there's a parallel accounting reality we've been ignoring: external balance. The current account includes goods, services, primary income and transfers, while the financial account records the offsetting financing. This section compresses those pieces into a teaching proxy so you can see the accounting logic and the J-curve without pretending that one slider measures the full external position.</p>
+    <p class="desc">So far we've tracked exchange rates through money, interest rates, and capital flows. But there's a parallel accounting reality we've been ignoring: external balance. The current account includes goods, services, primary income and transfers, while the financial account records the offsetting financing. This section compresses those pieces into a teaching proxy so you can see the accounting logic and the J-curve without pretending that one slider measures the full external position.</p>
   </div>
   <div class="controls controls--three">
     <label>Goods &amp; Services Balance (NX) <span class="value-pill" id="bop-nx-v">-1.5</span>
@@ -305,7 +248,7 @@
     <h4>What this section simplifies</h4>
     <ul>
       <li><strong>Exchange rate pass-through</strong>: the J-curve assumes depreciation eventually changes trade volumes. But the speed and completeness of pass-through from exchange rates to import/export prices matters enormously. Canada's pass-through to consumer goods is partial (~30–50% per BoC staff estimates), which limits how much and how quickly the J-curve adjustment actually works. As calibrated, the chart's long-run improvement is smaller than the initial worsening — consistent with partial pass-through keeping the recovery incomplete</li>
-      <li><strong>Primary income and the NIIP</strong>: the current account includes not just trade in goods and services but also <strong>primary income</strong> (investment earnings flowing in and out) and transfers. Canada’s net international investment position (NIIP) is negative — foreign claims on Canada exceed Canadian claims abroad — so investment income tends to be a net outflow. This slider captures only the trade piece; the primary-income balance matters too, especially for how sustainable a given external position feels</li>
+      <li><strong>Primary income and the NIIP</strong>: the current account includes not just trade in goods and services but also <strong>primary income</strong> (investment earnings flowing in and out) and transfers. Canada's net international investment position (NIIP) is currently <strong>positive</strong> — international assets exceed liabilities — and recent balance-of-payments data still show investment income contributing a surplus. That helps explain why a soft trade balance does not automatically imply weak overall external income. This slider captures only the trade piece; the primary-income balance matters too</li>
     </ul>
     <h4>🔬 Try This — Current events</h4>
     <ul>
@@ -321,12 +264,72 @@
   </div>
 </section>
 
+<!-- ============ SECTION 5: PPP ============ -->
+<section id="ppp" class="panel">
+  <div class="section-heading">
+    <span class="eyebrow">Section 5</span>
+    <h2>Purchasing Power Parity &amp; the Long Run</h2>
+    <p class="desc">Sections 2–4 explained short-run exchange rate moves through interest rates, capital flows, and trade. But where is CAD/USD headed over 5–10 years? One rough long-run anchor is inflation. This chart compounds the Canada–US inflation gap mechanically to show PPP direction, but real exchange rates also move with productivity, terms of trade, taxes and the tradable-versus-non-tradable mix.</p>
+  </div>
+  <div class="controls controls--three">
+    <label>Canada CPI Inflation (%) <span class="value-pill" id="ppp-pih-v">1.8%</span>
+      <input type="range" id="ppp-pih" min="0" max="12" step="0.1" value="1.8">
+    </label>
+    <label>US CPI Inflation (%) <span class="value-pill" id="ppp-pif-v">2.4%</span>
+      <input type="range" id="ppp-pif" min="0" max="12" step="0.1" value="2.4">
+    </label>
+    <label>Starting CAD/USD Rate <span class="value-pill" id="ppp-s-v">1.38</span>
+      <input type="range" id="ppp-s" min="0.5" max="2.0" step="0.01" value="1.38">
+    </label>
+  </div>
+  <div class="grid grid--single">
+    <div class="card"><svg id="ppp-chart" class="chart" viewBox="0 0 580 360"></svg></div>
+  </div>
+  <div class="metric-grid">
+    <div class="metric"><span class="metric__label">Canada − US Inflation Gap</span><strong id="ppp-gap">—</strong></div>
+    <div class="metric"><span class="metric__label">Illustrative 10Y PPP Path</span><strong id="ppp-10y">—</strong></div>
+  </div>
+  <div class="explanation">
+    <h4>What the controls mean</h4>
+    <ul>
+      <li><strong>Canada CPI Inflation</strong>: a rough proxy for Canadian inflation. The 1.8% February 2026 reading was temporarily lowered by GST/HST tax effects, so treat it as a teaching default rather than a clean long-run signal. The cyan line in the chart</li>
+      <li><strong>US CPI Inflation</strong>: the US headline rate (~2.4%). Using headline CPI keeps the comparison simple, but core measures and tradables prices may tell a different medium-run story. The green line</li>
+      <li><strong>Starting CAD/USD</strong>: today's spot rate (rounded to ~1.38 from a late-March 2026 close near 1.384). The chart projects forward 10 years from here</li>
+    </ul>
+    <h4>How to read the chart</h4>
+    <ul>
+      <li>The chart compounds the inflation gap into a mechanical nominal FX path. It is an illustration of PPP logic, not an estimated fair-value model</li>
+      <li>If <strong>Canada inflates faster</strong>: Canadian goods become relatively more expensive over time, so PPP-style reasoning points to a weaker CAD (higher E)</li>
+      <li>If <strong>US inflates faster</strong>: PPP-style reasoning points to some CAD appreciation over time, but the result should be read cautiously when the gap is driven by one-offs or by non-tradable prices</li>
+      <li>The "Illustrative 10Y" metric shows the chart's mechanical path, not a claim that CAD/USD should be at that level on schedule</li>
+      <li>This chart shows <strong>relative PPP</strong> — the rate-of-change version (inflation differentials drive FX changes). <strong>Absolute PPP</strong> (equal price levels across countries, via the law of one price) is a stronger and empirically harder condition that the chart does not test</li>
+    </ul>    <h4>Nominal vs. real exchange rate</h4>
+    <ul>
+      <li>This chart shows the <strong>nominal</strong> exchange rate (CAD per USD). Economists often care more about the <strong>real exchange rate</strong>, which adjusts for relative price levels: <em>q = E × P*/P</em> (spot rate × US prices / Canadian prices). The real rate captures purchasing-power-adjusted competitiveness</li>
+      <li>PPP is equivalent to saying the real exchange rate is constant over time. In practice, the real CAD/USD rate moves with productivity differences, terms of trade (especially energy prices for Canada), and the mix of tradable vs. non-tradable goods (the Balassa-Samuelson effect) — so it is not constant</li>
+      <li>When someone says “CAD is undervalued,” they usually mean the real rate has diverged from a long-run estimate. That divergence can persist for years and does not imply a near-term trading signal</li>
+      <li><strong>Connecting rates and prices (Fisher equation)</strong>: the real interest rate ≈ nominal rate − expected inflation. This links the money-market analysis in Sections 2–3 (nominal rates) to the inflation analysis here, but it does <em>not</em> mean PPP and interest-parity conditions mechanically point in the same direction one-for-one</li>
+    </ul>
+    <h4>🔬 Try This — Inflation scenarios</h4>
+    <ul>
+      <li><strong>Current reality:</strong> leave defaults at Canada 1.8%, US 2.4%. Notice the gap is −0.6% — PPP gives CAD a mild appreciation bias over the long run. But part of Canada's low headline print reflects GST/HST tax effects, so that bias should be treated cautiously</li>
+      <li><strong>Middle East energy shock spilling into Canada inflation:</strong> drag Canada inflation to 4.0%. If higher energy costs feed broadly into domestic prices and persist, PPP shifts toward a weaker CAD over time</li>
+      <li><strong>Trade-war inflation on both sides:</strong> set both to 4.5%. When inflation rates move together, PPP gives little directional push — short-run interest rates and capital flows would still dominate</li>
+      <li><strong>Back-to-target scenario:</strong> set both to 2.0%. When both economies converge near target, PPP adds very little trend pressure to CAD/USD</li>
+    </ul>
+    <h4>Key takeaway</h4>
+    <ul>
+      <li>PPP is one <strong>rough long-run anchor</strong>. It is most useful for direction over long horizons, not for near-term valuation calls, and it should sit alongside productivity and terms-of-trade stories rather than replacing them</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ============ SECTION 6: MUNDELL-FLEMING ============ -->
 <section id="mundell-fleming" class="panel">
   <div class="section-heading">
     <span class="eyebrow">Section 6</span>
     <h2>The Mundell-Fleming Model (IS-LM-BP)</h2>
-    <p class="desc">We now have all the building blocks: money markets (Section 2), capital flows (Section 3), trade (Section 5). Mundell-Fleming ties them together into one diagram to answer the big policy question: when the BoC cuts rates or Ottawa spends billions, what happens to output? The answer depends on the exchange-rate regime. In the textbook floating-rate case with perfect capital mobility, monetary policy is fully effective while fiscal stimulus leaks entirely through the exchange rate. Real Canada is messier, so treat the diagram as comparative statics rather than a complete empirical ranking.</p>
+    <p class="desc">We now have all the building blocks: money markets (Section 2), capital flows (Section 3), trade (Section 4), and the long-run price anchor (Section 5). Mundell-Fleming ties them together into one diagram to answer the big policy question: when the BoC cuts rates or Ottawa spends billions, what happens to output? The answer depends on the exchange-rate regime. In the textbook floating-rate case with perfect capital mobility, monetary policy is fully effective while fiscal stimulus leaks entirely through the exchange rate. Real Canada is messier, so treat the diagram as comparative statics rather than a complete empirical ranking. Note: the model starts at i = i* = 3.6% because, in the textbook case, equalized returns require zero risk premia and stable expectations. The real BoC–Fed gap from earlier sections reflects expected exchange-rate changes, risk premia and term-structure differences that the simple diagram abstracts from.</p>
   </div>
   <div class="toggle-row">
     <span class="toggle-group-label">Exchange Rate:</span>
@@ -450,6 +453,13 @@
       <li>Click <strong>"Fixed + Policy Autonomy"</strong> — this is China. The PBoC can ease while maintaining a stable yuan — but only because capital controls prevent money from fleeing. This is why Chinese investors struggle to buy Toronto real estate directly (they use workarounds)</li>
       <li>Think about <strong>today's shocks</strong>: tariffs, energy volatility, or non-bank funding stress. A floating rate is part of Canada's adjustment mechanism — CAD can move, absorbing some of the shock. A peg would be harder to defend</li>
     </ul>
+    <h4>Historical context: the international monetary system</h4>
+    <ul>
+      <li><strong>Gold Standard (pre-1914, restored 1920s–1931)</strong>: countries pegged to gold, which meant fixed exchange rates and free capital flows — but no independent monetary policy. Painful deflation and unemployment followed because central banks could not ease during downturns without breaking the peg</li>
+      <li><strong>Bretton Woods (1944–1971)</strong>: currencies were pegged to the US dollar (itself tied to gold). Capital controls gave some policy room, but the system collapsed when the US could no longer sustain dollar–gold convertibility. This was the "fixed rate + policy autonomy" corner, made possible by widespread capital controls</li>
+      <li><strong>Post-1973 floating</strong>: most advanced economies — including Canada — moved to floating rates with open capital accounts. This is the regime we live in: the BoC sets rates for Canadian conditions, but CAD/USD absorbs the resulting pressure</li>
+      <li>Each era effectively chose a different pair of vertices on the triangle. The history explains <em>why</em> Canada floats today: earlier regimes that tried to maintain pegs alongside open capital eventually broke down</li>
+    </ul>
     <h4>Key takeaway</h4>
     <ul>
       <li>Every time CAD drops and someone asks "why doesn't Canada just peg to the USD?" — the answer is the trinity. Pegging would mean surrendering the BoC's ability to set rates for Canadian conditions. Canada chose policy freedom, and the volatile CAD is the cost</li>
@@ -457,10 +467,75 @@
   </div>
 </section>
 
-<!-- ============ SECTION 9: CRISIS ============ -->
-<section id="crisis" class="panel">
+<!-- ============ SECTION 9: OPTIMUM CURRENCY AREAS ============ -->
+<section id="oca" class="panel">
   <div class="section-heading">
     <span class="eyebrow">Section 9</span>
+    <h2>Optimum Currency Areas</h2>
+    <p class="desc">Section 8 showed that Canada floats because it chose free capital mobility and policy autonomy. But when does it make sense to give up your own currency entirely? The optimum currency area (OCA) framework — Mundell (1961), McKinnon (1963), Kenen (1969) — asks whether a region's economic structure is compatible with sharing a single monetary policy. The answer depends on labour mobility, trade integration, fiscal transfers, and shock symmetry.</p>
+  </div>
+  <div class="controls controls--three">
+    <label>Labour Mobility (1–10) <span class="value-pill" id="oca-labour-v">7 / 10</span>
+      <input type="range" id="oca-labour" min="1" max="10" step="1" value="7">
+    </label>
+    <label>Trade Integration (1–10) <span class="value-pill" id="oca-trade-v">8 / 10</span>
+      <input type="range" id="oca-trade" min="1" max="10" step="1" value="8">
+    </label>
+    <label>Fiscal Transfer Capacity (1–10) <span class="value-pill" id="oca-fiscal-v">7 / 10</span>
+      <input type="range" id="oca-fiscal" min="1" max="10" step="1" value="7">
+    </label>
+  </div>
+  <div class="controls">
+    <label>Shock Symmetry (1–10) <span class="value-pill" id="oca-symm-v">5 / 10</span>
+      <input type="range" id="oca-symm" min="1" max="10" step="1" value="5">
+    </label>
+  </div>
+  <div class="card">
+    <svg id="oca-chart" class="chart chart--wide" viewBox="0 0 960 360"></svg>
+  </div>
+  <div class="metric-grid metric-grid--three">
+    <div class="metric"><span class="metric__label">OCA Viability Score</span><strong id="oca-score">—</strong></div>
+    <div class="metric"><span class="metric__label">Weakest Criterion</span><strong id="oca-weakest" class="small-metric">—</strong></div>
+    <div class="metric"><span class="metric__label">Verdict</span><strong id="oca-verdict" class="small-metric">—</strong></div>
+  </div>
+  <div class="scenario-box" id="oca-summary"></div>
+  <div class="explanation">
+    <h4>What the controls mean</h4>
+    <ul>
+      <li><strong>Labour Mobility</strong>: can workers move freely between regions to absorb asymmetric shocks? High within Canada (interprovincial migration is common) but low between Canada and the US (visa barriers)</li>
+      <li><strong>Trade Integration</strong>: how much does the region trade internally versus externally? Canada–US trade is very high, but Canada's internal trade across provinces is also substantial</li>
+      <li><strong>Fiscal Transfer Capacity</strong>: can a central fiscal authority redistribute from booming to struggling regions? Canada's equalization system does this across provinces; the Eurozone largely lacks this mechanism</li>
+      <li><strong>Shock Symmetry</strong>: do regions experience similar business cycles? Alberta's oil dependence versus Ontario's manufacturing base makes Canadian provinces somewhat asymmetric. US states also differ, but US fiscal federalism provides more automatic stabilization</li>
+    </ul>
+    <h4>How to read the chart</h4>
+    <ul>
+      <li>Each criterion is shown as a horizontal bar; the dashed threshold line marks the level above which that criterion supports a currency union</li>
+      <li>The OCA viability score is a weighted average. All four criteria above threshold = strong case for a shared currency. One or more below = the missing adjustment channel creates strain under asymmetric shocks</li>
+    </ul>
+    <h4>The three reference cases</h4>
+    <ul>
+      <li><strong>Canadian provinces</strong> (defaults): labour mobility is good (7), trade integration is high (8), fiscal transfers via equalization are meaningful (7), but shock symmetry is middling (5) because resource provinces cycle differently from manufacturing ones. Overall, Canada scores well enough that a single dollar works — but the asymmetry is why Alberta periodically grumbles about monetary policy set for Ontario</li>
+      <li><strong>Eurozone</strong>: trade integration is high (~8), but labour mobility is limited by language barriers (~4), fiscal transfer capacity is low without a federal budget (~3), and shock symmetry is moderate (~5). The missing fiscal and mobility channels help explain why Greece, Spain and Italy faced deep recessions that a national central bank could have partially cushioned</li>
+      <li><strong>Canada + US (hypothetical dollarization)</strong>: trade integration is very high (~9), but labour mobility is restricted by immigration law (~4), there would be no cross-border fiscal transfers (~1), and shock symmetry is moderate given Canada's commodity dependence (~4). The OCA framework says this would be a poor currency union — confirming the trilemma logic for why Canada keeps the loonie</li>
+    </ul>
+    <h4>🔬 Try This</h4>
+    <ul>
+      <li><strong>Canada internal (default):</strong> keep defaults at 7, 8, 7, 5. The score is above threshold — a single currency works despite imperfect symmetry, because the other three channels compensate</li>
+      <li><strong>Eurozone stress test:</strong> set Labour 4, Trade 8, Fiscal 3, Symmetry 5. Watch the score drop below threshold — this is why the euro area's architecture remains fragile after crises</li>
+      <li><strong>Would dollarization work for Canada?</strong> Set Labour 4, Trade 9, Fiscal 1, Symmetry 4. The score is clearly too low — confirming that giving up the loonie would remove a critical adjustment mechanism without the fiscal infrastructure to replace it</li>
+      <li><strong>Imagine a more integrated North America:</strong> push Labour to 8 (open borders), Fiscal to 6 (shared stabilization fund), Symmetry to 6 (more diversified economies). Now the case improves, illustrating what structural changes would be needed before dollarization could work</li>
+    </ul>
+    <h4>Key takeaway</h4>
+    <ul>
+      <li>The OCA framework explains why Canada keeps its own dollar: the adjustment channels that would substitute for an independent exchange rate — labour mobility across borders, cross-border fiscal transfers — simply are not strong enough. The trilemma says Canada <em>must</em> choose; OCA theory says the choice to float is the right one given Canada's economic structure</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SECTION 10: CRISIS ============ -->
+<section id="crisis" class="panel">
+  <div class="section-heading">
+    <span class="eyebrow">Section 10</span>
     <h2>Currency Crises &amp; Feedback Loops</h2>
     <p class="desc">Everything up to now described orderly adjustment — markets finding equilibrium through arbitrage and policy. But what happens when the system <em>breaks</em>? For Canada, the relevant tail risk is less a classic reserve-defense crisis and more a funding-and-liquidity stress episode: market-based finance reprices sharply, USD funding becomes scarce, and parity conditions become poor guides. This section simulates the mechanics of that kind of breakdown.</p>
   </div>
@@ -508,17 +583,17 @@
   </div>
 </section>
 
-<!-- ============ SECTION 10: SYNTHESIS ============ -->
+<!-- ============ SECTION 11: SYNTHESIS ============ -->
 <section id="synthesis" class="panel">
   <div class="section-heading">
-    <span class="eyebrow">Section 10</span>
+    <span class="eyebrow">Section 11</span>
     <h2>Putting It All Together — Canada vs USA, March 2026</h2>
-    <p class="desc">You've now seen every piece: how central banks move rates (2), how rates move exchange rates (3), where they're headed long-run (4), how trade adjusts (5), which policies work (6), why markets overreact (7), what constrains regime choice (8), and when it all breaks down (9). This final section uses those nine frameworks as a lens to explain <em>why</em> the main Canadian numbers sit where they do right now — and what scenarios the theory makes easiest to think about.</p>
+    <p class="desc">You've now seen every piece: how central banks move rates (2), how rates move exchange rates (3), how trade adjusts (4), where they're headed long-run (5), which policies work (6), why markets overreact (7), what constrains regime choice (8), when a currency area makes sense (9), and when it all breaks down (10). This final section uses those ten frameworks as a lens to explain <em>why</em> the main Canadian numbers sit where they do right now — and what scenarios the theory makes easiest to think about.</p>
   </div>
 
   <!-- ── Part A: The current state, explained ── -->
   <div class="card callout-card">
-    <p><strong>The question this section answers:</strong> You see the headlines — BoC at 2.25%, Fed at 3.50–3.75%, CAD/USD around 1.38–1.39, and 5Y GoC yields around 3.2%. <em>Why</em> are those numbers near where they are, and what do the models from Sections 1–9 suggest about the range of plausible next moves?</p>
+    <p><strong>The question this section answers:</strong> You see the headlines — BoC at 2.25%, Fed at 3.50–3.75%, USD/CAD around 1.384 in late March, and 5Y GoC yields around 3.19%. <em>Why</em> are those numbers near where they are, and what do the models from Sections 1–10 suggest about the range of plausible next moves?</p>
   </div>
 
   <div class="explanation">
@@ -538,7 +613,7 @@
       <li><strong>Section 7 says:</strong> overshooting is one plausible reason CAD moved more sharply than medium-run fundamentals alone would suggest. When the BoC surprised with the 50bp cut in Oct 2024, sticky prices likely made the exchange rate absorb more of the adjustment in the short run</li>
     </ul>
 
-    <h4>🔗 Canada's trade balance (Section 5)</h4>
+    <h4>🔗 Canada's trade balance (Section 4)</h4>
     <ul>
       <li><strong>The BOP identity:</strong> the official external position is smaller than a simple "~2% of GDP deficit" shorthand suggests. Statistics Canada reported a seasonally adjusted current-account deficit of just C$0.7B in Q4 2025, although 2025 as a whole still showed a C$30.4B deficit. The teaching slider starts with a modest shortfall because the section is illustrating accounting logic, not reproducing one exact quarter</li>
       <li>With the BoC at 2.25% and the Fed at 3.50–3.75%, Canada does not need to "solve" the external position through rates alone. But lower relative yields can make financing less comfortable and leave the exchange rate more sensitive to weaker terms of trade or softer investor appetite</li>
@@ -554,7 +629,7 @@
 
   <!-- ── Part B: What the theory says happens next ── -->
   <div class="card callout-card">
-    <p><strong>Part B — What happens next?</strong> The models from Sections 2–9 do not deliver a single forecast. They help organize the most important conditional paths for Canadian interest rates and the exchange rate.</p>
+    <p><strong>Part B — What happens next?</strong> The models from Sections 2–10 do not deliver a single forecast. They help organize the most important conditional paths for Canadian interest rates and the exchange rate.</p>
   </div>
 
   <div class="synthesis-grid">
@@ -564,7 +639,7 @@
     </article>
     <article class="summary-card">
       <h3>📊 Fixed-Rate Mortgages (5Y)</h3>
-      <p>Fixed mortgage pricing is tied more closely to Government of Canada bond yields than to the current overnight rate. With 5Y GoC yields around 3.2%, fixed borrowing costs are being shaped by expected future policy, term premia and geopolitical inflation risk rather than by the BoC alone.</p>
+      <p>Fixed mortgage pricing is tied more closely to Government of Canada bond yields than to the current overnight rate. With 5Y GoC yields around 3.19%, fixed borrowing costs are being shaped by expected future policy, term premia and geopolitical inflation risk rather than by the BoC alone.</p>
     </article>
     <article class="summary-card">
       <h3>💱 CAD/USD Exchange Rate</h3>
@@ -572,7 +647,7 @@
     </article>
     <article class="summary-card">
       <h3>⚠️ Risk Scenarios</h3>
-      <p>The highest-profile scenarios in current 2026 reporting are not all the same kind of shock. The live set includes US tariff and trade-policy uncertainty, Middle East energy volatility, mortgage renewal and household-stress risk, non-bank or private-credit repricing, and a medium-term LNG export upside for Canada.</p>
+      <p>The scenario set used in this guide is not all one kind of shock. It includes US tariff and trade-policy uncertainty, Middle East energy volatility, mortgage renewal and household-stress risk, non-bank or private-credit repricing, and a medium-term LNG export upside for Canada.</p>
     </article>
   </div>
 
@@ -582,40 +657,40 @@
     <ul>
       <li><strong>Next 3–6 months (Sections 2, 3):</strong> the BoC–Fed gap modestly supports the USD, but the Bank of Canada now explicitly highlights both US tariff uncertainty and Middle East energy volatility, which can push CAD in opposite directions. Given the Meese-Rogoff result, specifying a narrow numerical range adds false precision — the models tell you which shocks to watch for, not where the rate will be in June</li>
       <li><strong>12–24 months (Sections 3, 6):</strong> if US inflation cools enough for more Fed easing while the BoC mostly holds, CAD could firm somewhat. But that path is conditional on trade frictions not escalating and on growth in Canada not weakening enough to force renewed BoC cuts</li>
-      <li><strong>3–5 years (Section 4 — PPP):</strong> lower Canadian inflation than US inflation still points to a mild long-run appreciation bias for CAD in PPP-style reasoning. But PPP is a slow anchor, not a timing tool, and the current Canada print needs caution because headline CPI was affected by tax-related distortions</li>
+      <li><strong>3–5 years (Section 5 — PPP):</strong> lower Canadian inflation than US inflation still points to a mild long-run appreciation bias for CAD in PPP-style reasoning. But PPP is a slow anchor, not a timing tool, and the current Canada print needs caution because headline CPI was affected by tax-related distortions</li>
     </ul>
 
     <h4>The rate outlook, by instrument</h4>
     <ul>
       <li><strong>BoC overnight rate:</strong> currently 2.25%. The Bank's March statement says risks to growth are tilted to the downside, but inflation risks have risen because of higher energy prices. That makes the near-term path more plausibly "hold with easing bias" than a clean march lower</li>
-      <li><strong>5Y GoC bond yield:</strong> currently around 3.2% based on Bank of Canada benchmark data. It reflects expected short rates, term premium and risk compensation. That means fixed borrowing costs can stay elevated even if the BoC does not hike again</li>
+      <li><strong>5Y GoC bond yield:</strong> currently around 3.19% based on Bank of Canada benchmark data. It reflects expected short rates, term premium and risk compensation. That means fixed borrowing costs can stay elevated even if the BoC does not hike again</li>
       <li><strong>Variable mortgage rates:</strong> these still reset most directly with prime and the policy rate, but lender discounts move with credit conditions. In a weak-growth scenario they would usually adjust down faster than fixed rates; in an energy-driven inflation scare they may not</li>
       <li><strong>Fixed 5Y mortgage rates:</strong> these depend more on bond markets than on the next BoC meeting. A softer economy could pull them down somewhat, but a higher term premium or renewed inflation concern could keep them relatively sticky</li>
     </ul>
 
     <h4>Mortgage pricing through the lens of the models</h4>
     <ul>
-      <li>Variable mortgage rates move mainly with the BoC overnight rate (Section 2’s channel). Fixed mortgage rates move mainly with bond yields, term premia and inflation expectations (Section 4’s domain). These are different exposures to different shocks</li>
+      <li>Variable mortgage rates move mainly with the BoC overnight rate (Section 2’s channel). Fixed mortgage rates move mainly with bond yields, term premia and inflation expectations (Section 5’s domain). These are different exposures to different shocks</li>
       <li>The models taught here clarify which macroeconomic forces affect which type of rate. They do <em>not</em> deliver a mortgage recommendation — that depends on personal risk tolerance, cash-flow variability, prepayment flexibility and other factors outside the scope of an international finance framework</li>
     </ul>
 
     <h4>Most pressing scenarios for Canadians now</h4>
     <ul>
-      <li><strong>1. US tariffs and trade-policy uncertainty</strong> (Sections 1, 5, 6): this is the scenario most clearly emphasized in current Bank of Canada language and in current Canada-focused news searches. The key channel is weaker exports, softer business investment and added downside pressure on Canadian growth</li>
-      <li><strong>2. Middle East war and energy-market volatility</strong> (Sections 1, 5): the Bank of Canada now explicitly flags the conflict as a source of higher oil and gas prices, tighter financial conditions and more inflation risk. For Canada this is a mixed shock: better terms of trade on one side, more global risk aversion and higher gasoline prices on the other</li>
-      <li><strong>3. Mortgage renewal strain and household vulnerability</strong> (Sections 2, 6, 9): Bank of Canada financial-stability material continues to emphasize debt-service pressure, high loan-to-income borrowers and household stress indicators. This is less dramatic than a currency crisis, but probably more relevant to everyday Canadian macro risk</li>
-      <li><strong>4. Non-bank finance and private-credit repricing</strong> (Sections 7, 9): current searches and Bank of Canada financial-stability work still point to severe-repricing risk in markets and non-bank credit. For Canada this matters mainly through funding conditions, pension exposure and broader risk sentiment, not because a crisis is the base case</li>
-      <li><strong>5. LNG and export diversification upside</strong> (Sections 1, 5, 8): search results increasingly point to Canada's LNG build-out as a medium-term strategic story, especially for Asia and potentially Europe. This is better treated as an upside structural scenario for trade and investment than as an immediate March 2026 driver of CAD</li>
+      <li><strong>1. US tariffs and trade-policy uncertainty</strong> (Sections 1, 4, 6): this is the scenario most clearly emphasized in recent Bank of Canada communications. The key channel is weaker exports, softer business investment and added downside pressure on Canadian growth</li>
+      <li><strong>2. Middle East war and energy-market volatility</strong> (Sections 1, 4): the Bank of Canada now explicitly flags the conflict as a source of higher oil and gas prices, tighter financial conditions and more inflation risk. For Canada this is a mixed shock: better terms of trade on one side, more global risk aversion and higher gasoline prices on the other</li>
+      <li><strong>3. Mortgage renewal strain and household vulnerability</strong> (Sections 2, 6, 10): Bank of Canada financial-stability material continues to emphasize debt-service pressure, high loan-to-income borrowers and household stress indicators. This is less dramatic than a currency crisis, but probably more relevant to everyday Canadian macro risk</li>
+      <li><strong>4. Non-bank finance and private-credit repricing</strong> (Sections 7, 10): Bank of Canada financial-stability work and recent speeches still point to repricing risk in markets and non-bank credit. For Canada this matters mainly through funding conditions, pension exposure and broader risk sentiment, not because a crisis is the base case</li>
+      <li><strong>5. LNG and export diversification upside</strong> (Sections 1, 4, 8): Canada's LNG build-out is better treated as a medium-term structural upside story for trade and investment than as an immediate late-March 2026 driver of CAD</li>
     </ul>
 
-    <h4>🔬 Master exercise: simulate the full cycle through Sections 1–9</h4>
+    <h4>🔬 Master exercise: simulate the full cycle through Sections 1–10</h4>
     <ul>
       <li><strong>Step 1</strong> (Section 2): Set BoC Mˢ to 9.0, keeping Fed i* at 3.6 and Eᵉ at its default. Watch the Canadian rate drop and CAD weaken. <em>This is 2024–26: the BoC easing cycle</em></li>
       <li><strong>Step 2</strong> (Section 3): Set BoC rate to 2.25%, Fed to 3.0%, Eᵉ to 1.35. See E* drop to ~1.36 as the rate gap narrows. <em>This is one possible medium-term path if the Fed cuts and trade frictions do not worsen</em></li>
-      <li><strong>Step 3</strong> (Section 5): Set Trade Balance to −3.5 (tariff shock), Rate Premium to −1.0. See BOP stress — Canada needs capital inflows but can't offer competitive yields. <em>This is the trade-policy uncertainty scenario</em></li>
+      <li><strong>Step 3</strong> (Section 4): Set Trade Balance to −3.5 (tariff shock), Rate Premium to −1.0. See BOP stress — Canada needs capital inflows but can't offer competitive yields. <em>This is the trade-policy uncertainty scenario</em></li>
       <li><strong>Step 4</strong> (Section 7): Set Money Supply increase to 25% (emergency easing), θ to 0.4 (sticky prices). Watch the overshoot. <em>This is a stylized stress response, not a literal exchange-rate forecast</em></li>
-      <li><strong>Step 5</strong> (Section 9): Set Shock to 7 (private credit freeze), Backstop 8, FX Exposure 30%. See that Canada's institutions hold but stress is real. <em>Then try it at Shock 9 with Backstop 5 to see an emerging-market-style crisis — the version Canada is designed to avoid</em></li>
-      <li><strong>Step 6</strong> (Section 4): Set Canada CPI 1.8%, US CPI 2.4%, starting E 1.39. See the 10Y path pull CAD toward ~1.35. <em>This is PPP's long-run directional pull, not a schedule the market has to follow, and the Canadian headline CPI default is only a rough proxy</em></li>
+      <li><strong>Step 5</strong> (Section 10): Set Shock to 7 (private credit freeze), Backstop 8, FX Exposure 30%. See that Canada's institutions hold but stress is real. <em>Then try it at Shock 9 with Backstop 5 to see an emerging-market-style crisis — the version Canada is designed to avoid</em></li>
+      <li><strong>Step 6</strong> (Section 5): Set Canada CPI 1.8%, US CPI 2.4%, starting E 1.38. See the 10Y path pull CAD toward ~1.30. <em>This is PPP's long-run directional pull, not a schedule the market has to follow, and the Canadian headline CPI default is only a rough proxy</em></li>
     </ul>
   </div>
 
@@ -624,10 +699,419 @@
   </div>
 </section>
 
+<section id="show-more-topics" class="panel">
+  <div>
+    <div class="section-heading section-heading--compact">
+      <span class="eyebrow">Sections 12-18</span>
+      <h2>Capital-Markets Extensions</h2>
+      <p class="desc">Sections 1-11 establish the macro backbone: exchange rates, policy, parity conditions, external balance, regime choice and crisis mechanics. These next sections would extend that backbone into the finance, market-structure and institutional material usually needed for a fuller international capital markets curriculum.</p>
+    </div>
+
+    <div class="card callout-card show-more-callout">
+      <p><strong>What changes here:</strong> the course moves from broad macro adjustment into the market plumbing underneath it. Instead of asking only <em>where</em> CAD/USD or interest rates should move, these sections ask <em>who</em> is allocating capital, <em>how</em> exposures are hedged, and <em>where</em> risk is being priced, funded or transmitted across borders. They also rely less on one-equation parity conditions and more on balance sheets, term structures, payoff diagrams and institutional maps.</p>
+    </div>
+
+    <div class="card callout-card show-more-note">
+      <p><strong>Default anchors:</strong> where these sections use a late-March 2026 benchmark, they stay close to USD/CAD at 1.3844 on March 26, 2026, a U.S. 5Y Treasury yield near 4.08%, and a Government of Canada 5Y benchmark yield near 3.19%. The added sliders then layer stylized teaching shocks on top of those anchors.</p>
+    </div>
+
+    <section id="portfolio-flows" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 12</span>
+        <h2>Portfolio Flows &amp; Asset Pricing</h2>
+        <p class="desc">Sections 2-3 treated capital flows as if investors only compare interest rates. A better continuation asks how real allocators compare expected return, currency view and volatility at the same time. This section keeps the Canada-US framing but moves from parity arithmetic into portfolio choice.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>U.S. 5Y Treasury Yield (%) <span class="value-pill" id="pf-us5y-v">4.08%</span>
+          <input type="range" id="pf-us5y" min="2.50" max="5.50" step="0.01" value="4.08">
+        </label>
+        <label>Expected CAD Appreciation vs USD (%) <span class="value-pill" id="pf-fxview-v">0.5%</span>
+          <input type="range" id="pf-fxview" min="-2.0" max="2.0" step="0.1" value="0.5">
+        </label>
+        <label>USD Asset Volatility (%) <span class="value-pill" id="pf-usvol-v">6.0%</span>
+          <input type="range" id="pf-usvol" min="2.0" max="12.0" step="0.1" value="6.0">
+        </label>
+      </div>
+      <div class="grid grid--charts">
+        <div class="card">
+          <div class="card__title">Risk-return map for a CAD bond vs an unhedged USD bond</div>
+          <svg id="pf-frontier-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+        <div class="card">
+          <div class="card__title">Illustrative allocation split</div>
+          <svg id="pf-allocation-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">Expected USD Bond Return in CAD Terms</span><strong id="pf-usdret">-</strong></div>
+        <div class="metric"><span class="metric__label">Illustrative USD Weight</span><strong id="pf-usdweight">-</strong></div>
+        <div class="metric"><span class="metric__label">Illustrative Portfolio Volatility</span><strong id="pf-portvol">-</strong></div>
+      </div>
+      <div class="scenario-box" id="pf-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>U.S. 5Y Treasury Yield</strong>: a live benchmark for the nominal return available on a medium-term USD government bond. The default is set near March 2026 market levels.</li>
+          <li><strong>Expected CAD Appreciation vs USD</strong>: the investor's currency view. Positive values mean the investor expects CAD to strengthen, which reduces the CAD return on an unhedged USD asset.</li>
+          <li><strong>USD Asset Volatility</strong>: a compact way to capture bond-price volatility plus exchange-rate volatility on the USD position. It is a teaching input, not a literal option-implied measure.</li>
+        </ul>
+        <h4>How to read the visuals</h4>
+        <ul>
+          <li>The <strong>left chart</strong> places the CAD and USD bond choices on a risk-return plane. The curve between them is a stylized frontier: moving toward the middle diversifies, but only if the extra return compensates for the extra risk.</li>
+          <li>The <strong>right chart</strong> converts that comparison into an illustrative allocation. This is not a forecast of actual pension-fund weights. It shows how the same rate gap can imply very different flows once currency expectations and risk change.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Late-March 2026 style baseline:</strong> keep the U.S. 5Y near 4.08%, assume modest CAD appreciation of 0.5%, and keep volatility near 6%. The USD bond keeps a yield advantage, but part of it is given back once the currency view is included.</li>
+          <li><strong>Risk-off market:</strong> drag USD volatility higher. Even if the U.S. yield stays attractive, the optimal weight shifts back toward CAD because the same expected return now comes with more variability.</li>
+          <li><strong>Stronger-CAD view:</strong> move expected CAD appreciation up toward 1.5%-2.0%. The USD bond can quickly lose its return advantage in CAD terms even before the nominal yield gap closes.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Parity conditions explain a benchmark return relation. Portfolio flows go further: investors also care about volatility, correlation, mandates and currency views. That is why a given rate differential does not map one-for-one into actual capital flows.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="bond-pricing" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 13</span>
+        <h2>Bond Pricing &amp; Sovereign Spreads</h2>
+        <p class="desc">Section 11 linked fixed mortgage rates to bond yields. This next step opens the bond itself: price, coupon, yield and spread. It also shows why duration governs price sensitivity while spreads over a benchmark capture extra credit, liquidity or convertibility concerns.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>5Y Benchmark Yield (%) <span class="value-pill" id="bp-bench-v">3.19%</span>
+          <input type="range" id="bp-bench" min="1.50" max="6.50" step="0.01" value="3.19">
+        </label>
+        <label>Annual Coupon Rate (%) <span class="value-pill" id="bp-coupon-v">2.75%</span>
+          <input type="range" id="bp-coupon" min="1.00" max="6.00" step="0.05" value="2.75">
+        </label>
+        <label>Sovereign or Credit Spread (bp) <span class="value-pill" id="bp-spread-v">0 bp</span>
+          <input type="range" id="bp-spread" min="0" max="600" step="5" value="0">
+        </label>
+      </div>
+      <div class="grid grid--charts">
+        <div class="card">
+          <div class="card__title">Bond price versus all-in yield</div>
+          <svg id="bp-price-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+        <div class="card">
+          <div class="card__title">Yield decomposition: benchmark plus spread</div>
+          <svg id="bp-spread-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">All-in Yield</span><strong id="bp-allin">-</strong></div>
+        <div class="metric"><span class="metric__label">Illustrative Price per 100 Par</span><strong id="bp-price">-</strong></div>
+        <div class="metric"><span class="metric__label">Modified Duration</span><strong id="bp-duration">-</strong></div>
+      </div>
+      <div class="scenario-box" id="bp-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>5Y Benchmark Yield</strong>: the base government curve, with the default set near the March 2026 Government of Canada 5Y level.</li>
+          <li><strong>Annual Coupon Rate</strong>: the bond's promised annual coupon as a share of par value.</li>
+          <li><strong>Sovereign or Credit Spread</strong>: extra yield demanded above the benchmark. In Canada-US comparisons this is often small for sovereign debt, but for riskier borrowers the spread can reflect default, liquidity and transfer risk together.</li>
+        </ul>
+        <h4>How to read the visuals</h4>
+        <ul>
+          <li>The <strong>left chart</strong> shows the inverse price-yield relationship. When the all-in yield rises above the coupon, price falls below par; when yield drops below coupon, price rises above par.</li>
+          <li>The <strong>right chart</strong> stacks the benchmark yield and spread. That decomposition is often more useful than the total yield alone because it separates global rate conditions from issuer-specific risk.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Canada benchmark case:</strong> keep spread near zero. The main lesson is duration: a modest move in the benchmark yield changes the bond price even when credit risk is stable.</li>
+          <li><strong>Fragile-sovereign case:</strong> hold the benchmark steady and push the spread above 250 bp. The same world interest rate now translates into much higher borrowing costs because investors demand compensation for extra risk.</li>
+          <li><strong>Low-coupon sensitivity:</strong> drag coupon down while keeping yield high. Lower-coupon bonds have more value in distant cash flows, so price becomes more rate-sensitive.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Bond pricing is not just "higher rate, lower price." The yield itself contains layers: global benchmark rates, term premium, liquidity and issuer-specific risk. Sovereign spreads matter because they summarize many of those layers in one number.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="hedging" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 14</span>
+        <h2>Hedging Beyond CIP</h2>
+        <p class="desc">Section 3 introduced covered interest parity as the pricing benchmark for a forward. This section uses the same logic but moves to a firm's problem: how much foreign-currency cash flow should be left open, and how much should be locked in to reduce volatility?</p>
+      </div>
+      <div class="controls controls--three">
+        <label>Future USD Receivable (USD millions) <span class="value-pill" id="hg-amt-v">10.0</span>
+          <input type="range" id="hg-amt" min="1.0" max="30.0" step="0.5" value="10.0">
+        </label>
+        <label>Hedge Ratio (%) <span class="value-pill" id="hg-ratio-v">70%</span>
+          <input type="range" id="hg-ratio" min="0" max="100" step="1" value="70">
+        </label>
+        <label>Forward Rate (CAD/USD) <span class="value-pill" id="hg-fwd-v">1.37</span>
+          <input type="range" id="hg-fwd" min="1.20" max="1.55" step="0.005" value="1.37">
+        </label>
+      </div>
+      <div class="card">
+        <div class="card__title">CAD revenue with and without a forward hedge</div>
+        <svg id="hg-chart" class="chart chart--wide" viewBox="0 0 960 360"></svg>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">Guaranteed CAD Revenue from Hedged Portion</span><strong id="hg-locked">-</strong></div>
+        <div class="metric"><span class="metric__label">Revenue at Spot = 1.3844</span><strong id="hg-baseline">-</strong></div>
+        <div class="metric"><span class="metric__label">Extra CAD Revenue per +0.10 Spot Move</span><strong id="hg-sensitivity">-</strong></div>
+      </div>
+      <div class="scenario-box" id="hg-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>Future USD Receivable</strong>: the exporter or investor's future dollar inflow.</li>
+          <li><strong>Hedge Ratio</strong>: the share of that inflow sold forward today. A 100% hedge removes spot risk; a 0% hedge leaves the entire cash flow exposed.</li>
+          <li><strong>Forward Rate</strong>: the rate locked in on the hedged portion. In practice, this is closely linked to spot and interest differentials through CIP, but the hedge ratio itself is a risk-management choice, not an arbitrage condition.</li>
+        </ul>
+        <h4>How to read the chart</h4>
+        <ul>
+          <li>The <strong>unhedged line</strong> rises one-for-one with the future spot rate: more CAD is received only if USD strengthens.</li>
+          <li>The <strong>hedged line</strong> is flatter because part of the revenue is already locked in. Hedging gives up some upside in exchange for more predictable cash flow.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>High-certainty treasury policy:</strong> push the hedge ratio toward 100%. Revenue volatility collapses, which is often useful for budgeting or debt-service planning.</li>
+          <li><strong>Take a macro view:</strong> lower the hedge ratio if you expect USD strength and can tolerate earnings volatility. This may increase expected upside, but it also increases cash-flow risk.</li>
+          <li><strong>Worse forward terms:</strong> move the forward rate lower. The case for leaving some exposure open becomes stronger because the insurer is offering a less attractive lock-in rate.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>CIP prices the contract; it does not choose the policy. Real hedging decisions depend on cash-flow volatility, debt obligations, accounting rules and management risk tolerance.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="microstructure" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 15</span>
+        <h2>Derivatives &amp; FX Microstructure</h2>
+        <p class="desc">Sections 1-3 treated FX as a market-clearing price. This section adds the short-run trading layer underneath that price: order flow, dealer inventories and market depth. The point is not to replace macro fundamentals, but to explain how trades and information are translated into short-run spot moves.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>Net USD Buying Pressure (USD bn) <span class="value-pill" id="ms-flow-v">4.0</span>
+          <input type="range" id="ms-flow" min="-8.0" max="8.0" step="0.5" value="4.0">
+        </label>
+        <label>Market Depth (1-10) <span class="value-pill" id="ms-depth-v">6 / 10</span>
+          <input type="range" id="ms-depth" min="1" max="10" step="1" value="6">
+        </label>
+        <label>Dealer USD Inventory (USD bn) <span class="value-pill" id="ms-inv-v">1.0</span>
+          <input type="range" id="ms-inv" min="-5.0" max="5.0" step="0.5" value="1.0">
+        </label>
+      </div>
+      <div class="grid grid--charts">
+        <div class="card">
+          <div class="card__title">Stylized order book around spot</div>
+          <svg id="ms-book-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+        <div class="card">
+          <div class="card__title">Price impact of order flow</div>
+          <svg id="ms-impact-chart" class="chart" viewBox="0 0 640 360"></svg>
+        </div>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">Implied Spot After Order Flow</span><strong id="ms-spot">-</strong></div>
+        <div class="metric"><span class="metric__label">Bid-Ask Spread</span><strong id="ms-spread">-</strong></div>
+        <div class="metric"><span class="metric__label">Liquidity State</span><strong id="ms-liquidity" class="small-metric">-</strong></div>
+      </div>
+      <div class="scenario-box" id="ms-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>Net USD Buying Pressure</strong>: the signed imbalance hitting the market. Positive values mean buyers of USD dominate; negative values mean sellers dominate.</li>
+          <li><strong>Market Depth</strong>: how much order flow dealers can absorb before price moves materially.</li>
+          <li><strong>Dealer USD Inventory</strong>: the position dealers already hold. If dealers are already short USD, additional USD demand becomes harder to warehouse and prices can jump more; if they are long USD, they can sell inventory into demand more easily.</li>
+        </ul>
+        <h4>How to read the visuals</h4>
+        <ul>
+          <li>The <strong>order-book panel</strong> shows how available liquidity sits around the current spot rate. Thin books widen spreads and make price jumps more likely.</li>
+          <li>The <strong>impact panel</strong> traces a short-run price-impact curve. Better depth flattens the curve; tighter inventories steepen it.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Quiet market:</strong> keep order flow near zero and depth high. Spot stays close to the benchmark and spreads remain tight.</li>
+          <li><strong>One-sided demand:</strong> raise USD buying pressure while cutting depth. The same macro news now produces a larger spot move because fewer balances stand in the way.</li>
+          <li><strong>Inventory stress:</strong> push dealer inventory negative while buyers still want USD. Dealers have to rebuild inventory, so they mark the price up faster.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Microstructure explains the path, not the long-run destination. Fundamentals still matter, but they reach the spot rate through trading conditions, dealer balance sheets and the willingness of others to take the other side.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="country-risk" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 16</span>
+        <h2>Country Risk &amp; Political Risk</h2>
+        <p class="desc">Sections 8-10 showed why policy credibility and crisis risk matter. This section turns those ideas into pricing. Countries with similar inflation or growth can still face very different required returns once political, legal and convertibility risks are added on top of the world benchmark rate.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>Political Risk Premium (bp) <span class="value-pill" id="rk-pol-v">15 bp</span>
+          <input type="range" id="rk-pol" min="0" max="300" step="5" value="15">
+        </label>
+        <label>Convertibility or Capital-Control Premium (bp) <span class="value-pill" id="rk-conv-v">5 bp</span>
+          <input type="range" id="rk-conv" min="0" max="300" step="5" value="5">
+        </label>
+        <label>Legal-Credibility Premium (bp) <span class="value-pill" id="rk-legal-v">10 bp</span>
+          <input type="range" id="rk-legal" min="0" max="300" step="5" value="10">
+        </label>
+      </div>
+      <div class="card">
+        <div class="card__title">Required yield as a stack of benchmark and country-risk premia</div>
+        <svg id="rk-chart" class="chart chart--wide" viewBox="0 0 960 360"></svg>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">Total Country-Risk Premium</span><strong id="rk-premium">-</strong></div>
+        <div class="metric"><span class="metric__label">Required 5Y Yield</span><strong id="rk-yield">-</strong></div>
+        <div class="metric"><span class="metric__label">Risk Classification</span><strong id="rk-class" class="small-metric">-</strong></div>
+      </div>
+      <div class="scenario-box" id="rk-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>Political risk premium</strong>: compensation for elections, policy reversals, sanctions risk or broad political instability.</li>
+          <li><strong>Convertibility premium</strong>: compensation for the possibility that capital cannot be moved freely or foreign exchange cannot be accessed when needed.</li>
+          <li><strong>Legal-credibility premium</strong>: compensation for weaker contract enforcement, regulatory unpredictability or doubts about policy follow-through.</li>
+        </ul>
+        <h4>How to read the chart</h4>
+        <ul>
+          <li>The <strong>benchmark block</strong> is the world rate environment, proxied here by a U.S. 5Y yield near March 2026 levels.</li>
+          <li>The <strong>colored blocks added to it</strong> show how different institutional risks add to the total required yield. This is why the same global rates can still generate very different local borrowing costs.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Advanced-economy baseline:</strong> keep the premia small. Required yield stays close to the benchmark because credibility is doing part of the work.</li>
+          <li><strong>Election or sanctions scare:</strong> push political risk sharply higher. Required yield moves up even if inflation and growth data have not changed.</li>
+          <li><strong>Transfer-risk case:</strong> raise the convertibility premium. Investors now care not only about repayment, but about whether funds can be moved out at all.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Country risk is not one thing. It is a bundle of premia layered over a global benchmark. Treating it as a single number is sometimes useful, but students should know which risks are actually inside that number.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="eurocurrency" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 17</span>
+        <h2>Banking &amp; Eurocurrency Markets</h2>
+        <p class="desc">Section 10 introduced funding stress. This section opens the transmission channel behind it. Offshore dollar funding can tighten even when the domestic policy rate is unchanged, because cross-border banks and offshore money markets are funding and hedging real balance sheets, not just reacting to one central-bank rate.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>Offshore USD Funding Share (%) <span class="value-pill" id="ec-share-v">25%</span>
+          <input type="range" id="ec-share" min="0" max="80" step="1" value="25">
+        </label>
+        <label>Funding Shock Severity (1-10) <span class="value-pill" id="ec-shock-v">3 / 10</span>
+          <input type="range" id="ec-shock" min="0" max="10" step="1" value="3">
+        </label>
+        <label>Swap-Line or Backstop Strength (1-10) <span class="value-pill" id="ec-backstop-v">8 / 10</span>
+          <input type="range" id="ec-backstop" min="0" max="10" step="1" value="8">
+        </label>
+      </div>
+      <div class="card">
+        <div class="card__title">Offshore dollar funding chain and pass-through</div>
+        <svg id="ec-chart" class="chart chart--wide" viewBox="0 0 960 360"></svg>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">USD Funding Premium</span><strong id="ec-premium">-</strong></div>
+        <div class="metric"><span class="metric__label">Illustrative Cross-Currency Basis</span><strong id="ec-basis">-</strong></div>
+        <div class="metric"><span class="metric__label">Pass-through to Domestic Credit</span><strong id="ec-credit">-</strong></div>
+      </div>
+      <div class="scenario-box" id="ec-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>Offshore USD funding share</strong>: the share of funding or liabilities sourced through offshore dollar markets rather than stable domestic deposits.</li>
+          <li><strong>Funding shock severity</strong>: the size of the stress in wholesale dollar markets.</li>
+          <li><strong>Swap-line or backstop strength</strong>: the credibility of central-bank facilities or other backstops that keep offshore dollar funding available.</li>
+        </ul>
+        <h4>How to read the chart</h4>
+        <ul>
+          <li>The diagram follows the shock from offshore funding markets to bank balance sheets, FX swaps and then domestic lending conditions.</li>
+          <li>A stronger backstop does not eliminate the shock, but it reduces how much of the offshore squeeze is passed through to local borrowers.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Resilient advanced-economy case:</strong> keep the funding share moderate, the shock mild and backstops strong. The offshore premium rises, but the domestic hit is limited.</li>
+          <li><strong>Dollar shortage episode:</strong> raise the shock and funding share together. Basis widens, hedging becomes more expensive and banks ration balance-sheet capacity.</li>
+          <li><strong>Weak backstop:</strong> drag support down toward 2-3. The same wholesale shock now flows more directly into domestic credit conditions.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Eurocurrency does not mean "borrowing in euros." It means offshore deposits and lending outside the home jurisdiction, especially eurodollars. Those offshore markets matter because they can tighten dollar conditions globally even before domestic policy rates move.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="global-intermediation" class="panel panel--subsection">
+      <div class="section-heading">
+        <span class="eyebrow">Section 18</span>
+        <h2>Global Financial Intermediation</h2>
+        <p class="desc">The final extension broadens the map beyond banks. Asset managers, pension funds, insurers, hedge funds, money market funds and private-credit vehicles now transmit much of the cross-border financial cycle. The question becomes not just where rates are, but which institutions absorb shocks and which ones amplify them.</p>
+      </div>
+      <div class="controls controls--three">
+        <label>Non-bank Share of Cross-Border Finance (%) <span class="value-pill" id="gi-share-v">55%</span>
+          <input type="range" id="gi-share" min="20" max="85" step="1" value="55">
+        </label>
+        <label>Leverage or Margin Pressure (1-10) <span class="value-pill" id="gi-lev-v">4 / 10</span>
+          <input type="range" id="gi-lev" min="0" max="10" step="1" value="4">
+        </label>
+        <label>Redemption Pressure (1-10) <span class="value-pill" id="gi-red-v">3 / 10</span>
+          <input type="range" id="gi-red" min="0" max="10" step="1" value="3">
+        </label>
+      </div>
+      <div class="card">
+        <div class="card__title">Institution map: leverage pressure versus liquidity mismatch</div>
+        <svg id="gi-chart" class="chart chart--wide" viewBox="0 0 960 360"></svg>
+      </div>
+      <div class="metric-grid metric-grid--three">
+        <div class="metric"><span class="metric__label">System Stress Score</span><strong id="gi-stress">-</strong></div>
+        <div class="metric"><span class="metric__label">Most Exposed Channel</span><strong id="gi-channel" class="small-metric">-</strong></div>
+        <div class="metric"><span class="metric__label">Amplification Regime</span><strong id="gi-regime" class="small-metric">-</strong></div>
+      </div>
+      <div class="scenario-box" id="gi-summary"></div>
+      <div class="explanation">
+        <h4>What the controls mean</h4>
+        <ul>
+          <li><strong>Non-bank share</strong>: how much of cross-border finance is being handled outside the traditional banking system.</li>
+          <li><strong>Leverage or margin pressure</strong>: the intensity of margin calls, collateral demands or mark-to-market losses.</li>
+          <li><strong>Redemption pressure</strong>: the tendency of investors to pull cash quickly from funds holding less-liquid assets.</li>
+        </ul>
+        <h4>How to read the chart</h4>
+        <ul>
+          <li>Each bubble is an institution type. Moving right means more leverage pressure; moving up means more liquidity mismatch or redemption vulnerability.</li>
+          <li>As the controls rise, non-banks move deeper into the fragile quadrant. The point is not that all non-banks are unstable, but that the transmission mechanism differs from a traditional bank run.</li>
+        </ul>
+        <h4>Try this</h4>
+        <ul>
+          <li><strong>Calm allocation world:</strong> keep leverage and redemption pressure low. Institutions still transmit shocks, but they do not strongly amplify them.</li>
+          <li><strong>Margin-call episode:</strong> raise leverage pressure. Hedge funds and levered basis trades become the most exposed channel.</li>
+          <li><strong>Liquidity mismatch episode:</strong> raise redemption pressure. Funds promising quick liquidity against slower assets become more fragile.</li>
+        </ul>
+        <h4>Key takeaway</h4>
+        <ul>
+          <li>Modern international capital markets are mediated by many balance sheets, not just central banks. Understanding crises therefore requires looking at leverage, liquidity mismatch and margin dynamics alongside macro fundamentals.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="explanation explanation--tight">
+      <h4>Extension takeaway</h4>
+      <ul>
+        <li>Sections 1-11 gave the standard open-economy macro backbone. Sections 12-18 extend that backbone into the institutions, securities and funding structures that make real capital markets more complicated.</li>
+        <li>The teaching shift is deliberate: fewer pure equilibrium diagrams, more balance sheets, term structures, payoff charts and institution maps. That mirrors what students usually need once they move from textbook macro toward actual market practice.</li>
+        <li>These sections still use benchmark models, but they now separate benchmark pricing from implementation. Students should leave knowing not only the arbitrage logic, but also who trades, how positions are funded, how risks are hedged and where stress actually propagates.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer class="footer">
-  <p>Built as a client-side-only static site. Canada 🇨🇦 ↔ USA 🇺🇸 framing with ~March 2026 data. Conceptual anchors: Krugman &amp; Obstfeld, Mundell-Fleming, Dornbusch overshooting. Teaching diagrams are labeled as benchmarks rather than full empirical models. &nbsp;·&nbsp; <a href="/canada-usa-reference" style="color:var(--accent);opacity:0.7">Reference data, caveats &amp; slider guide ↗</a></p>
+  <p>Built as a client-side-only static site. Canada 🇨🇦 ↔ USA 🇺🇸 framing with late-March 2026 data. Conceptual anchors: Krugman &amp; Obstfeld, Mundell-Fleming, Dornbusch overshooting. Teaching diagrams are labeled as benchmarks rather than full empirical models. &nbsp;·&nbsp; <a href="./canada-usa-reference.md" style="color:var(--accent);opacity:0.7">Reference data, caveats &amp; slider guide ↗</a></p>
 </footer>
 
 <script src="app.js"></script>
