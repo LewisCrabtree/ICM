@@ -69,6 +69,7 @@
     <h4>Key takeaway</h4>
     <ul>
       <li>Every concept in this guide — interest rates, trade policy, energy shocks, and financial stress — ultimately works by shifting these two curves</li>
+      <li>This flow-of-funds diagram is a useful first pass. Section 2 introduces the asset-market approach — stocks of deposits and expected returns — that most modern exchange-rate theory is built on</li>
     </ul>
   </div>
 </section>
@@ -78,7 +79,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 2</span>
     <h2>Money Supply → Interest Rates → Exchange Rates</h2>
-    <p class="desc">Section 1 showed us that supply and demand set the exchange rate. But what <em>drives</em> those shifts in the short run? Central-bank policy is one major force. For teaching clarity, this section uses the classic money-market story: a more expansionary BoC stance lowers Canadian interest rates, which then affects CAD/USD through international capital flows. In practice the Bank implements policy through its rate corridor and expectations, so read the left panel as a simplified classroom representation rather than a literal operating manual.</p>
+    <p class="desc">Section 1 showed us that supply and demand set the exchange rate. But what <em>drives</em> those shifts in the short run? Central-bank policy is one major force. This section shifts from the flow-of-funds perspective in Section 1 to an asset-market approach: exchange rates are determined by stocks of deposits and expected returns, not just by trade flows per period. For teaching clarity, the section uses the classic money-market story: a more expansionary BoC stance lowers Canadian interest rates, which then affects CAD/USD through international capital flows. In practice the Bank implements policy through its rate corridor and expectations, so read the left panel as a simplified classroom representation rather than a literal operating manual.</p>
   </div>
   <div class="controls controls--three">
     <label>BoC Policy Stance / Money Supply (Mˢ) <span class="value-pill" id="mm-ms-v">7.0</span>
@@ -87,8 +88,8 @@
     <label>Fed Rate — US i* (%) <span class="value-pill" id="mm-if-v">3.6%</span>
       <input type="range" id="mm-if" min="0.5" max="8" step="0.1" value="3.6">
     </label>
-    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="mm-ee-v">1.31</span>
-      <input type="range" id="mm-ee" min="0.6" max="2.0" step="0.01" value="1.31">
+    <label>Expected Future CAD/USD (Eᵉ) <span class="value-pill" id="mm-ee-v">1.37</span>
+      <input type="range" id="mm-ee" min="0.6" max="2.0" step="0.01" value="1.37">
     </label>
   </div>
   <div class="grid grid--charts">
@@ -122,7 +123,7 @@
     <ul>
       <li><strong>Growth slowdown / household strain:</strong> drag Mˢ from 7.0 → 8.5. Watch the Canadian rate drop in the left panel. Then watch the cyan return line shift LEFT in the right panel → equilibrium E rises → <strong>CAD weakens</strong>. This is the channel that matters if weak growth and mortgage-renewal strain dominate</li>
       <li><strong>Fed easing if US inflation cools:</strong> drag Fed Rate from 3.6% → 3.0%. The green foreign-return curve shifts LEFT. Even without BoC doing anything, E drops → <strong>CAD strengthens</strong>. A narrower rate gap would reduce one of the main headwinds for the loonie</li>
-      <li><strong>Trade-policy shock or market repricing:</strong> drag Eᵉ from 1.31 → 1.42. The green curve shifts UP → E rises immediately → <strong>CAD weakens now</strong> because investors begin pricing a weaker future loonie under tariffs or tighter financial conditions</li>
+      <li><strong>Trade-policy shock or market repricing:</strong> drag Eᵉ from 1.37 → 1.45. The green curve shifts UP → E rises immediately → <strong>CAD weakens now</strong> because investors begin pricing a weaker future loonie under tariffs or tighter financial conditions</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
@@ -149,8 +150,8 @@
     <label>Fed Rate — US i* (%) <span class="value-pill" id="irp-if-v">3.6%</span>
       <input type="range" id="irp-if" min="0.5" max="10" step="0.1" value="3.6">
     </label>
-    <label><span id="irp-ee-label">Expected Future CAD/USD (Eᵉ)</span> <span class="value-pill" id="irp-ee-v">1.31</span>
-      <input type="range" id="irp-ee" min="0.6" max="2.0" step="0.01" value="1.31">
+    <label><span id="irp-ee-label">Expected Future CAD/USD (Eᵉ)</span> <span class="value-pill" id="irp-ee-v">1.37</span>
+      <input type="range" id="irp-ee" min="0.6" max="2.0" step="0.01" value="1.37">
     </label>
   </div>
   <div class="grid grid--single">
@@ -159,7 +160,7 @@
   <div class="metric-grid">
     <div class="metric"><span class="metric__label" id="irp-eq-label">UIP Benchmark Spot (E*)</span><strong id="irp-eq-e">—</strong></div>
     <div class="metric"><span class="metric__label" id="irp-diff-label">Rate Differential (BoC − Fed)</span><strong id="irp-diff">—</strong></div>
-    <div class="metric"><span class="metric__label" id="irp-fwd-label">Expected Depreciation (UIP)</span><strong id="irp-fwd">—</strong></div>
+    <div class="metric"><span class="metric__label" id="irp-fwd-label">Expected CAD Change (UIP)</span><strong id="irp-fwd">—</strong></div>
   </div>
   <div class="explanation">
     <h4>What the controls mean</h4>
@@ -167,7 +168,7 @@
       <li><strong>BoC Rate (i)</strong>: Canadian overnight rate at 2.25%. This is the vertical cyan line — the return you earn holding CAD deposits</li>
       <li><strong>Fed Rate (i*)</strong>: US rate at 3.50–3.75%. Embedded in the green downward-sloping curve — the expected return from holding USD deposits</li>
       <li><strong>Third slider</strong>: under UIP it is expected future CAD/USD (Eᵉ); under CIP it becomes today's spot rate (S). The toggle changes the economic meaning of that input so the chart matches the parity condition being shown</li>
-      <li><strong>Toggle UIP/CIP</strong>: UIP = risk-bearing bet on expected spot; CIP = risk-free forward contract priced off today's spot and the rate gap</li>
+      <li><strong>Toggle UIP/CIP</strong>: UIP = risk-bearing bet on expected spot; CIP = risk-free forward contract priced off today's spot and the rate gap. Both use policy rates as proxies for matched-maturity deposit rates; in practice, 1-year term rates would differ due to the yield curve</li>
       <li><strong>What is held fixed here</strong>: commodity prices, terms of trade, and currency risk premia. Those omitted wedges can move spot CAD/USD materially even when rate differentials do not</li>
     </ul>
     <h4>How to read the chart</h4>
@@ -180,8 +181,12 @@
     <ul>
       <li>Safe-haven USD demand, commodity prices, and Canada-specific risk premia can all push spot away from the parity benchmark for long periods</li>
       <li>When you switch to CIP, the chart turns into a spot-versus-forward pricing view. CIP does not by itself deliver a separate structural theory of the spot rate</li>
-    </ul>
-    <h4>🔬 Try This — Why CAD is weak but "expected to strengthen"</h4>
+    </ul>    <h4>Empirical caveat: the forward premium puzzle</h4>
+    <ul>
+      <li>UIP’s empirical track record is poor. Since Fama (1984), decades of research have documented that higher-rate currencies tend to <em>appreciate</em> rather than depreciate as UIP predicts — the opposite of what the textbook says should happen. This is the “forward premium puzzle” and remains one of the most robust findings in international finance</li>
+      <li>For CAD/USD specifically, carrying USD at a higher interest rate has historically tended to deliver positive excess returns, not the zero the model assumes</li>
+      <li>The chart’s foreign-return curve uses a teaching linearization. Its slope is simplified for visual clarity — do not read it as a precise empirical estimate of how sensitive returns are to the exchange rate</li>
+    </ul>    <h4>🔬 Try This — Why CAD is weak but "expected to strengthen"</h4>
     <ul>
       <li><strong>See the current gap:</strong> BoC at 2.25%, Fed at 3.6%. The US pays about 1.3–1.4 percentage points more. In the chart's calibration, CAD/USD E* settles in the 1.38–1.39 area — CAD is weak NOW to offset the rate gap</li>
       <li><strong>What if BoC cuts more?</strong> Drag BoC rate from 2.25% → 1.5%. The cyan line shifts left → E* jumps higher → <strong>CAD weakens further</strong>. This is the parity-style logic if weak Canadian growth or tariff damage pushes the BoC lower</li>
@@ -233,8 +238,12 @@
       <li>If <strong>Canada inflates faster</strong>: Canadian goods become relatively more expensive over time, so PPP-style reasoning points to a weaker CAD (higher E)</li>
       <li>If <strong>US inflates faster</strong>: PPP-style reasoning points to some CAD appreciation over time, but the result should be read cautiously when the gap is driven by one-offs or by non-tradable prices</li>
       <li>The "Illustrative 10Y" metric shows the chart's mechanical path, not a claim that CAD/USD should be at that level on schedule</li>
-    </ul>
-    <h4>🔬 Try This — Inflation scenarios</h4>
+      <li>This chart shows <strong>relative PPP</strong> — the rate-of-change version (inflation differentials drive FX changes). <strong>Absolute PPP</strong> (equal price levels across countries, via the law of one price) is a stronger and empirically harder condition that the chart does not test</li>
+    </ul>    <h4>Nominal vs. real exchange rate</h4>
+    <ul>
+      <li>This chart shows the <strong>nominal</strong> exchange rate (CAD per USD). Economists often care more about the <strong>real exchange rate</strong>, which adjusts for relative price levels: <em>q = E × P*/P</em> (spot rate × US prices / Canadian prices). The real rate captures purchasing-power-adjusted competitiveness</li>
+      <li>PPP is equivalent to saying the real exchange rate is constant over time. In practice, the real CAD/USD rate moves with productivity differences, terms of trade (especially energy prices for Canada), and the mix of tradable vs. non-tradable goods (the Balassa-Samuelson effect) — so it is not constant</li>
+      <li>When someone says “CAD is undervalued,” they usually mean the real rate has diverged from a long-run estimate. That divergence can persist for years and does not imply a near-term trading signal</li>      <li><strong>Connecting rates and prices (Fisher equation)</strong>: the real interest rate ≈ nominal rate − expected inflation. This links the money-market analysis in Sections 2–3 (nominal rates) to the inflation analysis here. When Canada's real rate is low relative to the US real rate, both interest-parity and PPP channels point the same way</li>    </ul>    <h4>🔬 Try This — Inflation scenarios</h4>
     <ul>
       <li><strong>Current reality:</strong> leave defaults at Canada 1.8%, US 2.4%. Notice the gap is −0.6% — PPP gives CAD a mild appreciation bias over the long run. But part of Canada's low headline print reflects GST/HST tax effects, so that bias should be treated cautiously</li>
       <li><strong>Middle East energy shock spilling into Canada inflation:</strong> drag Canada inflation to 4.0%. If higher energy costs feed broadly into domestic prices and persist, PPP shifts toward a weaker CAD over time</li>
@@ -293,12 +302,17 @@
       <li><strong>Left panel (bars)</strong>: the cyan bar is a <strong>stylized current-account proxy</strong> tied to goods/services trade, and the purple bar is the offsetting financial flow. The note above the bars summarizes whether the rate gap makes that financing easier or less comfortable</li>
       <li><strong>Right panel (J-curve)</strong>: after a CAD depreciation, imports get more expensive immediately (trade balance worsens), but over time Canadian exports may become more competitive and volumes adjust. The dip-then-recovery shape is the classic J-curve benchmark, not a guarantee on any fixed timeline</li>
     </ul>
+    <h4>What this section simplifies</h4>
+    <ul>
+      <li><strong>Exchange rate pass-through</strong>: the J-curve assumes depreciation eventually changes trade volumes. But the speed and completeness of pass-through from exchange rates to import/export prices matters enormously. Canada's pass-through to consumer goods is partial (~30–50% per BoC staff estimates), which limits how much and how quickly the J-curve adjustment actually works. As calibrated, the chart's long-run improvement is smaller than the initial worsening — consistent with partial pass-through keeping the recovery incomplete</li>
+      <li><strong>Primary income and the NIIP</strong>: the current account includes not just trade in goods and services but also <strong>primary income</strong> (investment earnings flowing in and out) and transfers. Canada’s net international investment position (NIIP) is negative — foreign claims on Canada exceed Canadian claims abroad — so investment income tends to be a net outflow. This slider captures only the trade piece; the primary-income balance matters too, especially for how sustainable a given external position feels</li>
+    </ul>
     <h4>🔬 Try This — Current events</h4>
     <ul>
       <li><strong>US tariffs / trade-policy shock:</strong> drag Goods &amp; Services Balance from −1.5 → −4.0. Exports fall, the external deficit widens, and Canada becomes more reliant on financing from abroad. With lower relative rates, that can put additional downward pressure on CAD</li>
-      <li><strong>Middle East energy shock:</strong> drag Goods &amp; Services Balance from −1.5 to +2.0. Canada is a net energy exporter, so higher oil and gas prices can improve trade income and reduce reliance on foreign financing. <strong>That is generally supportive for CAD</strong></li>
+      <li><strong>Middle East energy shock:</strong> drag Goods &amp; Services Balance from −1.5 to +2.0. Canada is a net energy exporter, so higher oil and gas prices can improve trade income and reduce reliance on foreign financing. <strong>That is generally supportive for CAD</strong> — though persistent resource-driven appreciation can squeeze non-resource exporters (the Dutch Disease channel)</li>
       <li><strong>Rate gap and financing pressure:</strong> set Rate Premium to −1.5. The CA proxy stays tied to trade, but the financing note turns more adverse. Lower Canadian yields do not force one mechanical outcome, but they can make external financing less comfortable and increase exchange-rate sensitivity</li>
-      <li><strong>J-curve after trade shock:</strong> set depreciation to 15%. Initially the trade balance worsens as import prices jump. Over time, if export and import volumes are elastic enough, the trade balance can recover. The loonie's weakness is part of the adjustment mechanism, not a cure by itself</li>
+      <li><strong>J-curve after trade shock:</strong> set depreciation to 15%. Initially the trade balance worsens as import prices jump. Over time, if the Marshall-Lerner condition holds — the sum of export and import demand elasticities exceeds one — the trade balance can recover. The loonie's weakness is part of the adjustment mechanism, not a cure by itself</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
@@ -312,7 +326,7 @@
   <div class="section-heading">
     <span class="eyebrow">Section 6</span>
     <h2>The Mundell-Fleming Model (IS-LM-BP)</h2>
-    <p class="desc">We now have all the building blocks: money markets (Section 2), capital flows (Section 3), trade (Section 5). Mundell-Fleming ties them together into one diagram to answer the big policy question: when the BoC cuts rates or Ottawa spends billions, what happens to output? The answer depends on the exchange-rate regime. In the textbook floating-rate case with high capital mobility, monetary policy often has more short-run traction while fiscal stimulus partly leaks through the exchange rate. Real Canada is messier, so treat the diagram as comparative statics rather than a complete empirical ranking.</p>
+    <p class="desc">We now have all the building blocks: money markets (Section 2), capital flows (Section 3), trade (Section 5). Mundell-Fleming ties them together into one diagram to answer the big policy question: when the BoC cuts rates or Ottawa spends billions, what happens to output? The answer depends on the exchange-rate regime. In the textbook floating-rate case with perfect capital mobility, monetary policy is fully effective while fiscal stimulus leaks entirely through the exchange rate. Real Canada is messier, so treat the diagram as comparative statics rather than a complete empirical ranking.</p>
   </div>
   <div class="toggle-row">
     <span class="toggle-group-label">Exchange Rate:</span>
@@ -335,10 +349,10 @@
   <div class="explanation">
     <ul>
       <li><strong>IS</strong> (cyan) = goods market equilibrium; <strong>LM</strong> (purple) = money market; <strong>BP</strong> (green) = external balance at world interest rate</li>
-      <li>Under <strong>FLOATING + high capital mobility</strong>: monetary policy is typically more powerful <em>in the textbook case</em> because depreciation can support net exports, while fiscal expansion is partly offset by appreciation</li>
+      <li>Under <strong>FLOATING + high capital mobility</strong>: monetary policy is typically more powerful <em>in the textbook case</em> because depreciation can support net exports, while fiscal expansion is fully offset by appreciation</li>
       <li>Under <strong>FIXED + high capital mobility</strong>: fiscal policy is typically more powerful <em>in the textbook case</em> because the central bank accommodates the peg, while monetary expansion is largely reversed to defend it</li>
       <li>Why monetary policy fails under fixed rates: expansion → lower rates → capital outflows → currency pressure → CB sells reserves → money supply goes back</li>
-      <li>Why fiscal policy weakens under floating: stimulus → higher rates → capital inflows → appreciation → exports fall, offsetting part of the output gain</li>
+      <li>Why fiscal policy weakens under floating: stimulus → higher rates → capital inflows → appreciation → exports fall, fully offsetting the output gain</li>
       <li>Canada caveat: fiscal policy can still matter materially, especially when households are balance-sheet constrained or shocks are sector-specific. The model is about relative short-run traction under restrictive assumptions</li>
       <li>In Canada's current setting, tariffs are a negative IS shock and any BoC easing partly cushions that shock through a weaker CAD</li>
       <li>The key textbook result: <strong>floating rates give central banks more room, while fixed rates give fiscal policy more traction</strong></li>
@@ -373,6 +387,7 @@
     <ul>
       <li><strong>BoC Money Supply Increase (%)</strong>: how big is the monetary expansion. 15% is a large shock (like cumulative QE). The bigger the increase, the bigger the overshoot</li>
       <li><strong>Price Stickiness (θ)</strong>: how fast Canadian prices (wages, rent, groceries) adjust. Low θ = very sticky prices (slow adjustment) = MORE overshooting. High θ = prices adjust quickly = less overshoot</li>
+      <li><strong>Implicit assumption — long-run monetary neutrality</strong>: the chart assumes that in the long run a 15% increase in the money supply raises both prices and the exchange rate by 15%, leaving real variables unchanged. This is a standard Dornbusch assumption</li>
     </ul>
     <h4>How to read the chart</h4>
     <ul>
@@ -386,6 +401,10 @@
       <li><strong>Why overshoot happens:</strong> Prices of Tim Hortons coffee, Toronto rent, and Ontario auto parts don't change overnight. So the exchange rate must do ALL the adjusting alone — and it overshoots to generate expected appreciation that makes investors willing to hold lower-yielding CAD assets</li>
       <li><strong>Stickier prices = bigger swings:</strong> drag θ from 0.5 → 0.15. The overshoot gets enormous. In any economy where prices adjust slowly relative to asset markets, the exchange rate must do more of the heavy lifting — amplifying volatility</li>
       <li><strong>Non-bank funding shock:</strong> if a major financial repricing hit and the BoC had to do emergency easing (Money Supply +30%), the stylized overshoot would be much larger. Treat that as a scenario illustration rather than a literal CAD target</li>
+    </ul>
+    <h4>Magnitudes caveat</h4>
+    <ul>
+      <li>At the default settings, the chart shows large overshoots (e.g., a 45% jump for a 15% money-supply increase). Part of this comes from implicitly setting the interest semi-elasticity of money demand (φ in Dornbusch's original notation) to 1, which amplifies the overshoot formula ΔE₀ = (1 + 1/θ) × ΔĒ. Empirical evidence for G7 currency overshooting of this magnitude from monetary shocks alone is essentially nonexistent (Rogoff 2002). Real-world G7 episodes typically involve single-digit percentage overshoots. The chart illustrates the <em>mechanism</em> of overshooting, not realistic G7 magnitudes — scale the intuition accordingly</li>
     </ul>
     <h4>Key takeaway</h4>
     <ul>
@@ -420,7 +439,7 @@
     </ul>
     <h4>The three scenarios</h4>
     <ul>
-      <li><strong>Fixed + Free Capital</strong> (sacrifice policy): Hong Kong, Eurozone. The CB must match the anchor country's rates exactly. If the Fed hikes, HK must hike too, even if their economy is weak</li>
+      <li><strong>Fixed + Free Capital</strong> (sacrifice policy): Hong Kong, Eurozone (the ultimate fixed rate — a shared currency). The CB must match the anchor country's rates exactly. If the Fed hikes, HK must hike too, even if their economy is weak</li>
       <li><strong>Free Capital + Policy Autonomy</strong> (sacrifice fixed rate): <strong>Canada, US, UK, Japan</strong>. The BoC sets rates independently, but CAD/USD must float. This is Canada's choice — it's why CAD/USD trades around 1.38–1.39 instead of at a peg</li>
       <li><strong>Fixed + Policy Autonomy</strong> (sacrifice capital mobility): China historically, Malaysia 1998. You control capital flows with regulations. Beijing can set rates AND peg the yuan, but companies can't freely move money in/out</li>
     </ul>
@@ -528,14 +547,14 @@
 
     <h4>🔗 Why Ottawa is not a mechanical fix (Section 6)</h4>
     <ul>
-      <li><strong>Mundell-Fleming's lesson:</strong> in the textbook floating-rate case with high capital mobility, fiscal stimulus is partly offset by appreciation. If Ottawa announces a $50B stimulus, some of the demand boost can leak into a stronger CAD and weaker net exports instead of translating one-for-one into output</li>
+      <li><strong>Mundell-Fleming's lesson:</strong> in the textbook floating-rate case with perfect capital mobility, fiscal stimulus is fully offset by appreciation — IS shifts right but the resulting capital inflows and appreciation shift it back. In practice, real-world capital mobility is high but not perfect, so some fiscal traction survives; still, the model's lesson is that much of the demand boost can leak into a stronger CAD and weaker net exports rather than translating into output</li>
       <li>That does <em>not</em> mean fiscal policy is irrelevant. It means the BoC is usually the cleaner stabilization lever inside this model, while fiscal policy still matters through composition, timing, and household balance-sheet channels</li>
     </ul>
   </div>
 
   <!-- ── Part B: What the theory says happens next ── -->
   <div class="card callout-card">
-    <p><strong>Part B — What happens next?</strong> The models from Sections 2–9 do not deliver a single forecast. They help organize the most important conditional paths for Canadian interest rates, the exchange rate and, crucially, mortgage pricing.</p>
+    <p><strong>Part B — What happens next?</strong> The models from Sections 2–9 do not deliver a single forecast. They help organize the most important conditional paths for Canadian interest rates and the exchange rate.</p>
   </div>
 
   <div class="synthesis-grid">
@@ -559,8 +578,9 @@
 
   <div class="explanation">
     <h4>The exchange rate outlook, by time horizon</h4>
+    <p style="margin:0.5em 0;color:#9cb0d2;font-size:0.95em"><strong>Forecasting caveat (Meese &amp; Rogoff, 1983):</strong> structural exchange rate models — including the ones taught in this guide — cannot reliably outforecast a <em>random walk</em> at horizons under 1–2 years. The directional reasoning below is useful for understanding <em>which</em> forces matter, but should not be read as point or range forecasts with attached confidence.</p>
     <ul>
-      <li><strong>Next 3–6 months (Sections 2, 3):</strong> a broad 1.36–1.41 range is more defensible than a single near-term target. The BoC–Fed gap modestly supports the USD, but the Bank of Canada now explicitly highlights both US tariff uncertainty and Middle East energy volatility, which can push CAD in opposite directions</li>
+      <li><strong>Next 3–6 months (Sections 2, 3):</strong> the BoC–Fed gap modestly supports the USD, but the Bank of Canada now explicitly highlights both US tariff uncertainty and Middle East energy volatility, which can push CAD in opposite directions. Given the Meese-Rogoff result, specifying a narrow numerical range adds false precision — the models tell you which shocks to watch for, not where the rate will be in June</li>
       <li><strong>12–24 months (Sections 3, 6):</strong> if US inflation cools enough for more Fed easing while the BoC mostly holds, CAD could firm somewhat. But that path is conditional on trade frictions not escalating and on growth in Canada not weakening enough to force renewed BoC cuts</li>
       <li><strong>3–5 years (Section 4 — PPP):</strong> lower Canadian inflation than US inflation still points to a mild long-run appreciation bias for CAD in PPP-style reasoning. But PPP is a slow anchor, not a timing tool, and the current Canada print needs caution because headline CPI was affected by tax-related distortions</li>
     </ul>
@@ -573,11 +593,10 @@
       <li><strong>Fixed 5Y mortgage rates:</strong> these depend more on bond markets than on the next BoC meeting. A softer economy could pull them down somewhat, but a higher term premium or renewed inflation concern could keep them relatively sticky</li>
     </ul>
 
-    <h4>The mortgage decision through the lens of Sections 2–7</h4>
+    <h4>Mortgage pricing through the lens of the models</h4>
     <ul>
-      <li><strong>Choose variable if</strong> (Section 2 worldview): you think weak growth, soft labour markets and mortgage renewal strain will dominate, eventually giving the BoC room to ease more. The risk is that energy-driven inflation or a weaker CAD prevents those cuts from arriving quickly</li>
-      <li><strong>Choose fixed if</strong> (Section 4 worldview): you care more about payment certainty or think geopolitical and trade shocks will keep bond risk premia elevated. In that world, fixed acts more like insurance than a pure rate call</li>
-      <li><strong>The spread matters:</strong> compare the actual lender spread available to you rather than relying on a generic national quote. In 2026 that spread can move because of bond yields, lender funding costs and borrower-specific underwriting, not just because of where the BoC is today</li>
+      <li>Variable mortgage rates move mainly with the BoC overnight rate (Section 2’s channel). Fixed mortgage rates move mainly with bond yields, term premia and inflation expectations (Section 4’s domain). These are different exposures to different shocks</li>
+      <li>The models taught here clarify which macroeconomic forces affect which type of rate. They do <em>not</em> deliver a mortgage recommendation — that depends on personal risk tolerance, cash-flow variability, prepayment flexibility and other factors outside the scope of an international finance framework</li>
     </ul>
 
     <h4>Most pressing scenarios for Canadians now</h4>
@@ -591,8 +610,8 @@
 
     <h4>🔬 Master exercise: simulate the full cycle through Sections 1–9</h4>
     <ul>
-      <li><strong>Step 1</strong> (Section 2): Set BoC Mˢ to 9.0, Fed i* to 3.6, Eᵉ to 1.37. Watch the Canadian rate drop and CAD weaken. <em>This is 2024–26: the BoC easing cycle</em></li>
-      <li><strong>Step 2</strong> (Section 3): Set BoC rate to 2.25%, Fed to 3.0%, Eᵉ to 1.35. See E* settle near the high-1.39 area. <em>This is one possible medium-term path if the Fed keeps cutting and trade frictions do not worsen</em></li>
+      <li><strong>Step 1</strong> (Section 2): Set BoC Mˢ to 9.0, keeping Fed i* at 3.6 and Eᵉ at its default. Watch the Canadian rate drop and CAD weaken. <em>This is 2024–26: the BoC easing cycle</em></li>
+      <li><strong>Step 2</strong> (Section 3): Set BoC rate to 2.25%, Fed to 3.0%, Eᵉ to 1.35. See E* drop to ~1.36 as the rate gap narrows. <em>This is one possible medium-term path if the Fed cuts and trade frictions do not worsen</em></li>
       <li><strong>Step 3</strong> (Section 5): Set Trade Balance to −3.5 (tariff shock), Rate Premium to −1.0. See BOP stress — Canada needs capital inflows but can't offer competitive yields. <em>This is the trade-policy uncertainty scenario</em></li>
       <li><strong>Step 4</strong> (Section 7): Set Money Supply increase to 25% (emergency easing), θ to 0.4 (sticky prices). Watch the overshoot. <em>This is a stylized stress response, not a literal exchange-rate forecast</em></li>
       <li><strong>Step 5</strong> (Section 9): Set Shock to 7 (private credit freeze), Backstop 8, FX Exposure 30%. See that Canada's institutions hold but stress is real. <em>Then try it at Shock 9 with Backstop 5 to see an emerging-market-style crisis — the version Canada is designed to avoid</em></li>
@@ -601,7 +620,7 @@
   </div>
 
   <div class="card callout-card">
-    <p><strong>The bottom line:</strong> The BoC–Fed gap still matters, but it no longer explains everything by itself. In March 2026 the live Canadian macro story is a combination of softer domestic activity, trade-policy uncertainty, higher energy prices and household financial strain. Variable rates remain more sensitive to the next BoC move; fixed rates remain more sensitive to bond markets and risk premia. The models do not tell you which mortgage choice wins with certainty, but they do clarify which shocks each choice is most exposed to.</p>
+    <p><strong>The bottom line:</strong> The BoC–Fed gap still matters, but it no longer explains everything by itself. In March 2026 the live Canadian macro story is a combination of softer domestic activity, trade-policy uncertainty, higher energy prices and household financial strain. The models in this guide are frameworks for organizing thinking about these forces — not forecasting tools and not financial advice.</p>
   </div>
 </section>
 

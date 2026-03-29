@@ -10,7 +10,7 @@ const fmtNum = (v, d = 2) => v.toFixed(d);
 
 const state = {
   parityMode: "uip",
-  parityUipEe: 1.31,
+  parityUipEe: 1.37,
   parityCipSpot: 1.39,
   mfRegime: "floating",
   mfPolicy: "monetary",
@@ -203,9 +203,9 @@ function updateFxMarket() {
    SECTION 2: MONEY → INTEREST RATES → EXCHANGE RATES
    Two-panel: Money Market (left) + FX Returns (right)
    ========================================================= */
-var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.31;
+var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.37;
 var MM_MONEY_SCALE = 15.75;
-var MM_SENSITIVITY = 17; // calibrated so the default benchmark loads near 1.39
+var MM_SENSITIVITY = 71; // linearization slope: with E^e=1.37, gives E*≈1.389 at default rates
 
 function updateMoneyFx() {
   var ms = +$("mm-ms").value;
@@ -224,7 +224,7 @@ function updateMoneyFx() {
   // Money demand curve
   var mdPts = linspace(2, 12.5, 60).map(function (m) { return [m, MM_MONEY_SCALE / m]; });
   cL.curve(mdPts, xR_m, yR_m, "#fb7185");
-  cL.label(11, MM_MONEY_SCALE / 11, xR_m, yR_m, "L(i,Y)", "#fb7185", { dx: -50, dy: -14 });
+  cL.label(11, MM_MONEY_SCALE / 11, xR_m, yR_m, "L(i,\u0232)", "#fb7185", { dx: -50, dy: -14 });
 
   // Ghost money supply if shifted
   var msShifted = Math.abs(ms - MM_DEFAULT_MS) > 0.15;
@@ -239,18 +239,21 @@ function updateMoneyFx() {
 
   // Equilibrium interest rate
   var iStar = clamp(MM_MONEY_SCALE / ms, 0.5, 10);
-  cL.dot(ms, iStar, xR_m, yR_m, "#fbbf24", { toAxes: true, label: "i*", yLbl: fmtPct(iStar, 2) });
+  cL.dot(ms, iStar, xR_m, yR_m, "#fbbf24", { toAxes: true, label: "i", yLbl: fmtPct(iStar, 2) });
 
   // ---- RIGHT PANEL: FX Returns Diagram ----
   // X-axis: rates of return (%), Y-axis: Exchange rate E
   // Domestic return: vertical at i*
   // Foreign expected return: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
+  // Pre-compute equilibrium to center the dynamic y-axis
+  var eStar = eExp - (iStar - iForeign) / MM_SENSITIVITY;
+  var yMid = clamp(eStar, 0.8, 1.8);
   var cR = mkChart($("mm-returns-chart"));
-  var xR_r = [0, 10], yR_r = [0.5, 2.0];
+  var xR_r = [0, 10], yR_r = [yMid - 0.35, yMid + 0.35];
   cR.axes("Rate of Return (%)", "CAD/USD (E)");
 
   // Foreign return curve - generate E values and compute R_f
-  var frPts = linspace(0.5, 2.0, 60).map(function (E) {
+  var frPts = linspace(yR_r[0], yR_r[1], 60).map(function (E) {
     var Rf = iForeign + MM_SENSITIVITY * (eExp - E);
     return [Rf, E];
   });
@@ -260,7 +263,7 @@ function updateMoneyFx() {
   // Ghost foreign return if eExp or iForeign changed
   var fxShifted = Math.abs(iForeign - MM_DEFAULT_IF) > 0.15 || Math.abs(eExp - MM_DEFAULT_EE) > 0.015;
   if (fxShifted) {
-    var ghostFr = linspace(0.5, 2.0, 60).map(function (E) {
+    var ghostFr = linspace(yR_r[0], yR_r[1], 60).map(function (E) {
       return [MM_DEFAULT_IF + MM_SENSITIVITY * (MM_DEFAULT_EE - E), E];
     }).filter(function (p) { return p[0] >= -1 && p[0] <= 11; });
     cR.curve(ghostFr, xR_r, yR_r, "#34d399", { dash: true, op: 0.25 });
@@ -268,9 +271,9 @@ function updateMoneyFx() {
 
   cR.curve(frPts, xR_r, yR_r, "#34d399");
   // Label foreign return curve
-  var frLabelE = eExp - 0.35;
-  var frLabelR = iForeign + MM_SENSITIVITY * 0.35;
-  if (frLabelR > 0 && frLabelR < 10 && frLabelE > 0.5) {
+  var frLabelE = eExp - 0.05;
+  var frLabelR = iForeign + MM_SENSITIVITY * 0.05;
+  if (frLabelR > 0 && frLabelR < 10 && frLabelE > yR_r[0]) {
     cR.label(frLabelR, frLabelE, xR_r, yR_r, "R_USD", "#34d399", { dx: 6, dy: 12 });
   }
 
@@ -280,7 +283,7 @@ function updateMoneyFx() {
     cR.vLine(oldI_r, xR_r, yR_r, "#7dd3fc", { dash: true, op: 0.25, label: "R_CAD" });
     // Old equilibrium
     var oldEStar = eExp - (oldI_r - iForeign) / MM_SENSITIVITY;
-    if (oldEStar > 0.5 && oldEStar < 2.0) {
+    if (oldEStar > yR_r[0] && oldEStar < yR_r[1]) {
       cR.dot(oldI_r, oldEStar, xR_r, yR_r, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
     }
   }
@@ -288,11 +291,8 @@ function updateMoneyFx() {
   // Current domestic return
   cR.vLine(iStar, xR_r, yR_r, "#7dd3fc", { label: msShifted ? "R_CAD'" : "R_CAD" });
 
-  // Equilibrium: iStar = iForeign + SENSITIVITY * (eExp - E*)
-  // E* = eExp - (iStar - iForeign) / SENSITIVITY
-  var eStar = eExp - (iStar - iForeign) / MM_SENSITIVITY;
-
-  if (eStar > 0.5 && eStar < 2.0) {
+  // eStar already computed above for y-axis centering
+  if (eStar > yR_r[0] && eStar < yR_r[1]) {
     cR.dot(iStar, eStar, xR_r, yR_r, "#fbbf24", { toAxes: true, label: "E*", yLbl: fmtNum(eStar, 3) });
   }
 
@@ -303,8 +303,8 @@ function updateMoneyFx() {
 /* =========================================================
    SECTION 3: INTEREST RATE PARITY
    ========================================================= */
-var IRP_DEFAULT_IH = 2.25, IRP_DEFAULT_IF = 3.6, IRP_DEFAULT_EE = 1.31;
-var IRP_SENSITIVITY = 17;
+var IRP_DEFAULT_IH = 2.25, IRP_DEFAULT_IF = 3.6, IRP_DEFAULT_EE = 1.37;
+var IRP_SENSITIVITY = 71;
 
 function updateParity() {
   var iHome = +$("irp-ih").value;
@@ -320,7 +320,7 @@ function updateParity() {
   $("irp-ee-label").textContent = isCip ? "Spot CAD/USD (S)" : "Expected Future CAD/USD (Eᵉ)";
   $("irp-eq-label").textContent = isCip ? "Spot Rate Input (S)" : "UIP Benchmark Spot (E*)";
   $("irp-diff-label").textContent = isCip ? "Forward Premium (F-S)/S" : "Rate Differential (BoC − Fed)";
-  $("irp-fwd-label").textContent = isCip ? "1Y CIP Forward (F)" : "Expected Depreciation (UIP)";
+  $("irp-fwd-label").textContent = isCip ? "1Y CIP Forward (F)" : "Expected CAD Change (UIP)";
 
   var c = mkChart($("irp-chart"));
   var diff = iHome - iForeign;
@@ -350,11 +350,13 @@ function updateParity() {
   }
 
   var eExp = parityInput;
-  var xR = [0, 12], yR = [0.5, 2.0];
+  var eStarUip = eExp - diff / IRP_SENSITIVITY;
+  var yMid = clamp(eStarUip, 0.8, 1.8);
+  var xR = [0, 12], yR = [yMid - 0.35, yMid + 0.35];
   c.axes("Rate of Return (%)", "CAD/USD (E)");
 
   // Foreign return curve: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
-  var frPts = linspace(0.5, 2.0, 60).map(function (E) {
+  var frPts = linspace(yR[0], yR[1], 60).map(function (E) {
     return [iForeign + IRP_SENSITIVITY * (eExp - E), E];
   }).filter(function (p) { return p[0] >= -1 && p[0] <= 13; });
 
@@ -364,13 +366,13 @@ function updateParity() {
     Math.abs(eExp - IRP_DEFAULT_EE) > 0.015;
 
   if (anyShift) {
-    var ghostFr = linspace(0.5, 2.0, 60).map(function (E) {
+    var ghostFr = linspace(yR[0], yR[1], 60).map(function (E) {
       return [IRP_DEFAULT_IF + IRP_SENSITIVITY * (IRP_DEFAULT_EE - E), E];
     }).filter(function (p) { return p[0] >= -1 && p[0] <= 13; });
     c.curve(ghostFr, xR, yR, "#34d399", { dash: true, op: 0.25 });
     c.vLine(IRP_DEFAULT_IH, xR, yR, "#7dd3fc", { dash: true, op: 0.25 });
     var ghostE = IRP_DEFAULT_EE - (IRP_DEFAULT_IH - IRP_DEFAULT_IF) / IRP_SENSITIVITY;
-    if (ghostE > 0.5 && ghostE < 2.0) {
+    if (ghostE > yR[0] && ghostE < yR[1]) {
       c.dot(IRP_DEFAULT_IH, ghostE, xR, yR, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
     }
   }
@@ -378,20 +380,20 @@ function updateParity() {
   c.curve(frPts, xR, yR, "#34d399");
   c.vLine(iHome, xR, yR, "#7dd3fc", { label: "i_CAN" });
 
-  var lE = eExp - 0.18;
-  var lR = iForeign + IRP_SENSITIVITY * 0.18;
-  if (lR > 0 && lR < 12 && lE > 0.5) {
+  var lE = eExp - 0.05;
+  var lR = iForeign + IRP_SENSITIVITY * 0.05;
+  if (lR > 0 && lR < 12 && lE > yR[0]) {
     c.label(lR, lE, xR, yR, "R_USD", "#34d399", { dx: 6, dy: 12 });
   }
 
-  var eStar = eExp - diff / IRP_SENSITIVITY;
-  if (eStar > 0.5 && eStar < 2.0) {
-    c.dot(iHome, eStar, xR, yR, "#fbbf24", { toAxes: true, label: "E*", yLbl: fmtNum(eStar, 3) });
+  // eStarUip already computed above for y-axis centering
+  if (eStarUip > yR[0] && eStarUip < yR[1]) {
+    c.dot(iHome, eStarUip, xR, yR, "#fbbf24", { toAxes: true, label: "E*", yLbl: fmtNum(eStarUip, 3) });
   }
 
-  $("irp-eq-e").textContent = fmtNum(eStar, 3);
+  $("irp-eq-e").textContent = fmtNum(eStarUip, 3);
   $("irp-diff").textContent = fmtNum(diff, 2) + "pp";
-  $("irp-fwd").textContent = fmtPct(diff, 2) + " (exp. depn.)";
+  $("irp-fwd").textContent = fmtPct(diff, 2) + (diff < 0 ? " (CAD exp. to appreciate)" : diff > 0 ? " (CAD exp. to depreciate)" : " (no expected change)");
 }
 
 /* =========================================================
