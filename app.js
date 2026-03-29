@@ -10,6 +10,8 @@ const fmtNum = (v, d = 2) => v.toFixed(d);
 
 const state = {
   parityMode: "uip",
+  parityUipEe: 1.31,
+  parityCipSpot: 1.39,
   mfRegime: "floating",
   mfPolicy: "monetary",
   trilemma: "peg"
@@ -148,6 +150,9 @@ function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 /* =========================================================
    SECTION 1: FX MARKET — Supply & Demand
    ========================================================= */
+var FX_DEMAND_BASE = 2.39;
+var FX_SUPPLY_BASE = 0.39;
+
 function updateFxMarket() {
   var dShift = +$("fx-d-shift").value;
   var sShift = +$("fx-s-shift").value;
@@ -159,31 +164,32 @@ function updateFxMarket() {
   c.axes("Quantity of USD", "CAD/USD (E)");
 
   // Original curves
-  // Demand: E = 2.5 - 0.2Q  |  Supply: E = 0.5 + 0.2Q
+  // Demand: E = 2.39 - 0.2Q  |  Supply: E = 0.39 + 0.2Q
   var pts = 50;
 
   if (Math.abs(dShift) > 0.05 || Math.abs(sShift) > 0.05) {
-    var origD = linspace(0, 10, pts).map(function (q) { return [q, 2.5 - 0.2 * q]; });
-    var origS = linspace(0, 10, pts).map(function (q) { return [q, 0.5 + 0.2 * q]; });
+    var origD = linspace(0, 10, pts).map(function (q) { return [q, FX_DEMAND_BASE - 0.2 * q]; });
+    var origS = linspace(0, 10, pts).map(function (q) { return [q, FX_SUPPLY_BASE + 0.2 * q]; });
     c.curve(origD, xR, yR, "#7dd3fc", { dash: true, op: 0.25 });
     c.curve(origS, xR, yR, "#c084fc", { dash: true, op: 0.25 });
     // Original equilibrium ghost
-    c.dot(5, 1.5, xR, yR, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)", op: 0.3 });
+    c.dot(5, 1.39, xR, yR, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)", op: 0.3 });
   }
 
   // Current (shifted) curves
-  var curD = linspace(0, 10, pts).map(function (q) { return [q, 2.5 + dShift - 0.2 * q]; });
-  var curS = linspace(0, 10, pts).map(function (q) { return [q, 0.5 + sShift + 0.2 * q]; });
+  var curD = linspace(0, 10, pts).map(function (q) { return [q, FX_DEMAND_BASE + dShift - 0.2 * q]; });
+  // Positive sShift is a rightward supply shift: more USD supplied, lower E at each quantity.
+  var curS = linspace(0, 10, pts).map(function (q) { return [q, FX_SUPPLY_BASE - sShift + 0.2 * q]; });
   c.curve(curD, xR, yR, "#7dd3fc");
   c.curve(curS, xR, yR, "#c084fc");
 
   // Labels at curve ends
-  c.label(0.3, 2.5 + dShift - 0.2 * 0.3, xR, yR, "D", "#7dd3fc", { dx: -30, dy: -6 });
-  c.label(9.5, 0.5 + sShift + 0.2 * 9.5, xR, yR, "S", "#c084fc", { dx: 6, dy: -6 });
+  c.label(0.3, FX_DEMAND_BASE + dShift - 0.2 * 0.3, xR, yR, "D", "#7dd3fc", { dx: -30, dy: -6 });
+  c.label(9.5, FX_SUPPLY_BASE - sShift + 0.2 * 9.5, xR, yR, "S", "#c084fc", { dx: 6, dy: -6 });
 
-  // Equilibrium: 2.5+dShift-0.2Q = 0.5+sShift+0.2Q → Q = (2+dShift-sShift)/0.4
-  var eqQ = (2 + dShift - sShift) / 0.4;
-  var eqE = 0.5 + sShift + 0.2 * eqQ;
+  // Equilibrium: D = S, with positive sShift interpreted as a rightward supply shift.
+  var eqQ = (FX_DEMAND_BASE - FX_SUPPLY_BASE + dShift + sShift) / 0.4;
+  var eqE = FX_SUPPLY_BASE - sShift + 0.2 * eqQ;
 
   if (eqQ > 0 && eqQ < 10 && eqE > 0 && eqE < 3) {
     c.dot(eqQ, eqE, xR, yR, "#fbbf24", { toAxes: true, label: "E*", xLbl: "Q*=" + fmtNum(eqQ, 1), yLbl: fmtNum(eqE, 2) });
@@ -197,8 +203,9 @@ function updateFxMarket() {
    SECTION 2: MONEY → INTEREST RATES → EXCHANGE RATES
    Two-panel: Money Market (left) + FX Returns (right)
    ========================================================= */
-var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.37;
-var MM_SENSITIVITY = 8; // how responsive expected foreign return is to E changes
+var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.31;
+var MM_MONEY_SCALE = 15.75;
+var MM_SENSITIVITY = 17; // calibrated so the default benchmark loads near 1.39
 
 function updateMoneyFx() {
   var ms = +$("mm-ms").value;
@@ -209,21 +216,21 @@ function updateMoneyFx() {
   $("mm-ee-v").textContent = fmtNum(eExp, 2);
 
   // ---- LEFT PANEL: Money Market ----
-  // Money demand: i = 20/M (hyperbolic), Money supply: vertical at ms
+  // Money demand: i = scale / M (hyperbolic), Money supply: vertical at ms
   var cL = mkChart($("mm-money-chart"));
   var xR_m = [1, 13], yR_m = [0, 10];
   cL.axes("Real Money (M/P)", "Interest Rate i (%)");
 
   // Money demand curve
-  var mdPts = linspace(2, 12.5, 60).map(function (m) { return [m, 20 / m]; });
+  var mdPts = linspace(2, 12.5, 60).map(function (m) { return [m, MM_MONEY_SCALE / m]; });
   cL.curve(mdPts, xR_m, yR_m, "#fb7185");
-  cL.label(11, 20 / 11, xR_m, yR_m, "L(i,Y)", "#fb7185", { dx: -50, dy: -14 });
+  cL.label(11, MM_MONEY_SCALE / 11, xR_m, yR_m, "L(i,Y)", "#fb7185", { dx: -50, dy: -14 });
 
   // Ghost money supply if shifted
   var msShifted = Math.abs(ms - MM_DEFAULT_MS) > 0.15;
   if (msShifted) {
     cL.vLine(MM_DEFAULT_MS, xR_m, yR_m, "#7dd3fc", { dash: true, op: 0.25, label: "Mˢ" });
-    var oldI = 20 / MM_DEFAULT_MS;
+    var oldI = MM_MONEY_SCALE / MM_DEFAULT_MS;
     cL.dot(MM_DEFAULT_MS, oldI, xR_m, yR_m, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
   }
 
@@ -231,8 +238,8 @@ function updateMoneyFx() {
   cL.vLine(ms, xR_m, yR_m, "#7dd3fc", { label: msShifted ? "Mˢ'" : "Mˢ" });
 
   // Equilibrium interest rate
-  var iStar = clamp(20 / ms, 0.5, 10);
-  cL.dot(ms, iStar, xR_m, yR_m, "#fbbf24", { toAxes: true, label: "i*", yLbl: fmtPct(iStar) });
+  var iStar = clamp(MM_MONEY_SCALE / ms, 0.5, 10);
+  cL.dot(ms, iStar, xR_m, yR_m, "#fbbf24", { toAxes: true, label: "i*", yLbl: fmtPct(iStar, 2) });
 
   // ---- RIGHT PANEL: FX Returns Diagram ----
   // X-axis: rates of return (%), Y-axis: Exchange rate E
@@ -269,7 +276,7 @@ function updateMoneyFx() {
 
   // Ghost domestic return if ms changed
   if (msShifted) {
-    var oldI_r = clamp(20 / MM_DEFAULT_MS, 0.5, 10);
+    var oldI_r = clamp(MM_MONEY_SCALE / MM_DEFAULT_MS, 0.5, 10);
     cR.vLine(oldI_r, xR_r, yR_r, "#7dd3fc", { dash: true, op: 0.25, label: "R_CAD" });
     // Old equilibrium
     var oldEStar = eExp - (oldI_r - iForeign) / MM_SENSITIVITY;
@@ -289,91 +296,102 @@ function updateMoneyFx() {
     cR.dot(iStar, eStar, xR_r, yR_r, "#fbbf24", { toAxes: true, label: "E*", yLbl: fmtNum(eStar, 3) });
   }
 
-  $("mm-rate").textContent = fmtPct(iStar);
+  $("mm-rate").textContent = fmtPct(iStar, 2);
   $("mm-exchange").textContent = fmtNum(eStar, 3);
 }
 
 /* =========================================================
    SECTION 3: INTEREST RATE PARITY
    ========================================================= */
-var IRP_SENSITIVITY = 8;
+var IRP_DEFAULT_IH = 2.25, IRP_DEFAULT_IF = 3.6, IRP_DEFAULT_EE = 1.31;
+var IRP_SENSITIVITY = 17;
 
 function updateParity() {
   var iHome = +$("irp-ih").value;
   var iForeign = +$("irp-if").value;
-  var eExp = +$("irp-ee").value;
-  $("irp-ih-v").textContent = fmtPct(iHome);
+  var parityInput = +$("irp-ee").value;
+  var isCip = state.parityMode === "cip";
+  if (isCip) state.parityCipSpot = parityInput;
+  else state.parityUipEe = parityInput;
+
+  $("irp-ih-v").textContent = fmtPct(iHome, 2);
   $("irp-if-v").textContent = fmtPct(iForeign);
-  $("irp-ee-v").textContent = fmtNum(eExp, 2);
+  $("irp-ee-v").textContent = fmtNum(parityInput, 2);
+  $("irp-ee-label").textContent = isCip ? "Spot CAD/USD (S)" : "Expected Future CAD/USD (Eᵉ)";
+  $("irp-eq-label").textContent = isCip ? "Spot Rate Input (S)" : "UIP Benchmark Spot (E*)";
+  $("irp-diff-label").textContent = isCip ? "Forward Premium (F-S)/S" : "Rate Differential (BoC − Fed)";
+  $("irp-fwd-label").textContent = isCip ? "1Y CIP Forward (F)" : "Expected Depreciation (UIP)";
 
   var c = mkChart($("irp-chart"));
+  var diff = iHome - iForeign;
+
+  if (isCip) {
+    var spot = parityInput;
+    var fwd = spot * (1 + iHome / 100) / (1 + iForeign / 100);
+    var premium = (fwd / spot - 1) * 100;
+    var yPad = Math.max(0.04, Math.abs(fwd - spot) * 1.8);
+    var yR_cip = [Math.max(0.5, Math.min(spot, fwd) - yPad), Math.min(2.0, Math.max(spot, fwd) + yPad)];
+    if (yR_cip[1] - yR_cip[0] < 0.12) {
+      yR_cip[0] -= 0.06;
+      yR_cip[1] += 0.06;
+    }
+    var xR_cip = [0, 3];
+    c.axes("Contract", "CAD/USD");
+    c.vLine(1, xR_cip, yR_cip, "#7dd3fc", { dash: true, op: 0.18 });
+    c.vLine(2, xR_cip, yR_cip, "#34d399", { dash: true, op: 0.18 });
+    c.dot(1, spot, xR_cip, yR_cip, "#7dd3fc", { toAxes: true, label: "S", xLbl: "Spot", yLbl: fmtNum(spot, 3) });
+    c.dot(2, fwd, xR_cip, yR_cip, "#34d399", { toAxes: true, label: "F", xLbl: "Forward", yLbl: fmtNum(fwd, 3) });
+    c.txt(c.W / 2, 18, "CIP: forward is pinned by today's spot and the rate gap", { fill: "#fbbf24", weight: 700, size: 13 });
+
+    $("irp-eq-e").textContent = fmtNum(spot, 3);
+    $("irp-diff").textContent = fmtPct(premium) + (premium < 0 ? " (USD fwd discount)" : " (USD fwd premium)");
+    $("irp-fwd").textContent = fmtNum(fwd, 3);
+    return;
+  }
+
+  var eExp = parityInput;
   var xR = [0, 12], yR = [0.5, 2.0];
   c.axes("Rate of Return (%)", "CAD/USD (E)");
-
-  // Default values for ghost curves
-  var defIH = 2.3, defIF = 3.6, defEE = 1.37;
 
   // Foreign return curve: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
   var frPts = linspace(0.5, 2.0, 60).map(function (E) {
     return [iForeign + IRP_SENSITIVITY * (eExp - E), E];
   }).filter(function (p) { return p[0] >= -1 && p[0] <= 13; });
 
-  // Ghost curves if parameters differ from defaults
   var anyShift =
-    Math.abs(iHome - defIH) > 0.15 ||
-    Math.abs(iForeign - defIF) > 0.15 ||
-    Math.abs(eExp - defEE) > 0.015;
+    Math.abs(iHome - IRP_DEFAULT_IH) > 0.1 ||
+    Math.abs(iForeign - IRP_DEFAULT_IF) > 0.15 ||
+    Math.abs(eExp - IRP_DEFAULT_EE) > 0.015;
 
   if (anyShift) {
-    // Ghost foreign return
     var ghostFr = linspace(0.5, 2.0, 60).map(function (E) {
-      return [defIF + IRP_SENSITIVITY * (defEE - E), E];
+      return [IRP_DEFAULT_IF + IRP_SENSITIVITY * (IRP_DEFAULT_EE - E), E];
     }).filter(function (p) { return p[0] >= -1 && p[0] <= 13; });
     c.curve(ghostFr, xR, yR, "#34d399", { dash: true, op: 0.25 });
-    // Ghost domestic return
-    c.vLine(defIH, xR, yR, "#7dd3fc", { dash: true, op: 0.25 });
-    // Ghost equilibrium
-    var ghostE = defEE - (defIH - defIF) / IRP_SENSITIVITY;
+    c.vLine(IRP_DEFAULT_IH, xR, yR, "#7dd3fc", { dash: true, op: 0.25 });
+    var ghostE = IRP_DEFAULT_EE - (IRP_DEFAULT_IH - IRP_DEFAULT_IF) / IRP_SENSITIVITY;
     if (ghostE > 0.5 && ghostE < 2.0) {
-      c.dot(defIH, ghostE, xR, yR, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
+      c.dot(IRP_DEFAULT_IH, ghostE, xR, yR, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
     }
   }
 
-  // Current curves
   c.curve(frPts, xR, yR, "#34d399");
   c.vLine(iHome, xR, yR, "#7dd3fc", { label: "i_CAN" });
 
-  // Label foreign return
-  var lE = eExp - 0.25;
-  var lR = iForeign + IRP_SENSITIVITY * 0.25;
+  var lE = eExp - 0.18;
+  var lR = iForeign + IRP_SENSITIVITY * 0.18;
   if (lR > 0 && lR < 12 && lE > 0.5) {
     c.label(lR, lE, xR, yR, "R_USD", "#34d399", { dx: 6, dy: 12 });
   }
 
-  // Equilibrium
-  var eStar = eExp - (iHome - iForeign) / IRP_SENSITIVITY;
-  var diff = iHome - iForeign;
-
+  var eStar = eExp - diff / IRP_SENSITIVITY;
   if (eStar > 0.5 && eStar < 2.0) {
     c.dot(iHome, eStar, xR, yR, "#fbbf24", { toAxes: true, label: "E*", yLbl: fmtNum(eStar, 3) });
   }
 
-  // Compute forward or expected depreciation
-  var fwdOrDepn;
-  if (state.parityMode === "cip") {
-    // CIP: F = S * (1+i_home)/(1+i_foreign)
-    var spot = eStar > 0 ? eStar : 1;
-    var fwd = spot * (1 + iHome / 100) / (1 + iForeign / 100);
-    fwdOrDepn = ((fwd / spot - 1) * 100);
-    $("irp-fwd").textContent = fmtPct(fwdOrDepn) + " (fwd premium)";
-  } else {
-    // UIP: expected depreciation = i_home - i_foreign
-    fwdOrDepn = diff;
-    $("irp-fwd").textContent = fmtPct(fwdOrDepn) + " (exp. depn.)";
-  }
-
   $("irp-eq-e").textContent = fmtNum(eStar, 3);
-  $("irp-diff").textContent = fmtPct(diff) + "pp";
+  $("irp-diff").textContent = fmtNum(diff, 2) + "pp";
+  $("irp-fwd").textContent = fmtPct(diff, 2) + " (exp. depn.)";
 }
 
 /* =========================================================
@@ -434,10 +452,15 @@ function updateBop() {
   $("bop-ip-v").textContent = fmtPct(ip);
   $("bop-dep-v").textContent = fmtNum(dep, 0) + "%";
 
-  // ---- LEFT: BOP Identity Bars ----
-  // CA ≈ trade balance + net income from interest premium
-  var ca = nx + ip * 0.3;
-  var fa = -ca; // identity: CA + FA = 0
+  // ---- LEFT: Stylized external-balance bars ----
+  // Keep the CA proxy tied to trade; show the rate gap separately as financing pressure.
+  var ca = nx;
+  var fa = -ca; // Offsetting net capital flow in this simplified sign convention.
+  var financingPressure = ip <= -1.5 ? "High" : ip < -0.5 ? "Moderate" : "Low";
+  var financingNote =
+    ip <= -1.5 ? "Lower Canadian yields make external financing less comfortable" :
+    ip < -0.5 ? "Rate gap is a mild financing headwind" :
+    "Rate gap is not a financing headwind";
 
   var cL = mkChart($("bop-bars"));
   var barMax = Math.max(Math.abs(ca), Math.abs(fa), 3) + 1;
@@ -454,7 +477,7 @@ function updateBop() {
   var caH = caBot - caTop;
   cL.svg.appendChild(cL.n("rect", { x: cL.sx(caX, xR_b[0], xR_b[1]) - bw / 2, y: caTop, width: bw, height: caH, rx: 8, fill: "#7dd3fc", opacity: 0.85 }));
   cL.txt(cL.sx(caX, xR_b[0], xR_b[1]), ca >= 0 ? caTop - 8 : caBot + 16, fmtNum(ca, 1), { fill: "#e8f0ff", weight: 700, size: 13 });
-  cL.txt(cL.sx(caX, xR_b[0], xR_b[1]), cL.H - 10, "Current Acct", { size: 11 });
+  cL.txt(cL.sx(caX, xR_b[0], xR_b[1]), cL.H - 10, "CA Proxy", { size: 11 });
 
   // FA bar
   var faTop = cL.sy(Math.max(fa, 0), yR_b[0], yR_b[1]);
@@ -462,10 +485,11 @@ function updateBop() {
   var faH = faBot - faTop;
   cL.svg.appendChild(cL.n("rect", { x: cL.sx(faX, xR_b[0], xR_b[1]) - bw / 2, y: faTop, width: bw, height: faH, rx: 8, fill: "#c084fc", opacity: 0.85 }));
   cL.txt(cL.sx(faX, xR_b[0], xR_b[1]), fa >= 0 ? faTop - 8 : faBot + 16, fmtNum(fa, 1), { fill: "#e8f0ff", weight: 700, size: 13 });
-  cL.txt(cL.sx(faX, xR_b[0], xR_b[1]), cL.H - 10, "Financial Acct", { size: 11 });
+  cL.txt(cL.sx(faX, xR_b[0], xR_b[1]), cL.H - 10, "Capital Flow", { size: 11 });
 
-  // CA + FA = 0 label
-  cL.txt(cL.W / 2, 18, "CA + FA = 0", { fill: "#fbbf24", weight: 700, size: 14 });
+  // Stylized identity label
+  cL.txt(cL.W / 2, 18, "Stylized offset: CA proxy + K = 0", { fill: "#fbbf24", weight: 700, size: 14 });
+  cL.txt(cL.W / 2, 36, financingNote, { fill: "#9cb0d2", size: 11 });
 
   // ---- RIGHT: J-Curve ----
   var cR = mkChart($("bop-jcurve"));
@@ -504,6 +528,7 @@ function updateBop() {
 
   $("bop-ca").textContent = fmtNum(ca, 1);
   $("bop-fa").textContent = fmtNum(fa, 1);
+  $("bop-pressure").textContent = financingPressure;
 }
 
 /* =========================================================
@@ -518,8 +543,8 @@ function updateMF() {
   c.axes("Output (Y)", "Interest Rate (i)");
 
   // Base parameters
-  var isA = 8, isB = 0.02;   // IS: i = isA - isB*Y
-  var lmA = -2, lmB = 0.03;  // LM: i = lmA + lmB*Y
+  var isA = 7.6, isB = 0.02;   // IS: i = isA - isB*Y
+  var lmA = -2.4, lmB = 0.03;  // LM: i = lmA + lmB*Y
   var iW = 3.60;               // World interest rate (≈ Fed funds rate)
   var shift = 2.5;
 
@@ -549,14 +574,14 @@ function updateMF() {
       finalLmA = lmA;
       Y_final = Y0;
       i_final = i0;
-      verdict = "INEFFECTIVE";
+      verdict = "WEAK IN TEXTBOOK CASE";
       detail = "Appreciation crowds out net exports → IS shifts back";
     } else {
       finalIsA = shiftedIsA;
       Y_final = (shiftedIsA - iW) / isB;
       finalLmA = iW - lmB * Y_final;
       i_final = iW;
-      verdict = "HIGHLY EFFECTIVE";
+      verdict = "STRONG IN TEXTBOOK CASE";
       detail = "CB accommodates to defend peg → LM also shifts right";
       lmShifts = true;
     }
@@ -571,7 +596,7 @@ function updateMF() {
       Y_final = (iW - shiftedLmA) / lmB;
       finalIsA = iW + isB * Y_final;
       i_final = iW;
-      verdict = "HIGHLY EFFECTIVE";
+      verdict = "STRONG IN TEXTBOOK CASE";
       detail = "Depreciation boosts net exports → IS also shifts right";
       isShifts = true;
     } else {
@@ -579,7 +604,7 @@ function updateMF() {
       finalLmA = lmA;
       Y_final = Y0;
       i_final = i0;
-      verdict = "INEFFECTIVE";
+      verdict = "WEAK IN TEXTBOOK CASE";
       detail = "CB defends peg → LM shifts back to original";
     }
   }
@@ -694,7 +719,7 @@ function updateOvershoot() {
   // Long-run reference lines
   c.hLine(100, xR, yR, "#9cb0d2", { w: 1, dash: true, op: 0.2 });
   c.hLine(E_LR, xR, yR, "#9cb0d2", { w: 1, dash: true, op: 0.25 });
-  c.txt(c.W - c.m.r - 4, c.sy(E_LR, yR[0], yR[1]) - 6, "Long-run E & P", { size: 10, fill: "#9cb0d2", anchor: "end" });
+  c.txt(c.W - c.m.r - 4, c.sy(E_LR, yR[0], yR[1]) - 6, "Stylized long-run E & P", { size: 10, fill: "#9cb0d2", anchor: "end" });
 
   // E path (cyan) — overshoots then settles
   c.curve(ePts, xR, yR, "#7dd3fc", { w: 3 });
@@ -811,10 +836,10 @@ function updateCrisis() {
   $("cr-res-v").textContent = reserves + " / 10";
   $("cr-debt-v").textContent = fxDebt + "%";
 
-  var bondSell = fundShock * 0.9 + fxDebt * 0.025;
-  var yieldSpike = bondSell * 0.7 - reserves * 0.18;
-  var currStress = fundShock * 0.8 + fxDebt * 0.03 - reserves * 0.28;
-  var bsStress = currStress * 0.65 + fxDebt * 0.028;
+  var bondSell = Math.max(0, fundShock * 0.9 + fxDebt * 0.025);
+  var yieldSpike = Math.max(0, bondSell * 0.7 - reserves * 0.18);
+  var currStress = Math.max(0, fundShock * 0.8 + fxDebt * 0.03 - reserves * 0.28);
+  var bsStress = Math.max(0, currStress * 0.65 + fxDebt * 0.028);
 
   var svg = $("cr-chart");
   svg.innerHTML = "";
@@ -842,16 +867,16 @@ function updateCrisis() {
 
   var nodes = [
     { x: 130, y: 110, label: "Funding shock", value: fundShock + "/10", color: "#fb7185" },
-    { x: 370, y: 90,  label: "Bond selling", value: fmtPct(bondSell), color: "#fbbf24" },
-    { x: 620, y: 110, label: "Yield spike",  value: fmtPct(yieldSpike), color: "#7dd3fc" },
-    { x: 790, y: 210, label: "Currency stress", value: fmtPct(currStress), color: "#c084fc" },
-    { x: 500, y: 260, label: "Balance sheet", value: fmtPct(bsStress), color: "#34d399" },
-    { x: 220, y: 245, label: "Reserve buffer", value: reserves + "/10", color: "#60a5fa" }
+    { x: 370, y: 90,  label: "Deleveraging", value: fmtPct(bondSell), color: "#fbbf24" },
+    { x: 620, y: 110, label: "Funding spread",  value: fmtPct(yieldSpike), color: "#7dd3fc" },
+    { x: 790, y: 210, label: "FX stress", value: fmtPct(currStress), color: "#c084fc" },
+    { x: 500, y: 260, label: "Balance-sheet stress", value: fmtPct(bsStress), color: "#34d399" },
+    { x: 220, y: 245, label: "Liquidity backstop", value: reserves + "/10", color: "#60a5fa" }
   ];
 
   var edgeList = [
-    [0, 1, "liquidity needs"], [1, 2, "prices fall"],
-    [2, 3, "higher return demanded"], [3, 4, "FX debt burden rises"],
+    [0, 1, "liquidity needs"], [1, 2, "spreads widen"],
+    [2, 3, "higher return demanded"], [3, 4, "FX exposure bites"],
     [4, 1, "forced deleveraging"], [5, 3, "cushion or failure"]
   ];
 
@@ -870,11 +895,16 @@ function updateCrisis() {
 
   var severity = Math.max(0, yieldSpike + currStress + bsStress);
   var tone = severity < 6 ? "contained" : severity < 10 ? "fragile" : "crisis-like";
+  var coreSummary;
+  if (severity === 0) {
+    coreSummary = "No material funding, FX or balance-sheet stress appears in this calibration.";
+  } else {
+    coreSummary = "Funding shock " + fundShock + "/10 with " + fxDebt + "% net FX exposure generates measurable funding and balance-sheet stress.";
+  }
   $("cr-summary").textContent =
-    "Scenario looks " + tone + ". Funding shock " + fundShock + "/10 with " + fxDebt +
-    "% FX debt creates selling pressure. Reserve credibility at " + reserves +
+    "Scenario looks " + tone + ". " + coreSummary + " Liquidity backstop credibility at " + reserves +
     "/10 " + (reserves >= 6 ? "provides a buffer" : "is insufficient to break the loop") +
-    ". Higher FX debt share amplifies the feedback — when the currency falls, the debt burden rises, triggering more outflows.";
+    ". The FX-exposure slider compresses hedging gaps, rollover risk and USD funding dependence into one teaching number rather than a literal stock of unhedged debt.";
 }
 
 /* =========================================================
@@ -908,12 +938,14 @@ function updateAll() {
 // Toggle: Parity mode
 $("irp-uip").addEventListener("click", function () {
   state.parityMode = "uip";
+  $("irp-ee").value = state.parityUipEe;
   $("irp-uip").classList.add("is-active");
   $("irp-cip").classList.remove("is-active");
   updateParity();
 });
 $("irp-cip").addEventListener("click", function () {
   state.parityMode = "cip";
+  $("irp-ee").value = state.parityCipSpot;
   $("irp-cip").classList.add("is-active");
   $("irp-uip").classList.remove("is-active");
   updateParity();

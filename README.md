@@ -1,6 +1,6 @@
 # International Capital Markets — Interactive Guide
 
-An interactive, client-side reference for university-level international economics and finance. Every section uses **Canada 🇨🇦 as the domestic country** and the **USA 🇺🇸 as the foreign country**, with slider defaults calibrated to approximately March 2026 values.
+An interactive, client-side reference for university-level international economics and finance. Every section uses **Canada 🇨🇦 as the domestic country** and the **USA 🇺🇸 as the foreign country**, with slider defaults calibrated to approximately March 2026 official releases. Textbook diagrams are presented as teaching benchmarks, not as fitted forecasts.
 
 **Live site:** [Deployed on Vercel]
 
@@ -14,25 +14,25 @@ An interactive, client-side reference for university-level international economi
 | 2 | Money → Interest Rates → FX | Two-panel monetary transmission |
 | 3 | Interest Rate Parity (UIP / CIP) | Arbitrage equilibrium |
 | 4 | Purchasing Power Parity | Long-run inflation anchor |
-| 5 | Balance of Payments | CA + FA = 0 identity; J-curve |
+| 5 | Balance of Payments | Stylized current-account proxy; J-curve |
 | 6 | Mundell-Fleming (IS-LM-BP) | Policy effectiveness under floating vs fixed |
 | 7 | Overshooting | Dornbusch sticky-price dynamics |
 | 8 | Impossible Trinity | Trilemma regime choice |
-| 9 | Currency Crises | Feedback loop mechanics |
+| 9 | Currency Crises | Funding and liquidity stress feedback loops |
 | 10 | Synthesis | Full Canada–US macro chain |
 
 ## Current-Events Case Studies
 
 Each section includes a **🔬 Try This** walkthrough referencing:
-- **BoC vs Fed divergence** — 175bp gap driving CAD weakness
-- **Iran war / oil shock** — commodity terms-of-trade effects
-- **AI bubble concerns** — risk-off capital flow dynamics
-- **Private credit unwind** — shadow banking feedback loops
-- **US tariff threats** — trade balance and exchange rate response
+- **US tariffs and trade-policy uncertainty** — export, investment and CAD pressure
+- **Middle East energy volatility** — terms-of-trade gains versus risk-off USD demand
+- **Household and mortgage strain** — growth and policy-rate sensitivity
+- **Non-bank / private-credit repricing** — funding and liquidity channels
+- **LNG diversification** — medium-term export upside
 
 ## Reference Data
 
-[`canada-usa-reference.md`](canada-usa-reference.md) contains the full economic data snapshot (rates, inflation, FX, debt exposure) and section-by-section slider mappings used to calibrate the defaults.
+[`canada-usa-reference.md`](canada-usa-reference.md) contains the full economic data snapshot, interpretation caveats, source notes and section-by-section slider mappings used to calibrate the defaults.
 
 ## Stack
 
