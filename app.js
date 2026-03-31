@@ -23,7 +23,7 @@ function mkChart(svgEl) {
   svg.innerHTML = "";
   const W = svg.viewBox.baseVal.width || 580;
   const H = svg.viewBox.baseVal.height || 360;
-  const m = { t: 30, r: 24, b: 48, l: 58 };
+  const m = { t: 34, r: 34, b: 48, l: 72 };
   const iW = W - m.l - m.r, iH = H - m.t - m.b;
 
   function n(tag, a) {
@@ -40,6 +40,7 @@ function mkChart(svgEl) {
       fill: a.fill || "#9cb0d2",
       "font-size": a.size || 12,
       "font-weight": a.weight || "normal",
+      ...(a.opacity !== undefined ? { opacity: a.opacity } : {}),
       ...(a.transform ? { transform: a.transform } : {})
     });
     t.textContent = s;
@@ -60,13 +61,18 @@ function mkChart(svgEl) {
       return api;
     },
 
-    axes(xLbl, yLbl) {
+    axes(xLbl, yLbl, opts) {
+      opts = opts || {};
       svg.appendChild(n("line", { x1: m.l, y1: m.t - 4, x2: m.l, y2: H - m.b, stroke: "rgba(156,176,210,0.35)", "stroke-width": 1.5 }));
       svg.appendChild(n("line", { x1: m.l, y1: H - m.b, x2: W - m.r + 4, y2: H - m.b, stroke: "rgba(156,176,210,0.35)", "stroke-width": 1.5 }));
       svg.appendChild(n("polygon", { points: `${m.l - 4},${m.t} ${m.l + 4},${m.t} ${m.l},${m.t - 8}`, fill: "rgba(156,176,210,0.35)" }));
       svg.appendChild(n("polygon", { points: `${W - m.r},${H - m.b - 4} ${W - m.r},${H - m.b + 4} ${W - m.r + 8},${H - m.b}`, fill: "rgba(156,176,210,0.35)" }));
       txt(W / 2, H - 4, xLbl);
-      txt(16, H / 2, yLbl, { transform: `rotate(-90 16 ${H / 2})` });
+      const yX = opts.yX !== undefined ? opts.yX : (m.l - 6);
+      txt(yX, H / 2, yLbl, {
+        transform: `rotate(-90 ${yX} ${H / 2})`,
+        size: opts.ySize || 11
+      });
       return api;
     },
 
@@ -93,8 +99,13 @@ function mkChart(svgEl) {
         svg.appendChild(n("line", { x1: px, y1: py, x2: m.l, y2: py, stroke: color, "stroke-width": 1, "stroke-dasharray": "3,3", opacity: 0.45 }));
         svg.appendChild(n("line", { x1: px, y1: py, x2: px, y2: H - m.b, stroke: color, "stroke-width": 1, "stroke-dasharray": "3,3", opacity: 0.45 }));
       }
-      svg.appendChild(n("circle", { cx: px, cy: py, r: opts.r || 6, fill: opts.fill || "#0b1628", stroke: color, "stroke-width": 2.5 }));
-      if (opts.label) txt(px + (opts.dx || 10), py + (opts.dy || -10), opts.label, { fill: color, weight: 700, size: 13, anchor: "start" });
+      svg.appendChild(n("circle", {
+        cx: px, cy: py, r: opts.r || 6, fill: opts.fill || "#0b1628", stroke: color,
+        "stroke-width": 2.5, opacity: opts.op || 1
+      }));
+      if (opts.label) txt(px + (opts.dx || 10), py + (opts.dy || -10), opts.label, {
+        fill: color, weight: 700, size: 13, anchor: "start", opacity: opts.op || 1
+      });
       if (opts.xLbl) txt(px, H - m.b + 16, opts.xLbl, { fill: color, weight: "bold", size: 11 });
       if (opts.yLbl) txt(m.l - 6, py + 4, opts.yLbl, { fill: color, weight: "bold", size: 11, anchor: "end" });
       return api;
@@ -122,7 +133,9 @@ function mkChart(svgEl) {
         ...(opts.dash ? { "stroke-dasharray": "8,5" } : {}),
         opacity: opts.op || 1
       }));
-      if (opts.label) txt(W - m.r + 4, sy + 4, opts.label, { fill: color, weight: 700, size: 12, anchor: "start" });
+      if (opts.label) txt(W - m.r - 4, sy + 4, opts.label, {
+        fill: color, weight: 700, size: 12, anchor: opts.anchor || "end"
+      });
       return api;
     },
 
@@ -157,7 +170,8 @@ function mkSvg(svgEl) {
       "text-anchor": a.anchor || "middle",
       fill: a.fill || "#9cb0d2",
       "font-size": a.size || 12,
-      "font-weight": a.weight || "normal"
+      "font-weight": a.weight || "normal",
+      ...(a.opacity !== undefined ? { opacity: a.opacity } : {})
     });
     t.textContent = s;
     svg.appendChild(t);
@@ -214,19 +228,27 @@ function updateFxMarket() {
   c.curve(curS, xR, yR, "#c084fc");
 
   // Labels at curve ends
-  c.label(0.3, FX_DEMAND_BASE + dShift - 0.2 * 0.3, xR, yR, "D", "#7dd3fc", { dx: -30, dy: -6 });
-  c.label(9.5, FX_SUPPLY_BASE - sShift + 0.2 * 9.5, xR, yR, "S", "#c084fc", { dx: 6, dy: -6 });
+  var dLabelY = clamp(FX_DEMAND_BASE + dShift - 0.2 * 0.3, yR[0] + 0.08, yR[1] - 0.08);
+  var sLabelY = clamp(FX_SUPPLY_BASE - sShift + 0.2 * 9.5, yR[0] + 0.08, yR[1] - 0.08);
+  c.label(0.3, dLabelY, xR, yR, "D", "#7dd3fc", { dx: -30, dy: -6 });
+  c.label(9.5, sLabelY, xR, yR, "S", "#c084fc", { dx: 6, dy: -6 });
 
   // Equilibrium: D = S, with positive sShift interpreted as a rightward supply shift.
   var eqQ = (FX_DEMAND_BASE - FX_SUPPLY_BASE + dShift + sShift) / 0.4;
   var eqE = FX_SUPPLY_BASE - sShift + 0.2 * eqQ;
+  var hasPositiveEq = eqQ > 0 && eqE > 0;
+  var inFrame = eqQ > xR[0] && eqQ < xR[1] && eqE > yR[0] && eqE < yR[1];
 
-  if (eqQ > 0 && eqQ < 10 && eqE > 0 && eqE < 3) {
+  if (inFrame) {
     c.dot(eqQ, eqE, xR, yR, "#fbbf24", { toAxes: true, label: "E*", xLbl: "Q*=" + fmtNum(eqQ, 1), yLbl: fmtNum(eqE, 2) });
+  } else {
+    c.txt(c.W / 2, 18, hasPositiveEq ? "Equilibrium lies outside the plotted range" : "Shifted curves imply no positive equilibrium in this frame", {
+      fill: "#fbbf24", weight: 700, size: 13
+    });
   }
 
-  $("fx-eq-e").textContent = fmtNum(eqE, 2);
-  $("fx-eq-q").textContent = fmtNum(eqQ, 1);
+  $("fx-eq-e").textContent = inFrame ? fmtNum(eqE, 2) : (hasPositiveEq ? "Outside range" : "No positive E*");
+  $("fx-eq-q").textContent = inFrame ? fmtNum(eqQ, 1) : (hasPositiveEq ? "Outside range" : "No positive Q*");
 }
 
 /* =========================================================
@@ -236,6 +258,8 @@ function updateFxMarket() {
 var MM_DEFAULT_MS = 7, MM_DEFAULT_IF = 3.6, MM_DEFAULT_EE = 1.37;
 var MM_MONEY_SCALE = 15.75;
 var MM_SENSITIVITY = 71; // linearization slope: with E^e=1.37, gives E*≈1.389 at default rates
+
+var RETURN_E_RANGE = [0.45, 2.15];
 
 function updateMoneyFx() {
   var ms = +$("mm-ms").value;
@@ -275,11 +299,10 @@ function updateMoneyFx() {
   // X-axis: rates of return (%), Y-axis: Exchange rate E
   // Domestic return: vertical at i*
   // Foreign expected return: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
-  // Pre-compute equilibrium to center the dynamic y-axis
+  // Keep a stable exchange-rate axis so the movement in E* is visible.
   var eStar = eExp - (iStar - iForeign) / MM_SENSITIVITY;
-  var yMid = clamp(eStar, 0.8, 1.8);
   var cR = mkChart($("mm-returns-chart"));
-  var xR_r = [0, 10], yR_r = [yMid - 0.35, yMid + 0.35];
+  var xR_r = [0, 10], yR_r = RETURN_E_RANGE;
   cR.axes("Rate of Return (%)", "CAD/USD (E)");
 
   // Foreign return curve - generate E values and compute R_f
@@ -312,7 +335,7 @@ function updateMoneyFx() {
     var oldI_r = clamp(MM_MONEY_SCALE / MM_DEFAULT_MS, 0.5, 10);
     cR.vLine(oldI_r, xR_r, yR_r, "#7dd3fc", { dash: true, op: 0.25, label: "R_CAD" });
     // Old equilibrium
-    var oldEStar = eExp - (oldI_r - iForeign) / MM_SENSITIVITY;
+    var oldEStar = MM_DEFAULT_EE - (oldI_r - MM_DEFAULT_IF) / MM_SENSITIVITY;
     if (oldEStar > yR_r[0] && oldEStar < yR_r[1]) {
       cR.dot(oldI_r, oldEStar, xR_r, yR_r, "#fbbf24", { r: 4, fill: "rgba(251,191,36,0.15)" });
     }
@@ -381,8 +404,7 @@ function updateParity() {
 
   var eExp = parityInput;
   var eStarUip = eExp - diff / IRP_SENSITIVITY;
-  var yMid = clamp(eStarUip, 0.8, 1.8);
-  var xR = [0, 12], yR = [yMid - 0.35, yMid + 0.35];
+  var xR = [0, 12], yR = RETURN_E_RANGE;
   c.axes("Rate of Return (%)", "CAD/USD (E)");
 
   // Foreign return curve: R_f(E) = iForeign + SENSITIVITY * (eExp - E)
@@ -496,14 +518,14 @@ function updateBop() {
 
   var cL = mkChart($("bop-bars"));
   var barMax = Math.max(Math.abs(ca), Math.abs(fa), 3) + 1;
-  var xR_b = [0, 4], yR_b = [-barMax, barMax];
+  var xR_b = [0, 4.4], yR_b = [-barMax, barMax];
   cL.axes("", "Balance");
 
   // Zero line
   cL.hLine(0, xR_b, yR_b, "#9cb0d2", { w: 1, dash: true, op: 0.3 });
 
   // CA bar
-  var caX = 1.2, faX = 2.8, bw = 70;
+  var caX = 1.1, faX = 2.4, pressureX = 3.55, bw = 70;
   var caTop = cL.sy(Math.max(ca, 0), yR_b[0], yR_b[1]);
   var caBot = cL.sy(Math.min(ca, 0), yR_b[0], yR_b[1]);
   var caH = caBot - caTop;
@@ -518,6 +540,29 @@ function updateBop() {
   cL.svg.appendChild(cL.n("rect", { x: cL.sx(faX, xR_b[0], xR_b[1]) - bw / 2, y: faTop, width: bw, height: faH, rx: 8, fill: "#c084fc", opacity: 0.85 }));
   cL.txt(cL.sx(faX, xR_b[0], xR_b[1]), fa >= 0 ? faTop - 8 : faBot + 16, fmtNum(fa, 1), { fill: "#e8f0ff", weight: 700, size: 13 });
   cL.txt(cL.sx(faX, xR_b[0], xR_b[1]), cL.H - 10, "Capital Flow", { size: 11 });
+
+  // Financing-pressure gauge: the rate gap affects financing comfort, not the accounting identity.
+  var pressureColor =
+    financingPressure === "High" ? "#fb7185" :
+    financingPressure === "Moderate" ? "#fbbf24" : "#34d399";
+  var pressureNorm =
+    financingPressure === "High" ? 0.92 :
+    financingPressure === "Moderate" ? 0.58 : 0.22;
+  var trackX = cL.sx(pressureX, xR_b[0], xR_b[1]) - 14;
+  var trackY = cL.m.t + 18;
+  var trackH = cL.H - cL.m.t - cL.m.b - 36;
+  var fillH = trackH * pressureNorm;
+  cL.svg.appendChild(cL.n("rect", {
+    x: trackX, y: trackY, width: 28, height: trackH, rx: 12,
+    fill: "rgba(156,176,210,0.10)", stroke: "rgba(156,176,210,0.16)"
+  }));
+  cL.svg.appendChild(cL.n("rect", {
+    x: trackX, y: trackY + trackH - fillH, width: 28, height: fillH, rx: 12,
+    fill: pressureColor, opacity: 0.85
+  }));
+  cL.txt(cL.sx(pressureX, xR_b[0], xR_b[1]), trackY - 8, financingPressure, { fill: pressureColor, weight: 700, size: 11 });
+  cL.txt(cL.sx(pressureX, xR_b[0], xR_b[1]), cL.H - 24, "Financing", { size: 10 });
+  cL.txt(cL.sx(pressureX, xR_b[0], xR_b[1]), cL.H - 10, "Pressure", { size: 10 });
 
   // Stylized identity label
   cL.txt(cL.W / 2, 18, "Stylized offset: CA proxy + K = 0", { fill: "#fbbf24", weight: 700, size: 14 });
@@ -1087,10 +1132,13 @@ function updatePortfolioFlows() {
   cR.txt(barX + barW * (cadW + usdW * 0.5), barY + 38, "USD " + Math.round(usdW * 100) + "%", { fill: "#04111f", weight: 800, size: 15 });
   cR.txt(180, 88, "Expected CAD bond return: " + fmtPct(cadRet, 2), { anchor: "start", fill: "#34d399", weight: 700 });
   cR.txt(180, 112, "Expected USD bond return in CAD: " + fmtPct(usdRet, 2), { anchor: "start", fill: "#7dd3fc", weight: 700 });
-  cR.txt(180, 258, "Illustrative choice rule: higher expected return helps, but volatility and correlation still matter.", {
+  cR.txt(120, 258, "Illustrative choice rule: expected return helps,", {
     anchor: "start", fill: "#9cb0d2", size: 13
   });
-  cR.txt(180, 286, "This bar is a teaching allocation, not a claim about actual fund weights.", {
+  cR.txt(120, 282, "but volatility and correlation still matter.", {
+    anchor: "start", fill: "#9cb0d2", size: 13
+  });
+  cR.txt(120, 310, "This bar is a teaching allocation, not a claim about actual fund weights.", {
     anchor: "start", fill: "#9cb0d2", size: 13
   });
 
@@ -1457,9 +1505,9 @@ function updateGlobalIntermediation() {
 
   var c = mkChart($("gi-chart"));
   var xR = [0, 10], yR = [0, 10];
-  c.axes("Leverage / Margin Pressure", "Liquidity Mismatch / Redemption Risk");
+  c.axes("Leverage / Margin Pressure", "Liquidity / Redemption Risk");
   c.vLine(5, xR, yR, "rgba(156,176,210,0.18)", { dash: true, label: "Higher leverage" });
-  c.hLine(5, xR, yR, "rgba(156,176,210,0.18)", { dash: true, label: "Higher liquidity mismatch" });
+  c.hLine(5, xR, yR, "rgba(156,176,210,0.18)", { dash: true, label: "Higher mismatch" });
 
   var nbScale = (share - 20) / 65;
   var institutions = [

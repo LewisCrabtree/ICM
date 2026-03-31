@@ -237,12 +237,12 @@
     <h4>What the controls mean</h4>
     <ul>
       <li><strong>Goods &amp; Services Balance (NX)</strong>: the trade component of external balance. Negative = deficit (Canada imports more goods and services than it exports). This is only one piece of the current account</li>
-      <li><strong>Rate Premium (BoC − Fed)</strong>: the interest rate gap. Here it changes how comfortable the offsetting external financing looks; it does <em>not</em> move the current-account proxy directly</li>
+      <li><strong>Rate Premium (BoC − Fed)</strong>: the interest rate gap. Here it changes the <strong>financing-pressure gauge</strong> beside the offsetting financial flow; it does <em>not</em> move the current-account proxy directly</li>
       <li><strong>CAD Depreciation Shock</strong>: a sudden weakening of the loonie (e.g., from tariff news). This triggers the J-curve in the right panel</li>
     </ul>
     <h4>How to read the two panels</h4>
     <ul>
-      <li><strong>Left panel (bars)</strong>: the cyan bar is a <strong>stylized current-account proxy</strong> tied to goods/services trade, and the purple bar is the offsetting financial flow. The note above the bars summarizes whether the rate gap makes that financing easier or less comfortable</li>
+      <li><strong>Left panel (bars + gauge)</strong>: the cyan bar is a <strong>stylized current-account proxy</strong> tied to goods/services trade, the purple bar is the offsetting financial flow, and the right-hand gauge shows whether the rate gap makes that financing easier or less comfortable</li>
       <li><strong>Right panel (J-curve)</strong>: after a CAD depreciation, imports get more expensive immediately (trade balance worsens), but over time Canadian exports may become more competitive and volumes adjust. The dip-then-recovery shape is the classic J-curve benchmark, not a guarantee on any fixed timeline</li>
     </ul>
     <h4>What this section simplifies</h4>
@@ -254,7 +254,7 @@
     <ul>
       <li><strong>US tariffs / trade-policy shock:</strong> drag Goods &amp; Services Balance from −1.5 → −4.0. Exports fall, the external deficit widens, and Canada becomes more reliant on financing from abroad. With lower relative rates, that can put additional downward pressure on CAD</li>
       <li><strong>Middle East energy shock:</strong> drag Goods &amp; Services Balance from −1.5 to +2.0. Canada is a net energy exporter, so higher oil and gas prices can improve trade income and reduce reliance on foreign financing. <strong>That is generally supportive for CAD</strong> — though persistent resource-driven appreciation can squeeze non-resource exporters (the Dutch Disease channel)</li>
-      <li><strong>Rate gap and financing pressure:</strong> set Rate Premium to −1.5. The CA proxy stays tied to trade, but the financing note turns more adverse. Lower Canadian yields do not force one mechanical outcome, but they can make external financing less comfortable and increase exchange-rate sensitivity</li>
+      <li><strong>Rate gap and financing pressure:</strong> set Rate Premium to −1.5. The CA proxy stays tied to trade, but the pressure gauge jumps higher. Lower Canadian yields do not force one mechanical outcome, but they can make external financing less comfortable and increase exchange-rate sensitivity</li>
       <li><strong>J-curve after trade shock:</strong> set depreciation to 15%. Initially the trade balance worsens as import prices jump. Over time, if the Marshall-Lerner condition holds — the sum of export and import demand elasticities exceeds one — the trade balance can recover. The loonie's weakness is part of the adjustment mechanism, not a cure by itself</li>
     </ul>
     <h4>Key takeaway</h4>
@@ -394,7 +394,7 @@
     </ul>
     <h4>How to read the chart</h4>
     <ul>
-      <li>The <strong>red spike</strong> is the initial CAD/USD jump — the currency overshoots past the dashed long-run line</li>
+      <li>The <strong>cyan jump in E(t)</strong> is the initial CAD/USD overshoot — the currency moves past the dashed long-run line before settling back</li>
       <li>The <strong>dashed horizontal</strong> shows the chart's stylized long-run level after prices adjust. It is an illustration of the overshooting mechanism, not a calibrated forecast path</li>
       <li>The <strong>recovery path</strong> slopes downward as prices gradually adjust and the exchange rate comes back from its overshoot</li>
     </ul>
@@ -1003,10 +1003,10 @@
         <label>Offshore USD Funding Share (%) <span class="value-pill" id="ec-share-v">25%</span>
           <input type="range" id="ec-share" min="0" max="80" step="1" value="25">
         </label>
-        <label>Funding Shock Severity (1-10) <span class="value-pill" id="ec-shock-v">3 / 10</span>
+        <label>Funding Shock Severity (0-10) <span class="value-pill" id="ec-shock-v">3 / 10</span>
           <input type="range" id="ec-shock" min="0" max="10" step="1" value="3">
         </label>
-        <label>Swap-Line or Backstop Strength (1-10) <span class="value-pill" id="ec-backstop-v">8 / 10</span>
+        <label>Swap-Line or Backstop Strength (0-10) <span class="value-pill" id="ec-backstop-v">8 / 10</span>
           <input type="range" id="ec-backstop" min="0" max="10" step="1" value="8">
         </label>
       </div>
@@ -1055,10 +1055,10 @@
         <label>Non-bank Share of Cross-Border Finance (%) <span class="value-pill" id="gi-share-v">55%</span>
           <input type="range" id="gi-share" min="20" max="85" step="1" value="55">
         </label>
-        <label>Leverage or Margin Pressure (1-10) <span class="value-pill" id="gi-lev-v">4 / 10</span>
+        <label>Leverage or Margin Pressure (0-10) <span class="value-pill" id="gi-lev-v">4 / 10</span>
           <input type="range" id="gi-lev" min="0" max="10" step="1" value="4">
         </label>
-        <label>Redemption Pressure (1-10) <span class="value-pill" id="gi-red-v">3 / 10</span>
+        <label>Redemption Pressure (0-10) <span class="value-pill" id="gi-red-v">3 / 10</span>
           <input type="range" id="gi-red" min="0" max="10" step="1" value="3">
         </label>
       </div>
